@@ -2,12 +2,36 @@
 #include <stdlib.h>
 #include <math.h>
 #include "mlx.h"
-#include "mlx_int.h"
+
+// 環境光と鏡面反射による陰影処理を追加
 
 #define	WIDTH	512
 #define	HEIGHT	512
 
 #define	R	1
+/*
+	環境光反射係数
+		𝑘𝑎=0.01
+	拡散反射係数
+		𝑘𝑑=0.69
+	鏡面反射係数
+		𝑘𝑠=0.3
+	光沢度
+		𝛼=8
+	環境光の強度
+		𝐼𝑎=0.1
+	光源の光の強度
+		𝐼𝑖=1.0
+*/
+typedef struct s_const
+{
+	const double	k_a;
+	const double	k_d;
+	const double	k_s;
+	const double	I_a;
+	const double	I_i;
+	const int8_t	alpha;
+}	t_const;
 
 typedef struct s_imge
 {
@@ -145,6 +169,28 @@ __int32_t	map(double R_d)
 	return (result);
 }
 
+double	calculate_mirror_reflection(t_const constant, t_vector de, t_vector n, t_vector l)
+{
+	t_vector	v;
+	t_vector	v_tmp;
+	t_vector	r;
+	t_vector	r_tmp;
+	double		inner;
+	double		inner2;
+	double		R_s;
+
+	inner = inner_product(n, l);
+	v_tmp = multi_vector(de, -1);
+	v = multi_vector(v_tmp, sqrt(1/abst_squared(v_tmp)));
+	r_tmp = subst_vector(multi_vector(n, 2*inner), l);
+	r = multi_vector(r_tmp, sqrt(1/abst_squared(r_tmp)));
+	inner2 = inner_product(v, r);
+
+	R_s = constant.k_s * constant.I_i * pow(inner2, constant.alpha);
+	if (inner_product(n, l) < 0 || inner_product(v, r) < 0)
+		R_s = 0;
+	return (R_s);
+}
 
 /*	de:	perspective vector 
 	pe: perspective position 
@@ -154,8 +200,28 @@ __int32_t	map(double R_d)
 	n: normal vector
 	p_i: 視線と球の交点
 	p_l: 点光源の位置
+	𝑅𝑎：環境光の反射光の放射輝度
+	𝑅𝑑：直接光の拡散反射光の放射輝度
+	𝑅𝑠：直接光の鏡面反射光の放射輝度
+*/
+
+/*
+	𝑅𝑠=𝑘𝑠𝐼𝑖(𝐯⃗ ⋅𝐫⃗ )𝛼
+	𝑘𝑠：鏡面反射係数
+	𝐼𝑖：光源の光の強度
+	𝐯⃗ ：視線ベクトルの逆ベクトル(∣∣𝐯⃗ ∣∣=1)
+	𝐫⃗ ：入射光の正反射ベクトル(∣∣𝐫⃗ ∣∣=1)
+	𝛼：光沢度(1≤𝛼)
 */
 int	main() {
+	t_const constant = {
+	.k_a = 0.01,
+	.k_d = 0.69,
+	.k_s = 0.3,
+	.I_a = 0.1,
+	.I_i = 1.0,
+	.alpha = 8
+};
 	t_mlx	mlx;
 	init(&mlx);
 	t_vector	de;
@@ -171,15 +237,19 @@ int	main() {
 	double	xs, ys;
 	double	xw, yw;
 
+	double	R_r;
+	double	R_a;
 	double	R_d;
+	double	R_s;
 	double	answer1, answer2;
 	double	t;
 
 	ys = 0;
 	init_vector(&pe, &pc);
-	d_light.x = 0;
-	d_light.y = -3;
-	d_light.z = 0;
+	d_light.x = 5;
+	d_light.y = 5;
+	d_light.z = -5;
+	R_a = constant.k_a * constant.I_a;
 	while (ys < HEIGHT)
 	{
 		xs = 0;
@@ -222,15 +292,16 @@ int	main() {
 				l_tmp = subst_vector(d_light, p_i);
 				l = multi_vector(l_tmp, 1 / sqrt(abst_squared(l_tmp)));
 
-				R_d = inner_product(n, l);
-				// printf("R_d is %d\n", map(R_d));
-
-				if (D == 0 || R_d <= 0)
+				R_d = constant.k_d * constant.I_i * inner_product(n, l);
+				if (D == 0 || inner_product(n, l) < 0)
 					R_d = 0;
-				my_pixel_put(xs, ys, mlx.img, map(R_d));
+				R_s = calculate_mirror_reflection(constant, de, n, l);
+
+				R_r = R_a + R_d + R_s;
+				my_pixel_put(xs, ys, mlx.img, map(R_r));
 			}
 			else
-				my_pixel_put(xs, ys, mlx.img, 0xFFFFFF);
+				my_pixel_put(xs, ys, mlx.img, 0xA0A0FF);
 			xs++;
 		}
 		ys++;
