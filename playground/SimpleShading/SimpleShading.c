@@ -296,7 +296,6 @@ int	main() {
 				if (D == 0 || inner_product(n, l) < 0)
 					R_d = 0;
 				R_s = calculate_mirror_reflection(constant, de, n, l);
-
 				R_r = R_a + R_d + R_s;
 				my_pixel_put(xs, ys, mlx.img, map(R_r));
 			}
