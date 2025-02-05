@@ -13,7 +13,7 @@ UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)  # macOSの場合
     LD_FLAGS := ../../mlx/libmlx.a -L../mlx -lmlx -framework OpenGL -framework AppKit
 else ifeq ($(UNAME_S), Linux)
-    LD_FLAGS := -L../mlx -lmlx -lX11 -lXext -lm
+    LD_FLAGS := -L../../mlx -lmlx -lX11 -lXext -lm
 endif
 
 %.o: %.c

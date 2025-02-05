@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <math.h>
 #include "mlx.h"
 
@@ -154,9 +155,9 @@ void	my_pixel_put(int x, int y, t_imge *img, int color)
 	}
 }
 
-__int32_t	map(double R_d)
+int32_t	map(double R_d)
 {
-	__int32_t	result;
+	int32_t	result;
 	int	red;
 	int green;
 	int	blue;
@@ -297,6 +298,7 @@ int	main() {
 					R_d = 0;
 				R_s = calculate_mirror_reflection(constant, de, n, l);
 				R_r = R_a + R_d + R_s;
+				// R_r = R_a + R_s;
 				my_pixel_put(xs, ys, mlx.img, map(R_r));
 			}
 			else
