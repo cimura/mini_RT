@@ -9,6 +9,7 @@
 #define	HEIGHT	512
 
 #define	R	1
+#define	ALPHA	8
 /*
 	環境光反射係数
 		𝑘𝑎=0.01
@@ -25,21 +26,19 @@
 */
 typedef struct s_const
 {
-	const double	k_a;
-	const double	k_d;
-	const double	k_s;
-	const double	I_a;
-	const double	I_i;
-	const int8_t	alpha;
+	double	k_a;
+	double	k_d;
+	double	k_s;
+	double	I_a;
+	double	I_i;
 }	t_const;
 
 #include "vector.h"
 
 typedef struct s_color
 {
-	double	red;
-	double	green;
-	double	blue;
+	double	value;
+	double	R_r;
 	t_const	constant;
 }	t_color;
 
@@ -50,6 +49,6 @@ typedef struct s_sphere
 	double	radius;
 }	t_sphere;
 
-__int32_t	map(double R_d);
+__int32_t	map(t_color red, t_color green, t_color blue);
 
 #endif

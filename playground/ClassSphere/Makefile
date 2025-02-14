@@ -1,6 +1,6 @@
 NAME    := exc
 CC      := cc
-SRCS    := ClassSphere.c ft_mlx.c map.c vector.c
+SRCS    := main.c ft_mlx.c map.c vector.c
 MLX_INC := ../../mlx
 MLX     := $(MLX_INC)/libmlx.a
 

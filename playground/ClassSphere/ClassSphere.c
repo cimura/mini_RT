@@ -30,7 +30,6 @@ int	main() {
 	.k_s = 0.3,
 	.I_a = 0.1,
 	.I_i = 1.0,
-	.alpha = 8
 };
 	t_mlx	mlx;
 	init(&mlx);
@@ -110,7 +109,7 @@ int	main() {
 				my_pixel_put(xs, ys, mlx.img, map(R_r));
 			}
 			else
-				my_pixel_put(xs, ys, mlx.img, 0xA0A0FF);
+				my_pixel_put(xs, ys, mlx.img, 0x303030);
 			xs++;
 		}
 		ys++;

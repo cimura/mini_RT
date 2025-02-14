@@ -1,16 +1,9 @@
 #include "draw.h"
 
-__int32_t	map(double R_d)
+__int32_t	map(t_color red, t_color green, t_color blue)
 {
 	__int32_t	result;
-	int	red;
-	int green;
-	int	blue;
 
-	red = 255 * R_d;
-	green = 255 * R_d;
-	blue = 255 * R_d;
-
-	result = red * pow(16, 4) + green * pow(16, 2) + blue;
+	result = red.value*red.R_r * pow(16, 4) + green.value*green.R_r * pow(16, 2) + blue.value*blue.R_r;
 	return (result);
 }

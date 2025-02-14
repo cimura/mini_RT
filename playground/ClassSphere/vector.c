@@ -91,7 +91,7 @@ double	calculate_mirror_reflection(t_const constant, t_vector de, t_vector n, t_
 	r = multi_vector(r_tmp, sqrt(1/abst_squared(r_tmp)));
 	inner2 = inner_product(v, r);
 
-	R_s = constant.k_s * constant.I_i * pow(inner2, constant.alpha);
+	R_s = constant.k_s * constant.I_i * pow(inner2, ALPHA);
 	if (inner_product(n, l) < 0 || inner_product(v, r) < 0)
 		R_s = 0;
 	return (R_s);
