@@ -132,7 +132,7 @@ int	main() {
 
 	t_color	red, green, blue;
 	init_color(&red, 255, 0.01, 0.69, 0.30, 0.10, 1.00);
-	init_color(&green, 255, 0.01, 0, 0.30, 0.10, 1.00);
+	init_color(&green, 255, 0, 0.2, 0.30, 0.10, 1.00);
 	init_color(&blue, 255, 0.01, 0, 0.30, 0.10, 1.00);
 
 	t_vector	pe, pc;
