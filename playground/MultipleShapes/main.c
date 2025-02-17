@@ -67,31 +67,39 @@ double calculate_lighting(t_color color, t_vector de, t_vector n, t_vector l)
 	return R_a + R_d + R_s;
 }
 
-void render_pixel(int xs, int ys, t_vector pe, t_vector pc, t_vector d_light, t_vector pw, t_color red, t_color green, t_color blue, t_mlx mlx)
+void render_pixel(int xs, int ys, t_vector pe, t_vector *pc_list, t_vector d_light, t_vector pw, t_color red, t_color green, t_color blue, t_mlx mlx)
 {
-	t_vector de, p_i, n, l;
-	double t;
+	t_vector de, p_i, n, l, best_pc;
+	double min_t, t;
+
+	// *** 3つのオブジェを生成 ***
+	int	obj_count = 3;
+	min_t = 200;
 
 	de = subst_vector(pw, pe);
 
-	t = calculate_intersection(pe, pc, de);
-	if (t > 0)
+	int	i = 0;
+	while (i < obj_count)
 	{
-		p_i = add_vector(pe, multi_vector(de, t));
-		n = calculate_normal(p_i, pc);
+		t = calculate_intersection(pe, pc_list[i], de);
+		if (t > 0 && t < min_t)
+		{
+			min_t = t;
+			best_pc = pc_list[i];
+		}
+		i++;
+	}
+	if (min_t != INFINITY)
+	{
+		// printf("min_t: %f\n", min_t);
+		p_i = add_vector(pe, multi_vector(de, min_t));
+		n = calculate_normal(p_i, best_pc);
 		t_vector l_tmp = subst_vector(d_light, p_i);
 		l = multi_vector(l_tmp, 1 / sqrt(abst_squared(l_tmp)));
 
 		red.R_r = calculate_lighting(red, de, n, l);
 		green.R_r = calculate_lighting(green, de, n, l);
 		blue.R_r = calculate_lighting(blue, de, n, l);
-		// if (xs >= WIDTH/2 -10 && xs <= WIDTH/2 + 10
-		// 	&& ys >= HEIGHT/2 -10 && ys <= HEIGHT/2 + 10)
-		// {
-		// 	printf("RED: %f\n", red.R_r);
-		// 	printf("GREEN: %f\n", green.R_r);
-		// 	printf("BLUE: %f\n", blue.R_r);
-		// }
 
 		my_pixel_put(xs, ys, mlx.img, map(red, green, blue));
 	}
@@ -99,7 +107,7 @@ void render_pixel(int xs, int ys, t_vector pe, t_vector pc, t_vector d_light, t_
 		my_pixel_put(xs, ys, mlx.img, 0x303030);
 }
 
-void render_scene(t_mlx mlx, t_color red, t_color green, t_color blue, t_vector pe, t_vector pc, t_vector d_light)
+void render_scene(t_mlx mlx, t_color red, t_color green, t_color blue, t_vector pe, t_vector *pc_list, t_vector d_light)
 {
 	t_vector	pw;
 	double xs, ys;
@@ -111,7 +119,7 @@ void render_scene(t_mlx mlx, t_color red, t_color green, t_color blue, t_vector 
 		{
 			xw = (2 * xs) / (WIDTH - 1) - 1.0;
 			set(&pw, xw, yw, 0);
-			render_pixel(xs, ys, pe, pc, d_light, pw, red, green, blue, mlx);
+			render_pixel(xs, ys, pe, pc_list, d_light, pw, red, green, blue, mlx);
 		}
 	}
 }
@@ -130,18 +138,33 @@ int	main() {
 	t_mlx	mlx;
 	init(&mlx);
 
+	t_vector	pc_list[3];
+	t_vector	pe;
+	set(&pe, 0, 0, -5);
+	set(&pc_list[0], 0, 0, 5);
+	set(&pc_list[1], 0.3, 0.2, 4);
+	set(&pc_list[2], 0.6, 0, 3);
+
+	/*
+	pe->x = 0;
+	pe->y = 0;
+	pe->z = -5;
+
+	pc->x = 0;
+	pc->y = 0;
+	pc->z = 5;*/
+
 	t_color	red, green, blue;
 	init_color(&red, 255, 0.01, 0.69, 0.30, 0.10, 1.00);
 	init_color(&green, 255, 0.01, 0, 0.30, 0.10, 1.00);
 	init_color(&blue, 255, 0.01, 0, 0.30, 0.10, 1.00);
 
-	t_vector	pe, pc;
 	t_vector	d_light;
-	init_vector(&pe, &pc);
 	d_light.x = 5;
 	d_light.y = 5;
 	d_light.z = -5;
-	render_scene(mlx, red, green, blue, pe, pc, d_light);
+	render_scene(mlx, red, green, blue, pe, pc_list, d_light);
+
 	mlx_put_image_to_window(mlx.ptr, mlx.win_ptr, mlx.img->ptr, 0, 0);
 	mlx_loop(mlx.ptr);
 }
