@@ -1,7 +1,7 @@
 NAME    := exc
 CC      := cc
 SRCS    := main.c ft_mlx.c map.c vector.c
-MLX_INC := ../../mlx
+MLX_INC := ../mlx
 MLX     := $(MLX_INC)/libmlx.a
 
 FLAGS   := -g -Wall -Wextra -Werror

@@ -134,6 +134,37 @@ void	init_color(t_color *color, double value, double k_a, double k_d, double k_s
 	color->constant.I_i = I_i;
 }
 
+void	on_destroy(t_mlx mlx)
+{
+	if (mlx.win_ptr)
+		mlx_destroy_window(mlx.ptr, mlx.win_ptr);
+	if (mlx.ptr)
+	{
+		mlx_destroy_display(mlx.ptr);
+		free(mlx.ptr);
+	}
+	exit(0);
+}
+
+int	handle_no_input(void *data)
+{
+	(void)data;
+	return (0);
+}
+
+int	handle_win_input(t_mlx *mlx)
+{
+	on_destroy(*mlx);
+	return (0);
+}
+
+int	key_press(int keysym, t_mlx *mlx)
+{
+	if (keysym == ESC_KEY)
+		on_destroy(*mlx);
+	return (0);
+}
+
 int	main() {
 	t_mlx	mlx;
 	init(&mlx);
@@ -154,8 +185,10 @@ int	main() {
 	d_light.x = 5;
 	d_light.y = 5;
 	d_light.z = -5;
-	render_scene(mlx, red, green, blue, pe, sphere[0].center, d_light);
-
+	render_scene(mlx, red, green, blue, pe, &sphere[0].center, d_light);
 	mlx_put_image_to_window(mlx.ptr, mlx.win_ptr, mlx.img->ptr, 0, 0);
+	mlx_loop_hook(mlx.ptr, &handle_no_input, &mlx);
+	mlx_hook(mlx.win_ptr, 2, 1L << 0, key_press, &mlx);
+	mlx_hook(mlx.win_ptr, 17, 0, handle_win_input, &mlx);
 	mlx_loop(mlx.ptr);
 }

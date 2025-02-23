@@ -1,8 +1,10 @@
 #ifndef FT_MLX_H
 # define FT_MLX_H
 
-#include "draw.h"
-#include "mlx.h"
+# include "draw.h"
+# include "mlx.h"
+
+# define ESC_KEY 65307
 
 typedef struct s_imge
 {
