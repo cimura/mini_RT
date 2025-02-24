@@ -1,5 +1,6 @@
 #include "draw.h"
 #include "ft_mlx.h"
+#include "parser.h"
 #include "vector.h"
 
 /*	de:	視線ベクトル
@@ -150,13 +151,17 @@ void	on_destroy(t_mlx mlx)
 	exit(0);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_mlx	mlx;
 
+	(void)argc;
+	(void)argv;
+	// parse arguments()
+	if (parse_arguments(argc, argv) != 0)
+		return (1);
 	if (init_mlx(&mlx) != 0)
 		return (1);
-// parse arguments()
 
 	t_sphere	sphere[3];
 	t_vector	pe;
