@@ -22,7 +22,14 @@ typedef struct s_mlx
 	t_imge	*img;
 }	t_mlx;
 
+// *** diaplay.c ***
+void	display_in_mlx(t_mlx mlx);
+
+// *** ft_mlx.c ***
 void	my_pixel_put(int x, int y, t_imge *img, int color);
-void	init(t_mlx *mlx);
+int		init_mlx(t_mlx *mlx);
+
+// *** main.c ***
+void	on_destroy(t_mlx mlx);
 
 #endif

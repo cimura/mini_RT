@@ -44,9 +44,9 @@ typedef struct s_color
 
 typedef struct s_sphere
 {
-	t_color	color;
+	t_color		color;
 	t_vector	center;
-	double	radius;
+	double		radius;
 }	t_sphere;
 
 __int32_t	map(t_color red, t_color green, t_color blue);

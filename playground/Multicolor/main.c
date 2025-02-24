@@ -50,13 +50,13 @@ double	calculate_intersection(t_vector pe, t_vector pc, t_vector de)
 	return (t);
 }
 
-t_vector calculate_normal(t_vector p_i, t_vector pc)
+t_vector	calculate_normal(t_vector p_i, t_vector pc)
 {
 	t_vector n_tmp = subst_vector(p_i, pc);
-	return multi_vector(n_tmp, 1 / sqrt(abst_squared(n_tmp)));
+	return (multi_vector(n_tmp, 1 / sqrt(abst_squared(n_tmp))));
 }
 
-double calculate_lighting(t_color color, t_vector de, t_vector n, t_vector l)
+double	calculate_lighting(t_color color, t_vector de, t_vector n, t_vector l)
 {
 	double R_a = color.constant.k_a * color.constant.I_a;
 	double R_d = color.constant.k_d * color.constant.I_i * inner_product(n, l);
@@ -64,10 +64,10 @@ double calculate_lighting(t_color color, t_vector de, t_vector n, t_vector l)
 		R_d = 0;
 	double R_s = calculate_mirror_reflection(color.constant, de, n, l);
 
-	return R_a + R_d + R_s;
+	return (R_a + R_d + R_s);
 }
 
-void render_pixel(int xs, int ys, t_vector pe, t_vector *pc_list, t_vector d_light, t_vector pw, t_color red, t_color green, t_color blue, t_mlx mlx)
+void	render_pixel(int xs, int ys, t_vector pe, t_vector *pc_list, t_vector d_light, t_vector pw, t_color red, t_color green, t_color blue, t_mlx mlx)
 {
 	t_vector de, p_i, n, l, best_pc;
 	double min_t, t;
@@ -107,18 +107,19 @@ void render_pixel(int xs, int ys, t_vector pe, t_vector *pc_list, t_vector d_lig
 		my_pixel_put(xs, ys, mlx.img, 0x303030);
 }
 
-void render_scene(t_mlx mlx, t_color red, t_color green, t_color blue, t_vector pe, t_vector *pc_list, t_vector d_light)
+void	render_scene(t_mlx mlx, t_color red, t_color green, t_color blue, t_vector pe, t_vector *pc_list, t_vector d_light)
 {
 	t_vector	pw;
 	double xs, ys;
 	double xw, yw;
+
 	for (ys = 0; ys < HEIGHT; ys++)
 	{
 		yw = (-2 * ys) / (HEIGHT - 1) + 1.0;
 		for (xs = 0; xs < WIDTH; xs++)
 		{
 			xw = (2 * xs) / (WIDTH - 1) - 1.0;
-			set(&pw, xw, yw, 0);
+			set_vector(&pw, xw, yw, 0);
 			render_pixel(xs, ys, pe, pc_list, d_light, pw, red, green, blue, mlx);
 		}
 	}
@@ -134,8 +135,11 @@ void	init_color(t_color *color, double value, double k_a, double k_d, double k_s
 	color->constant.I_i = I_i;
 }
 
+// プログラムを終了するときに呼ぶ mlx関係のポインタをfreeする mlx以外をfreeするようにしてもいいかも
 void	on_destroy(t_mlx mlx)
 {
+	if (mlx.img && mlx.img->ptr)
+		mlx_destroy_image(mlx.ptr, mlx.img->ptr);
 	if (mlx.win_ptr)
 		mlx_destroy_window(mlx.ptr, mlx.win_ptr);
 	if (mlx.ptr)
@@ -146,49 +150,32 @@ void	on_destroy(t_mlx mlx)
 	exit(0);
 }
 
-int	handle_no_input(void *data)
+int	main(void)
 {
-	(void)data;
-	return (0);
-}
-
-int	handle_win_input(t_mlx *mlx)
-{
-	on_destroy(*mlx);
-	return (0);
-}
-
-int	key_press(int keysym, t_mlx *mlx)
-{
-	if (keysym == ESC_KEY)
-		on_destroy(*mlx);
-	return (0);
-}
-
-int	main() {
 	t_mlx	mlx;
-	init(&mlx);
+
+	if (init_mlx(&mlx) != 0)
+		return (1);
+// parse arguments()
 
 	t_sphere	sphere[3];
 	t_vector	pe;
-	set(&pe, 0, 0, -2);
-	set(&sphere[0].center, -0.4, 0, 5);
-	set(&sphere[1].center, 0.3, 0.2, 4);
-	set(&sphere[2].center, 0.9, 0, 3);
+	set_vector(&pe, 0, 0, -2);
+	set_vector(&sphere[0].center, -0.4, 0, 5);
+	set_vector(&sphere[1].center, 0.3, 0.2, 4);
+	set_vector(&sphere[2].center, 0.9, 0, 3);
 
 	t_color	red, green, blue;
 	init_color(&red, 255, 0.01, 0.69, 0.30, 0.10, 1.00);
-	init_color(&green, 255, 0.01, 0, 0.30, 0.10, 1.00);
-	init_color(&blue, 255, 0.01, 0, 0.30, 0.10, 1.00);
+	init_color(&green, 255, 0.01, 0.21, 0.30, 0.10, 1.00);
+	init_color(&blue, 255, 0.01, 0.89, 0.30, 0.10, 1.00);
 
 	t_vector	d_light;
-	d_light.x = 5;
-	d_light.y = 5;
-	d_light.z = -5;
+	set_vector(&d_light, 5, 5, -5);
+	//d_light.x = 5;
+	//d_light.y = 5;
+	//d_light.z = -5;
 	render_scene(mlx, red, green, blue, pe, &sphere[0].center, d_light);
-	mlx_put_image_to_window(mlx.ptr, mlx.win_ptr, mlx.img->ptr, 0, 0);
-	mlx_loop_hook(mlx.ptr, &handle_no_input, &mlx);
-	mlx_hook(mlx.win_ptr, 2, 1L << 0, key_press, &mlx);
-	mlx_hook(mlx.win_ptr, 17, 0, handle_win_input, &mlx);
-	mlx_loop(mlx.ptr);
+	display_in_mlx(mlx);
+	return (0);
 }
