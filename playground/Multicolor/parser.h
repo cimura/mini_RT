@@ -1,8 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 14:16:38 by ttakino           #+#    #+#             */
+/*   Updated: 2025/02/25 14:53:26 by ttakino          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSER_H
 
 # define PARSER_H
 
-#include "vector.h"
+# include <stdio.h>
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include "vector.h"
+# include "libft.h"
 
 enum	e_errnum
 {
@@ -11,11 +28,8 @@ enum	e_errnum
 	FILE_TOO_LARGE,
 	FILE_NOT_FOUND,
 	CANT_READ_FILE,
+	INV_IDENTIFIER,
 };
-
-#define R 0;
-#define G 1;
-#define B 2;
 
 // 環境光 Ambient lightning
 typedef struct	s_ambient_lightning
@@ -121,11 +135,6 @@ typedef struct	s_scene_data
 	t_plane				*planes;
 	t_cylinder			*cylinders;
 }	t_scene_data;
-
-#include <fcntl.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
 
 int	parse_arguments(int argc, char **argv);
 
