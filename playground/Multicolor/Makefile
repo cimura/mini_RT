@@ -1,8 +1,10 @@
-NAME    := exc
-CC      := cc
-SRCS    := display.c ft_mlx.c main.c map.c vector.c
-MLX_INC := ../mlx
-MLX     := $(MLX_INC)/libmlx.a
+NAME    	:= exc
+CC      	:= cc
+SRCS    	:= display.c ft_mlx.c libft2.c libft3.c main.c map.c parse_objects.c parser.c vector.c
+MLX_INC 	:= ../mlx
+MLX     	:= $(MLX_INC)/libmlx.a
+LIBFT_DIR	:=	./libft
+LIBFT		:=	$(LIBFT_DIR)/libft.a
 
 FLAGS   := -g -Wall -Wextra -Werror
 OBJS    := $(SRCS:%.c=%.o)
