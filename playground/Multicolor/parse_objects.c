@@ -25,7 +25,6 @@ bool	is_valid_double(char *str)
 		return (false);
 	while (str[i] != '\0')
 	{
-		printf("%c", str[i]);
 		if (str[i + 1] != '\0' && str[i] == '.')
 		{
 			i++;
@@ -49,11 +48,13 @@ int	register_rgb(t_rgb *rgb, char *str)
 
 	if (str == NULL)
 		return (1);
+	if (ft_char_count(str, ',') != 2)
+		return (print_err_msg(INV_PARAM, str), 1);
 	rgb_str = ft_split(str, ',');
 	if (rgb_str == NULL)
 		return (1);
 	if (ft_double_pointer_size(rgb_str) != 3)
-		return (print_err_msg(INV_ARGUMENT, str), 1);
+		return (print_err_msg(INV_PARAM, str), 1);
 	i = 0;
 	while (rgb_str[i] != NULL)
 	{
@@ -76,7 +77,7 @@ int	parse_ambient_lightning(t_scene_data *scene, char **per_word_pointer)
 	if (per_word_pointer == NULL)
 		return (1);
 	if (ft_double_pointer_size(per_word_pointer) != 3)
-		return (print_err_msg(INV_ARGUMENT, NULL), 1);
+		return (print_err_msg(NOT_MATCH_PARAM_NUM, NULL), 1);
 	ambient_lightning.identifier = per_word_pointer[0];
 	if (!is_valid_double(per_word_pointer[1]))
 		return (print_err_msg(INV_NUMBER, per_word_pointer[1]), 1);
@@ -87,6 +88,7 @@ int	parse_ambient_lightning(t_scene_data *scene, char **per_word_pointer)
 	//	return (print_err_msg(INV_NUMBER, per_word_pointer[2]), 1);
 	if (register_rgb(&ambient_lightning.rgb, per_word_pointer[2]) != 0)
 		return (1);
+	printf("identifier: %s\n", ambient_lightning.identifier);
 	printf("ratio: %lf\n", ambient_lightning.ratio);
 	printf("red: %lf, green: %lf, blue: %lf\n", ambient_lightning.rgb.red, ambient_lightning.rgb.green, ambient_lightning.rgb.blue);
 	scene->ambient_lightning = ambient_lightning;

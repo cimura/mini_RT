@@ -32,7 +32,8 @@ enum	e_errnum
 	INV_IDENTIFIER,
 	INV_NUMBER,
 	OUT_OF_RANGE,
-	INV_ARGUMENT,
+	INV_PARAM,
+	NOT_MATCH_PARAM_NUM,
 };
 
 // RGB 計算しやすく0.0~1.0の範囲で表す
@@ -141,5 +142,8 @@ int		parse_ambient_lightning(t_scene_data *scene, char **per_word_pointer);
 double	ft_atod(char *nptr);
 int     ft_strrncmp(const char *s1, const char *s2, size_t size);
 int		ft_double_pointer_size(char **pointers);
+
+// *** libft3.c *** utils.hなどに移してもいいかも
+int		ft_char_count(char *src, char target);
 
 #endif

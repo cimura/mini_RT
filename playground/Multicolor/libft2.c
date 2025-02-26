@@ -47,9 +47,9 @@ static double	update_result(char **nptr, double result, double *factor)
 		// 	return ((int)LONG_MAX);
 		// else if (check_overflow(sign, result, **nptr) == -1)
 		// 	return ((int)LONG_MIN);
-		printf("**nptr = %c\n", **nptr);
+		//printf("**nptr = %c\n", **nptr);
 		result = result * 10 + (**nptr - '0');
-		printf("result = %lf\n", result);
+		//printf("result = %lf\n", result);
 		if (factor != NULL)
 			*factor *= 10;
 		(*nptr)++;

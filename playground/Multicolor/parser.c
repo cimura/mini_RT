@@ -34,8 +34,10 @@ void	print_err_msg(int errnum, char *arg)
 		printf("%s: Invalid number.\n", arg);
 	else if (errnum == OUT_OF_RANGE)
 		printf("%s: Number out of range.\n", arg);
-	else if (errnum == INV_ARGUMENT)
-		printf("%s: Invalid argument.\n", arg);
+	else if (errnum == INV_PARAM)
+		printf("%s: Invalid parameter.\n", arg);
+	else if (errnum == NOT_MATCH_PARAM_NUM)
+		printf("%s: The number of parameters does not match.\n", arg);
 }
 
 int	check_num_of_args(int argc)
