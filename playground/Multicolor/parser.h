@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:38 by ttakino           #+#    #+#             */
-/*   Updated: 2025/02/25 14:53:26 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/02/26 16:56:26 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include "vector.h"
 # include "libft.h"
 
@@ -31,16 +32,23 @@ enum	e_errnum
 	INV_IDENTIFIER,
 };
 
+// RGB 計算しやすく0.0~1.0の範囲で表す
+typedef struct	s_rgb
+{
+	double	red;
+	double	green;
+	double	blue;
+}	t_rgb;
+
+
 // 環境光 Ambient lightning
 typedef struct	s_ambient_lightning
 {
-	char			*identifier;
-	// 環境光の比率 ambient_lightning_ratio
-	double			ambient_lightning_ratio;
-	// RGB 範囲は0-255 ( red,green,blue )
-	unsigned char	red;
-	unsigned char	green;
-	unsigned char	blue;
+	char	*identifier;
+	// 環境光の比率 ambient_lightning_ratio 範囲は[0.0-1.0]
+	double	ambient_lightning_ratio;
+	// RGB 範囲は0.0-1.0 ( red,green,blue )
+	t_rgb	rgb;
 }	t_ambient_lightning;
 
 // カメラ Camera
@@ -48,11 +56,9 @@ typedef struct	s_camera
 {
 	char		identifier;
 	// 座標 ( x,y,z )
-	double		x;
-	double		y;
-	double		z;
+	t_vector	coordinates_vec;
 	// 3D正規化方向ベクトル 範囲は[-1,1] ( x,y,z )
-	t_vector	nov_3d;// 3d normalized_orientation vector
+	t_vector	orientation_vec;// 3d normalized_orientation vector
 	// FOV 水平方向の視野角 範囲は[0,180]
 	int			horizontal_fov;
 }	t_camera;
@@ -60,69 +66,53 @@ typedef struct	s_camera
 // 光源 Light
 typedef struct	s_light
 {
-	char			identifier;
+	char		identifier;
 	// 座標 ( x,y,z )
-	double			x;
-	double			y;
-	double			z;
+	t_vector	coordinates_vec;
 	// 光の明るさ比率 範囲は[0.0,1.0]
-	double			light_brightness_ratio;
-	// ※mandatoryでは不使用 RGB 範囲は0-255
-	unsigned char	red;
-	unsigned char	green;
-	unsigned char	blue;
+	double		light_brightness_ratio;
+	// ※mandatoryでは不使用 RGB 範囲は0.0-1.0
+	t_rgb		rgb;
 }	t_light;
 
 // 球 Sphere
 typedef struct	s_sphere
 {
-	char			*identifier;
+	char		*identifier;
 	// 座標 ( x,y,z )
-	double			x;
-	double			y;
-	double			z;
+	t_vector	coordinates_vec;
 	// 直径
-	double			diameter;
-	// RGB 範囲は0-255
-	unsigned char	red;
-	unsigned char	green;
-	unsigned char	blue;
+	double		diameter;
+	// RGB 範囲は0.0-1.0
+	t_rgb		rgb;
 }	t_sphere;
 
 // 平面 Plane
 typedef struct	s_plane
 {
-	char			*identifier;
+	char		*identifier;
 	// 座標 (x,y,z)
-	double			x;
-	double			y;
-	double			z;
+	t_vector	coordinates_vec;
 	// 3D正規化法線ベクトル 範囲は[-1,1] (x,y,z)
-	t_vector		nov_3d;// 3d normalized orientation vector
-	// RGB 範囲は0-255
-	unsigned char	red;
-	unsigned char	green;
-	unsigned char	blue;
+	t_vector	orientation_vec;// 3d normalized orientation vector
+	// RGB 範囲は0.0-1.0
+	t_rgb		rgb;
 }	t_plane;
 
 // 円柱 Cylinder
 typedef struct	s_cylinder
 {
-	char			*identifier;
+	char		*identifier;
 	// 座標 (x,y,z)
-	double			x;
-	double			y;
-	double			z;
+	t_vector	coordinates_vec;
 	// 円柱の軸の三次元正規化ベクトル 範囲は[-1,1] (x,y,z)
-	t_vector		nv_ac_3d;//  3d normalized vector of axis of cylinder
+	t_vector	orientation_vec;//  3d normalized vector of axis of cylinder
 	// 直径
-	double			diameter;
+	double		diameter;
 	// 高さ
-	double			height;
-	// RGB 範囲は0-255
-	unsigned char	red;
-	unsigned char	green;
-	unsigned char	blue;
+	double		height;
+	// RGB 範囲は0.0-1.0
+	t_rgb		rgb;
 }	t_cylinder;
 
 // 描画対象の図形（円、平面、円柱）は複数個扱えるように配列にする
@@ -136,6 +126,11 @@ typedef struct	s_scene_data
 	t_cylinder			*cylinders;
 }	t_scene_data;
 
-int	parse_arguments(int argc, char **argv);
+int	parse_arguments(t_scene_data *scene, int argc, char **argv);
+
+
+// *** libft2.c *** utils.hなどに移してもいいかも
+double	ft_atod(char *nptr);
+int     ft_strrncmp(const char *s1, const char *s2, size_t size);
 
 #endif

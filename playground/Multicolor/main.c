@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:49 by ttakino           #+#    #+#             */
-/*   Updated: 2025/02/25 14:32:24 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/02/26 15:31:35 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,12 +165,13 @@ void	on_destroy(t_mlx mlx)
 
 int	main(int argc, char **argv)
 {
-	t_mlx	mlx;
+	t_mlx			mlx;
+	t_scene_data	scene;
 
 	(void)argc;
 	(void)argv;
 	// parse arguments()
-	if (parse_arguments(argc, argv) != 0)
+	if (parse_arguments(&scene, argc, argv) != 0)
 		return (1);
 	if (init_mlx(&mlx) != 0)
 		return (1);
