@@ -30,6 +30,12 @@ void	print_err_msg(int errnum, char *arg)
 		printf("%s: Cannot read file.\n", arg);
 	else if (errnum == INV_IDENTIFIER)
 		printf("%s: Invalid identifier.\n", arg);
+	else if (errnum == INV_NUMBER)
+		printf("%s: Invalid number.\n", arg);
+	else if (errnum == OUT_OF_RANGE)
+		printf("%s: Number out of range.\n", arg);
+	else if (errnum == INV_ARGUMENT)
+		printf("%s: Invalid argument.\n", arg);
 }
 
 int	check_num_of_args(int argc)
@@ -101,10 +107,10 @@ int	parse_line(t_scene_data *scene, char *line)
 
 	status = 0;
 	per_word_pointer = ft_split(line, ' ');
-	if (per_word_pointer == NULL)
+	if (per_word_pointer == NULL || per_word_pointer[0] == NULL)
 		return (1);
 	if (ft_strncmp(per_word_pointer[0], "A", 3) == 0)
-		;// parse_ambient_lightning
+		status = parse_ambient_lightning(scene, per_word_pointer);// parse_ambient_lightning
 	else if (ft_strncmp(per_word_pointer[0], "C", 3) == 0)
 		;// parse_camera
 	else if (ft_strncmp(per_word_pointer[0], "L", 3) == 0)
@@ -116,11 +122,9 @@ int	parse_line(t_scene_data *scene, char *line)
 	else if (ft_strncmp(per_word_pointer[0], "cy", 3) == 0)
 		;// parse_cylinder
 	else
-	{
-		print_err_msg(INV_IDENTIFIER, per_word_pointer[0]);
-		return (1);
-	}
-	return (0);
+		return (print_err_msg(INV_IDENTIFIER, per_word_pointer[0]), 1);
+	free_double_pointer(per_word_pointer);
+	return (status);
 }
 
 int	parse_rt_file(t_scene_data *scene, char *buf)
@@ -147,7 +151,7 @@ int	parse_rt_file(t_scene_data *scene, char *buf)
 	return (0);
 }
 
-int	parse_arguments(int argc, char **argv)
+int	parse_arguments(t_scene_data *scene, int argc, char **argv)
 {
 	char	buf[BUF_SIZE];
 

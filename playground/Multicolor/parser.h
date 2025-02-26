@@ -30,6 +30,9 @@ enum	e_errnum
 	FILE_NOT_FOUND,
 	CANT_READ_FILE,
 	INV_IDENTIFIER,
+	INV_NUMBER,
+	OUT_OF_RANGE,
+	INV_ARGUMENT,
 };
 
 // RGB 計算しやすく0.0~1.0の範囲で表す
@@ -46,7 +49,7 @@ typedef struct	s_ambient_lightning
 {
 	char	*identifier;
 	// 環境光の比率 ambient_lightning_ratio 範囲は[0.0-1.0]
-	double	ambient_lightning_ratio;
+	double	ratio;
 	// RGB 範囲は0.0-1.0 ( red,green,blue )
 	t_rgb	rgb;
 }	t_ambient_lightning;
@@ -70,7 +73,7 @@ typedef struct	s_light
 	// 座標 ( x,y,z )
 	t_vector	coordinates_vec;
 	// 光の明るさ比率 範囲は[0.0,1.0]
-	double		light_brightness_ratio;
+	double		ratio;
 	// ※mandatoryでは不使用 RGB 範囲は0.0-1.0
 	t_rgb		rgb;
 }	t_light;
@@ -126,11 +129,17 @@ typedef struct	s_scene_data
 	t_cylinder			*cylinders;
 }	t_scene_data;
 
-int	parse_arguments(t_scene_data *scene, int argc, char **argv);
+// *** parser.c ***
+void	print_err_msg(int errnum, char *arg);
+int		parse_arguments(t_scene_data *scene, int argc, char **argv);
+void	free_double_pointer(char **pointer);
 
+// *** parse_objects.c ***
+int		parse_ambient_lightning(t_scene_data *scene, char **per_word_pointer);
 
 // *** libft2.c *** utils.hなどに移してもいいかも
 double	ft_atod(char *nptr);
 int     ft_strrncmp(const char *s1, const char *s2, size_t size);
+int		ft_double_pointer_size(char **pointers);
 
 #endif

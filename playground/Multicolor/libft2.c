@@ -39,8 +39,7 @@ static int	check_isspace(char check)
 // 	return (0);
 // }
 
-static double	update_result(char **nptr, double result,
-									int sign, double *factor)
+static double	update_result(char **nptr, double result, double *factor)
 {
 	while ('0' <= **nptr && **nptr <= '9')
 	{
@@ -75,10 +74,10 @@ double	ft_atod(char *nptr)
 	}
 	factor = 1.0;
 	result = 0.0;
-	result = update_result(&nptr, result, sign, NULL);
+	result = update_result(&nptr, result, NULL);
 	if (*nptr == '.')
 		nptr++;
-	result = update_result(&nptr, result, sign, &factor);
+	result = update_result(&nptr, result, &factor);
 	return ((double)result * sign / factor);
 }
 
@@ -97,4 +96,16 @@ int     ft_strrncmp(const char *s1, const char *s2, size_t size)
 		j--;
 	}
 	return ((unsigned char)s1[i] - (unsigned char)s2[j]);
+}
+
+int	ft_double_pointer_size(char **pointers)
+{
+	int	size;
+
+	if (pointers == NULL)
+		return (0);
+	size = 0;
+	while (pointers[size] != NULL)
+		size++;
+	return (size);
 }
