@@ -58,7 +58,7 @@ typedef struct	s_ambient_lightning
 // カメラ Camera
 typedef struct	s_camera
 {
-	char		identifier;
+	char		*identifier;
 	// 座標 ( x,y,z )
 	t_vector	coordinates_vec;
 	// 3D正規化方向ベクトル 範囲は[-1,1] ( x,y,z )
@@ -70,7 +70,7 @@ typedef struct	s_camera
 // 光源 Light
 typedef struct	s_light
 {
-	char		identifier;
+	char		*identifier;
 	// 座標 ( x,y,z )
 	t_vector	coordinates_vec;
 	// 光の明るさ比率 範囲は[0.0,1.0]
@@ -137,6 +137,8 @@ void	free_double_pointer(char **pointer);
 
 // *** parse_objects.c ***
 int		parse_ambient_lightning(t_scene_data *scene, char **per_word_pointer);
+int		parse_camera(t_scene_data *scene, char **per_word_pointer);
+int		parse_light(t_scene_data *scene, char **per_word_pointer);
 
 // *** libft2.c *** utils.hなどに移してもいいかも
 double	ft_atod(char *nptr);
