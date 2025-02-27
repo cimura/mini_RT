@@ -114,9 +114,9 @@ int	parse_line(t_scene_data *scene, char *line)
 	if (ft_strncmp(per_word_pointer[0], "A", 3) == 0)
 		status = parse_ambient_lightning(scene, per_word_pointer);// parse_ambient_lightning
 	else if (ft_strncmp(per_word_pointer[0], "C", 3) == 0)
-		;// parse_camera
+		status = parse_camera(scene, per_word_pointer);// parse_camera
 	else if (ft_strncmp(per_word_pointer[0], "L", 3) == 0)
-		;// parse_light
+		status = parse_light(scene, per_word_pointer);// parse_light
 	else if (ft_strncmp(per_word_pointer[0], "sp", 3) == 0)
 		;// parse_sphere
 	else if (ft_strncmp(per_word_pointer[0], "pl", 3) == 0)
