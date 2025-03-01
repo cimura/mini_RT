@@ -148,7 +148,9 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_vector d_light, t_vecto
 	C = (pow((camera.coordinates_vec.x - cylinder.coordinates_vec.x), 2) + pow((camera.coordinates_vec.z - cylinder.coordinates_vec.z), 2)) - pow(cylinder.diameter / 2, 2);
 
 	D = pow(B, 2) - 4 * A * C;
-	printf("%lf ", D);
+	if (D > 0)
+		my_pixel_put(xs, ys, mlx.img, 0xFF0000);
+	//printf("%lf ", D);
 }
 
 
@@ -166,7 +168,7 @@ void render_scene(t_mlx mlx, t_cylinder cylinder, t_vector d_light, t_camera cam
 			set(&pw, xw, yw, 0);
 			render_pixel(xs, ys, cylinder, d_light, pw, mlx, camera);
 		}
-		printf("\n");
+		//printf("\n");
 	}
 }
 
