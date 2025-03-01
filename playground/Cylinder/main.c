@@ -137,36 +137,76 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_vector d_light, t_vecto
 	(void)xs;
 	(void)ys;
 	(void)d_light;
-	(void)pw;
 	(void)mlx;
 
-	double	A, B, C, D;
+	// At^2 + Bt + C = 0 判別式D 交わるときのt二つT1,T2 交点のy座標二つPy1,Py2
+	double	A, B, C, D, T1, T2, Py1, Py2;
+	// 円柱の中心のy座標 - 交点のy座標二つ H1, H2
+	double H1, H2;
 
-	A = pow(camera.orientation_vec.x, 2) + pow(camera.orientation_vec.z, 2);
-	B = 2 * (camera.orientation_vec.x * (camera.coordinates_vec.x - cylinder.coordinates_vec.x)
-		 + camera.orientation_vec.z * (camera.coordinates_vec.z - cylinder.coordinates_vec.z));
+	A = pow(pw.x, 2) + pow(pw.z, 2);
+	B = 2 * (pw.x * (camera.coordinates_vec.x - cylinder.coordinates_vec.x)
+		 + pw.z * (camera.coordinates_vec.z - cylinder.coordinates_vec.z));
 	C = (pow((camera.coordinates_vec.x - cylinder.coordinates_vec.x), 2) + pow((camera.coordinates_vec.z - cylinder.coordinates_vec.z), 2)) - pow(cylinder.diameter / 2, 2);
 
 	D = pow(B, 2) - 4 * A * C;
-	printf("%lf ", D);
+
+	// 交わるときの係数tを計算
+	T1 = ((-1 * B) - sqrt(D)) / (2 * A);
+	T2 = ((-1 * B) + sqrt(D)) / (2 * A);
+
+	// 交点がない場合は背景色を置いてreturn
+	if (D < 0)
+	{
+		my_pixel_put(xs, ys, mlx.img, 0x0000FF);
+		return ;
+	}
+
+// 交点がある場合
+	// 交点のy座標を計算
+	Py1 = camera.coordinates_vec.y + T1 * pw.y;
+	Py2 = camera.coordinates_vec.y + T2 * pw.y;
+
+	// 交点と円柱の中心のy座標の差を計算
+	H1 = cylinder.coordinates_vec.y - Py1;
+	H2 = cylinder.coordinates_vec.y - Py2;
+	//printf("%lf ", D);
+	// 交点が円筒の高さ範囲内にあるかどうか
+	if (D >= 0 && ((H1 >= -1 * (cylinder.height / 2) && H1 <= cylinder.height / 2)
+		|| (H2 >= -1 * (cylinder.height / 2) && H2 <= cylinder.height / 2)))
+		my_pixel_put(xs, ys, mlx.img, 0xFF0000);
+	else
+		my_pixel_put(xs, ys, mlx.img, 0x0000FF);
 }
 
-
+// いったんカメラの位置ベクトル、方向ベクトル、FOV（視野角）を固定する（原点上のx,yにスクリーンを張る）
 void render_scene(t_mlx mlx, t_cylinder cylinder, t_vector d_light, t_camera camera)
 {
-	t_vector	pw;
+	// スクリーンの位置ベクトル
+	t_vector	screen_vec;
+	// カメラから2次元スクリーン上の任意の点(x,y)の方向ベクトル
+	t_vector	dir_vec;
+	// 2次元スクリーン上のxs,ys
 	double xs, ys;
+	// 3次元ワールド上のxw,yw
 	double xw, yw;
-	for (ys = 0; ys < HEIGHT; ys++)
+
+	ys = 0;
+	while (ys < HEIGHT - 1)
 	{
-		yw = (-2 * ys) / (HEIGHT - 1) + 1.0;
-		for (xs = 0; xs < WIDTH; xs++)
+		xs = 0;
+		while (xs < WIDTH - 1)
 		{
-			xw = (2 * xs) / (WIDTH - 1) - 1.0;
-			set(&pw, xw, yw, 0);
-			render_pixel(xs, ys, cylinder, d_light, pw, mlx, camera);
+			// スクリーン上の点の3次元空間における位置ベクトルを計算
+			yw = 2 * ys / HEIGHT - 1.0;
+			xw = 2 * xs / WIDTH - 1.0;
+			set(&screen_vec, xw, yw, 0);
+			dir_vec = normalize_vector(subst_vector(screen_vec, camera.coordinates_vec));
+			render_pixel(xs, ys, cylinder, d_light, dir_vec, mlx, camera);
+			xs++;
 		}
-		printf("\n");
+		//printf("\n");
+		ys++;
 	}
 }
 
@@ -198,8 +238,8 @@ int	main() {
 	d_light.y = 5;
 	d_light.z = -5;
 	t_camera	camera;
-	set(&camera.coordinates_vec, 0, 0, 10);
-	set(&camera.orientation_vec, 0, 0, -1);
+	set(&camera.coordinates_vec, 0, 0, -5);
+	set(&camera.orientation_vec, 0, 0, 1);
 
 	render_scene(mlx, cylinder, d_light, camera);
 

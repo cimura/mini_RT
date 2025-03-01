@@ -51,6 +51,17 @@ t_vector	multi_vector(t_vector v, double c)
 	return (result);
 }
 
+t_vector	normalize_vector(t_vector v)
+{
+	double		magnitude;
+	t_vector	nv;
+
+	magnitude = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	set(&nv, v.x / magnitude, v.y / magnitude, v.z / magnitude);
+	//printf("src: (%lf,%lf,%lf)  normalize: (%lf,%lf,%lf)\n", v.x, v.y, v.z, nv.x, nv.y, nv.z);
+	return (nv);
+}
+
 double	inner_product(t_vector a, t_vector b)
 {
 	double	result;
