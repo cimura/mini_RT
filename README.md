@@ -28,3 +28,8 @@ Sphereについてはplaygroundのコードを参照
 物体の構造体に色の情報を入れる必要がある。データ構造の整理が必要そう
 
 計画はissuesを使ってやろうかな
+
+<img width="831" alt="image" src="https://github.com/user-attachments/assets/4b733f28-8856-45fc-b147-a59a54414b9c" />
+
+
+=====>　案1の方が確かにいい気もしてきた
