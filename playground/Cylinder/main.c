@@ -131,7 +131,7 @@ double calculate_lighting(t_color color, t_vector de, t_vector n, t_vector l)
 // }
 
 
-void render_pixel(int xs, int ys, t_cylinder cylinder, t_vector d_light, t_vector pw, t_mlx mlx, t_camera camera)
+void render_pixel(int xs, int ys, t_cylinder cylinder, t_vector d_light, t_vector dir_vec, t_mlx mlx, t_camera camera)
 {
 	// t_vector de, p_i, n, l;
 	(void)xs;
@@ -140,20 +140,34 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_vector d_light, t_vecto
 	(void)mlx;
 
 	// At^2 + Bt + C = 0 判別式D 交わるときのt二つT1,T2 交点のy座標二つPy1,Py2
-	double	A, B, C, D, T1, T2, Py1, Py2;
+	double	A, B, C, D, T1, T2/*, Py1, Py2*/;
 	// 円柱の中心のy座標 - 交点のy座標二つ H1, H2
-	double H1, H2;
+	//double H1, H2;
 
-	A = pow(pw.x, 2) + pow(pw.z, 2);
-	B = 2 * (pw.x * (camera.coordinates_vec.x - cylinder.coordinates_vec.x)
-		 + pw.z * (camera.coordinates_vec.z - cylinder.coordinates_vec.z));
-	C = (pow((camera.coordinates_vec.x - cylinder.coordinates_vec.x), 2) + pow((camera.coordinates_vec.z - cylinder.coordinates_vec.z), 2)) - pow(cylinder.diameter / 2, 2);
+	//A = pow(dir_vec.x, 2) + pow(dir_vec.z, 2);
+	//B = 2 * (dir_vec.x * (camera.coordinates_vec.x - cylinder.coordinates_vec.x)
+	//	 + dir_vec.z * (camera.coordinates_vec.z - cylinder.coordinates_vec.z));
+	//C = (pow((camera.coordinates_vec.x - cylinder.coordinates_vec.x), 2) + pow((camera.coordinates_vec.z - cylinder.coordinates_vec.z), 2)) - pow(cylinder.diameter / 2, 2);
 
+	//D = pow(B, 2) - 4 * A * C;
+	
+	// d: 円柱の軸の方向ベクトル  D: 視線の方向ベクトル  O: カメラの位置ベクトル  C: 円柱の位置ベクトル
+	t_vector	camera_to_cylinder = subst_vector(camera.coordinates_vec, cylinder.coordinates_vec);
+	double	D_dot_D = dot_vector(dir_vec, dir_vec);
+	double	d_dot_D = dot_vector(cylinder.orientation_vec, dir_vec);
+	double	d_dot_d = dot_vector(cylinder.orientation_vec, cylinder.orientation_vec);
+	double	D_dot_OC = dot_vector(dir_vec, camera_to_cylinder);
+	double	d_dot_OC = dot_vector(cylinder.orientation_vec, camera_to_cylinder);
+	double	OC_dot_OC = dot_vector(camera_to_cylinder, camera_to_cylinder);
+
+	A = D_dot_D - pow(d_dot_D, 2) / d_dot_d;
+	B = 2.0 * (D_dot_OC - d_dot_D * d_dot_OC / d_dot_d);
+	C = OC_dot_OC - pow(d_dot_OC, 2) / d_dot_d - pow(cylinder.diameter / 2, 2);
+
+	// 判別式
 	D = pow(B, 2) - 4 * A * C;
 
-	// 交わるときの係数tを計算
-	T1 = ((-1 * B) - sqrt(D)) / (2 * A);
-	T2 = ((-1 * B) + sqrt(D)) / (2 * A);
+	//printf("%lf ", d_dot_d);
 
 	// 交点がない場合は背景色を置いてreturn
 	if (D < 0)
@@ -162,19 +176,43 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_vector d_light, t_vecto
 		return ;
 	}
 
+	// 交わるときの係数tを計算 P = s + td の t  (P:視線と物体の交点 s:カメラの位置ベクトル d:カメラの方向ベクトル)
+	T1 = ((-1 * B) - sqrt(D)) / (2 * A);
+	T2 = ((-1 * B) + sqrt(D)) / (2 * A);
+
 // 交点がある場合
 	// 交点のy座標を計算
-	Py1 = camera.coordinates_vec.y + T1 * pw.y;
-	Py2 = camera.coordinates_vec.y + T2 * pw.y;
+	//Py1 = camera.coordinates_vec.y + T1 * dir_vec.y;
+	//Py2 = camera.coordinates_vec.y + T2 * dir_vec.y;
+
+	// 交点の位置ベクトルを計算 R1 R2は交点1, 2
+	t_vector	R1 = add_vector(camera.coordinates_vec, multi_vector(dir_vec, T1));
+	t_vector	R2 = add_vector(camera.coordinates_vec, multi_vector(dir_vec, T2));
+
+	// 円柱の底面の座標2つ C0, C1
+	t_vector	C0 = subst_vector(cylinder.coordinates_vec, multi_vector(cylinder.orientation_vec, cylinder.height / 2));
+	//t_vector	C1 = add_vector(cylinder.coordinates_vec, multi_vector(cylinder.orientation_vec, cylinder.height / 2));
+
+	// 円柱の軸方向ベクトルと中心から交点へのベクトルの内積を計算
+	double	R1_dot_d = dot_vector(subst_vector(R1, C0), cylinder.orientation_vec);
+	double	R2_dot_d = dot_vector(subst_vector(R2, C0), cylinder.orientation_vec);
 
 	// 交点と円柱の中心のy座標の差を計算
-	H1 = cylinder.coordinates_vec.y - Py1;
-	H2 = cylinder.coordinates_vec.y - Py2;
+	//H1 = cylinder.coordinates_vec.y - Py1;
+	//H2 = cylinder.coordinates_vec.y - Py2;
 	//printf("%lf ", D);
 	// 交点が円筒の高さ範囲内にあるかどうか
-	if (D >= 0 && ((H1 >= -1 * (cylinder.height / 2) && H1 <= cylinder.height / 2)
-		|| (H2 >= -1 * (cylinder.height / 2) && H2 <= cylinder.height / 2)))
+	//if (D >= 0 && ((H1 >= -1 * (cylinder.height / 2) && H1 <= cylinder.height / 2)
+	//	|| (H2 >= -1 * (cylinder.height / 2) && H2 <= cylinder.height / 2)))
+	//	my_pixel_put(xs, ys, mlx.img, 0xFF0000);
+	//else
+	//	my_pixel_put(xs, ys, mlx.img, 0x0000FF);
+
+	// 交点の円柱高さ範囲内チェック
+	if ((R1_dot_d >= 0 && R1_dot_d <= cylinder.height) || (R2_dot_d >= 0 && R2_dot_d <= cylinder.height))
+	{
 		my_pixel_put(xs, ys, mlx.img, 0xFF0000);
+	}
 	else
 		my_pixel_put(xs, ys, mlx.img, 0x0000FF);
 }
@@ -198,8 +236,8 @@ void render_scene(t_mlx mlx, t_cylinder cylinder, t_vector d_light, t_camera cam
 		while (xs < WIDTH - 1)
 		{
 			// スクリーン上の点の3次元空間における位置ベクトルを計算
-			yw = 2 * ys / HEIGHT - 1.0;
-			xw = 2 * xs / WIDTH - 1.0;
+			yw = 1.0 - 2 * ys / HEIGHT;
+			xw = 1.0 - 2 * xs / WIDTH;
 			set(&screen_vec, xw, yw, 0);
 			dir_vec = normalize_vector(subst_vector(screen_vec, camera.coordinates_vec));
 			render_pixel(xs, ys, cylinder, d_light, dir_vec, mlx, camera);
@@ -228,7 +266,7 @@ int	main() {
 	cylinder.height = 2.0;
 	cylinder.diameter = 2.0;
 	set(&cylinder.coordinates_vec, 0, 0, 5);
-	set(&cylinder.orientation_vec, 0, 0, 0);
+	set(&cylinder.orientation_vec, 1/sqrt(3), 1/sqrt(3), 1/sqrt(3));
 	cylinder.rgb.red = 200;
 	cylinder.rgb.green = 255;
 	cylinder.rgb.blue = 168;
@@ -239,7 +277,7 @@ int	main() {
 	d_light.z = -5;
 	t_camera	camera;
 	set(&camera.coordinates_vec, 0, 0, -5);
-	set(&camera.orientation_vec, 0, 0, 1);
+	set(&camera.orientation_vec, 0, 0, 0);
 
 	render_scene(mlx, cylinder, d_light, camera);
 
