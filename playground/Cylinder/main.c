@@ -32,6 +32,16 @@ typedef struct	s_rgb
 	__int32_t	blue;
 }	t_rgb;
 
+// 環境光 Ambient lightning
+typedef struct	s_ambient_lightning
+{
+	char	*identifier;
+	// 環境光の比率 ambient_lightning_ratio 範囲は[0.0-1.0]
+	double	ratio;
+	// RGB 範囲は0.0-1.0 ( red,green,blue )
+	t_rgb	rgb;
+}	t_ambient_lightning;
+
 // カメラ Camera
 typedef struct	s_camera
 {
@@ -43,6 +53,18 @@ typedef struct	s_camera
 	// FOV 水平方向の視野角 範囲は[0,180]
 	int			horizontal_fov;
 }	t_camera;
+
+// 光源 Light
+typedef struct	s_light
+{
+	char		*identifier;
+	// 座標 ( x,y,z )
+	t_vector	coordinates_vec;
+	// 光の明るさ比率 範囲は[0.0,1.0]
+	double		ratio;
+	// ※mandatoryでは不使用 RGB 範囲は0.0-1.0
+	t_rgb		rgb;
+}	t_light;
 
 // 円柱 Cylinder
 typedef struct	s_cylinder
@@ -60,7 +82,10 @@ typedef struct	s_cylinder
 	t_rgb		rgb;
 }	t_cylinder;
 
+// 諸々の定数を定義しておく あとで全体の構造体に入れる
 
+#define	AMBIENT_COEFFICIENT 0.01
+#define	DIFFUSE_COEFFICIENT 0.69
 
 double	calculate_intersection(t_vector pe, t_vector pc, t_vector de)
 {
@@ -130,13 +155,56 @@ double calculate_lighting(t_color color, t_vector de, t_vector n, t_vector l)
 // 		my_pixel_put(xs, ys, mlx.img, 0x303030);
 // }
 
+// 交点が手前か奥側かの判定 法線ベクトルの向きを左右する
+#define I1 1
+#define I2 2
 
-void render_pixel(int xs, int ys, t_cylinder cylinder, t_vector d_light, t_vector dir_vec, t_mlx mlx, t_camera camera)
+// 視線と円柱の表面の法線ベクトルを計算する (円柱データ、交点、円柱の底面の位置ベクトル)
+t_vector	calculate_cylinder_normal_vector(t_cylinder cylinder, t_vector intersection,
+		t_vector base, int dir_flag)
+{
+	t_vector	normal_vector;
+	t_vector	base_to_intersection;
+	double		bti_dot_orientation;
+
+	base_to_intersection = subst_vector(intersection, base);
+	bti_dot_orientation = dot_vector(base_to_intersection, cylinder.orientation_vec);
+	if (dir_flag == I1)
+		normal_vector = subst_vector(base_to_intersection, multi_vector(cylinder.orientation_vec,
+			bti_dot_orientation));
+	else if (dir_flag == I2)
+			normal_vector = subst_vector(multi_vector(cylinder.orientation_vec, bti_dot_orientation),
+				base_to_intersection);
+	normal_vector = normalize_vector(normal_vector);
+	return (normal_vector);
+}
+
+// 交点があったピクセルの色を計算する
+int	calculate_intersections_color(t_cylinder cylinder, t_light light, t_vector dir_vec, t_vector normal_vec, t_vector intersection_vec)
+{
+	t_vector	incidence_vec;
+	double		normal_dot_incindence;
+	double		ambient_intensity;
+	double		diffuse_intensity;
+	int			result_color;
+
+	// 直接光の入射ベクトル
+	incidence_vec = normalize_vector(subst_vector(light.coordinates_vec, intersection_vec));
+	// 法線ベクトルと入射ベクトルの内積 これを0-1の範囲にする(負の値の時は光は当たらないため)
+	normal_dot_incindence = dot_vector(normal_vec, incidence_vec);
+	if (normal_dot_incindence <= 0.0)
+		normal_dot_incindence = 0.0;
+	if (normal_dot_incindence > 255)
+		normal_dot_incindence = 255;
+	ambient_intensity = AMBIENT_COEFFICIENT
+	diffuse_intensity = DIFFUSE_COEFFICIENT * light.ratio * dot_vector(normal_vec, incidence_vec);
+}
+
+void render_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera)
 {
 	// t_vector de, p_i, n, l;
 	(void)xs;
 	(void)ys;
-	(void)d_light;
 	(void)mlx;
 
 	// At^2 + Bt + C = 0 判別式D 交わるときのt二つT1,T2 交点のy座標二つPy1,Py2
@@ -208,9 +276,18 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_vector d_light, t_vecto
 	//else
 	//	my_pixel_put(xs, ys, mlx.img, 0x0000FF);
 
+	// 視線と円柱の曲名との交点における法線ベクトル
+	t_vector	normal_vector;
+
 	// 交点の円柱高さ範囲内チェック
-	if ((R1_dot_d >= 0 && R1_dot_d <= cylinder.height) || (R2_dot_d >= 0 && R2_dot_d <= cylinder.height))
+	if (R1_dot_d >= 0 && R1_dot_d <= cylinder.height)
 	{
+		normal_vector = calculate_cylinder_normal_vector(cylinder, R1, C0, I1);
+		my_pixel_put(xs, ys, mlx.img, 0xFF0000);
+	}
+	else if (R2_dot_d >= 0 && R2_dot_d <= cylinder.height)
+	{
+		normal_vector = calculate_cylinder_normal_vector(cylinder, R2, C0, I2);
 		my_pixel_put(xs, ys, mlx.img, 0xFF0000);
 	}
 	else
@@ -218,7 +295,7 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_vector d_light, t_vecto
 }
 
 // いったんカメラの位置ベクトル、方向ベクトル、FOV（視野角）を固定する（原点上のx,yにスクリーンを張る）
-void render_scene(t_mlx mlx, t_cylinder cylinder, t_vector d_light, t_camera camera)
+void render_scene(t_mlx mlx, t_cylinder cylinder, t_light light, t_camera camera)
 {
 	// スクリーンの位置ベクトル
 	t_vector	screen_vec;
@@ -240,7 +317,7 @@ void render_scene(t_mlx mlx, t_cylinder cylinder, t_vector d_light, t_camera cam
 			xw = 1.0 - 2 * xs / WIDTH;
 			set(&screen_vec, xw, yw, 0);
 			dir_vec = normalize_vector(subst_vector(screen_vec, camera.coordinates_vec));
-			render_pixel(xs, ys, cylinder, d_light, dir_vec, mlx, camera);
+			render_pixel(xs, ys, cylinder, light, dir_vec, mlx, camera);
 			xs++;
 		}
 		//printf("\n");
@@ -271,15 +348,20 @@ int	main() {
 	cylinder.rgb.green = 255;
 	cylinder.rgb.blue = 168;
 
-	t_vector	d_light;
-	d_light.x = 0;
-	d_light.y = 5;
-	d_light.z = -5;
+	t_ambient_lightning	ambient_lightning;
+
+	t_light	light;
+	set(&light.coordinates_vec, 0, 5, -5);
+	light.ratio = 0.6;
+	light.rgb.red = 46;
+	light.rgb.green = 182;
+	light.rgb.blue = 51;
+
 	t_camera	camera;
 	set(&camera.coordinates_vec, 0, 0, -5);
 	set(&camera.orientation_vec, 0, 0, 0);
 
-	render_scene(mlx, cylinder, d_light, camera);
+	render_scene(mlx, cylinder, light, camera);
 
 	mlx_put_image_to_window(mlx.ptr, mlx.win_ptr, mlx.img->ptr, 0, 0);
 	mlx_loop(mlx.ptr);
