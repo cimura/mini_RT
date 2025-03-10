@@ -27,10 +27,17 @@
 // RGB 計算しやすく0.0~1.0の範囲で表す
 typedef struct	s_rgb
 {
-	__int32_t	red;
-	__int32_t	green;
-	__int32_t	blue;
+	double	red;
+	double	green;
+	double	blue;
 }	t_rgb;
+
+typedef struct	s_light_ratio
+{
+	double	red;
+	double	green;
+	double	blue;
+}	t_light_ratio;
 
 // 環境光 Ambient lightning
 typedef struct	s_ambient_lightning
@@ -83,8 +90,9 @@ typedef struct	s_cylinder
 }	t_cylinder;
 
 // 諸々の定数を定義しておく あとで全体の構造体に入れる
-
-#define	AMBIENT_COEFFICIENT 0.01
+// 環境光反射係数
+#define	AMBIENT_COEFFICIENT 0.52
+// 拡散反射光反射係数
 #define	DIFFUSE_COEFFICIENT 0.69
 
 double	calculate_intersection(t_vector pe, t_vector pc, t_vector de)
@@ -179,14 +187,62 @@ t_vector	calculate_cylinder_normal_vector(t_cylinder cylinder, t_vector intersec
 	return (normal_vector);
 }
 
-// 交点があったピクセルの色を計算する
-int	calculate_intersections_color(t_cylinder cylinder, t_light light, t_vector dir_vec, t_vector normal_vec, t_vector intersection_vec)
+void	set_light_ratio(t_light_ratio *light, t_rgb rgb, double coefficient)
 {
-	t_vector	incidence_vec;
-	double		normal_dot_incindence;
-	double		ambient_intensity;
-	double		diffuse_intensity;
-	int			result_color;
+	light->red = rgb.red / 255 * coefficient;
+	light->green = rgb.green /255 * coefficient;
+	light->blue = rgb.blue / 255 * coefficient;
+}
+
+t_light_ratio	add_light_ratio(t_light_ratio l1, t_light_ratio l2)
+{
+	t_light_ratio	result;
+
+	result.red = l1.red + l2.red;
+	if (result.red > 1.0)
+		result.red = 1.0;
+	result.green = l1.green + l2.green;
+	if (result.green > 1.0)
+		result.green = 1.0;
+	result.blue = l1.blue + l2.blue;
+	if (result.blue > 1.0)
+		result.blue = 1.0;
+	return (result);
+}
+
+t_light_ratio	multi_light_ratio(t_light_ratio l1, t_light_ratio l2)
+{
+	t_light_ratio	result;
+
+	result.red = l1.red * l2.red;
+	result.green = l1.green * l2.green;
+	result.blue = l1.blue * l2.blue;
+	return (result);
+}
+
+int	rgb_to_colorcode(t_light_ratio light)
+{
+	int	result;
+
+	// result = red.value*red.R_r * pow(16, 4) + green.value*green.R_r * pow(16, 2) + blue.value*blue.R_r;
+		result = (int)(light.red * 255) << 16  // 赤は上位16ビット
+		   | (int)(light.green * 255) << 8  // 緑は中間8ビット
+		   | (int)(light.blue * 255);  // 青は下位8ビット
+	return (result);
+}
+
+// 交点があったピクセルの色を計算する
+int	calculate_intersections_color(t_cylinder cylinder, t_light light, t_ambient_lightning ambient_lightning, t_vector normal_vec, t_vector intersection_vec)
+{
+	t_vector			incidence_vec;
+	double				normal_dot_incindence;
+	// 物体の表面の色によって変える
+	t_light_ratio		ambient_coefficient;
+	t_light_ratio		diffuse_coefficient;
+	// 光の色によって変える
+	t_light_ratio		ambient_light;
+	t_light_ratio		diffuse_light;
+	t_light_ratio		result_color;
 
 	// 直接光の入射ベクトル
 	incidence_vec = normalize_vector(subst_vector(light.coordinates_vec, intersection_vec));
@@ -194,13 +250,19 @@ int	calculate_intersections_color(t_cylinder cylinder, t_light light, t_vector d
 	normal_dot_incindence = dot_vector(normal_vec, incidence_vec);
 	if (normal_dot_incindence <= 0.0)
 		normal_dot_incindence = 0.0;
-	if (normal_dot_incindence > 255)
-		normal_dot_incindence = 255;
-	ambient_intensity = AMBIENT_COEFFICIENT
-	diffuse_intensity = DIFFUSE_COEFFICIENT * light.ratio * dot_vector(normal_vec, incidence_vec);
+	if (normal_dot_incindence > 1.0)
+		normal_dot_incindence = 1.0;
+	set_light_ratio(&ambient_coefficient, cylinder.rgb, AMBIENT_COEFFICIENT);
+	set_light_ratio(&ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
+	ambient_light = multi_light_ratio(ambient_light, ambient_coefficient);
+	set_light_ratio(&diffuse_coefficient, cylinder.rgb, DIFFUSE_COEFFICIENT);
+	set_light_ratio(&diffuse_light, light.rgb, light.ratio * normal_dot_incindence);
+	diffuse_light = multi_light_ratio(diffuse_light, diffuse_coefficient);
+	result_color = add_light_ratio(ambient_light, diffuse_light);
+	return (rgb_to_colorcode(result_color));
 }
 
-void render_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera)
+void render_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera, t_ambient_lightning ambient_lightning)
 {
 	// t_vector de, p_i, n, l;
 	(void)xs;
@@ -240,7 +302,7 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector d
 	// 交点がない場合は背景色を置いてreturn
 	if (D < 0)
 	{
-		my_pixel_put(xs, ys, mlx.img, 0x0000FF);
+		my_pixel_put(xs, ys, mlx.img, 0xaaaaaa);
 		return ;
 	}
 
@@ -283,19 +345,19 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector d
 	if (R1_dot_d >= 0 && R1_dot_d <= cylinder.height)
 	{
 		normal_vector = calculate_cylinder_normal_vector(cylinder, R1, C0, I1);
-		my_pixel_put(xs, ys, mlx.img, 0xFF0000);
+		my_pixel_put(xs, ys, mlx.img, calculate_intersections_color(cylinder, light, ambient_lightning, normal_vector, R1));
 	}
 	else if (R2_dot_d >= 0 && R2_dot_d <= cylinder.height)
 	{
 		normal_vector = calculate_cylinder_normal_vector(cylinder, R2, C0, I2);
-		my_pixel_put(xs, ys, mlx.img, 0xFF0000);
+		my_pixel_put(xs, ys, mlx.img, calculate_intersections_color(cylinder, light, ambient_lightning, normal_vector, R2));
 	}
 	else
-		my_pixel_put(xs, ys, mlx.img, 0x0000FF);
+		my_pixel_put(xs, ys, mlx.img, 0xaaaaaa);
 }
 
 // いったんカメラの位置ベクトル、方向ベクトル、FOV（視野角）を固定する（原点上のx,yにスクリーンを張る）
-void render_scene(t_mlx mlx, t_cylinder cylinder, t_light light, t_camera camera)
+void render_scene(t_mlx mlx, t_cylinder cylinder, t_light light, t_camera camera, t_ambient_lightning ambient_lightning)
 {
 	// スクリーンの位置ベクトル
 	t_vector	screen_vec;
@@ -317,7 +379,7 @@ void render_scene(t_mlx mlx, t_cylinder cylinder, t_light light, t_camera camera
 			xw = 1.0 - 2 * xs / WIDTH;
 			set(&screen_vec, xw, yw, 0);
 			dir_vec = normalize_vector(subst_vector(screen_vec, camera.coordinates_vec));
-			render_pixel(xs, ys, cylinder, light, dir_vec, mlx, camera);
+			render_pixel(xs, ys, cylinder, light, dir_vec, mlx, camera, ambient_lightning);
 			xs++;
 		}
 		//printf("\n");
@@ -344,24 +406,28 @@ int	main() {
 	cylinder.diameter = 2.0;
 	set(&cylinder.coordinates_vec, 0, 0, 5);
 	set(&cylinder.orientation_vec, 1/sqrt(3), 1/sqrt(3), 1/sqrt(3));
-	cylinder.rgb.red = 200;
-	cylinder.rgb.green = 255;
-	cylinder.rgb.blue = 168;
+	cylinder.rgb.red = 246;
+	cylinder.rgb.green = 246;
+	cylinder.rgb.blue = 38;
 
 	t_ambient_lightning	ambient_lightning;
+	ambient_lightning.ratio = 0.2;
+	ambient_lightning.rgb.red = 222;
+	ambient_lightning.rgb.green = 185;
+	ambient_lightning.rgb.blue = 155;
 
 	t_light	light;
 	set(&light.coordinates_vec, 0, 5, -5);
 	light.ratio = 0.6;
-	light.rgb.red = 46;
-	light.rgb.green = 182;
-	light.rgb.blue = 51;
+	light.rgb.red = 255;
+	light.rgb.green = 255;
+	light.rgb.blue = 255;
 
 	t_camera	camera;
 	set(&camera.coordinates_vec, 0, 0, -5);
 	set(&camera.orientation_vec, 0, 0, 0);
 
-	render_scene(mlx, cylinder, light, camera);
+	render_scene(mlx, cylinder, light, camera, ambient_lightning);
 
 	mlx_put_image_to_window(mlx.ptr, mlx.win_ptr, mlx.img->ptr, 0, 0);
 	mlx_loop(mlx.ptr);
