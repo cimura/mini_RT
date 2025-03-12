@@ -192,7 +192,7 @@ t_vector	calculate_cylinder_normal_vector(t_cylinder cylinder, t_vector intersec
 	double		bti_dot_orientation;
 
 	base_to_intersection = subst_vector(intersection, base);
-	bti_dot_orientation = dot_vector(base_to_intersection, cylinder.orientation_vec);
+	bti_dot_orientation = calculate_inner_product(base_to_intersection, cylinder.orientation_vec);
 	if (dir_flag == I1)
 		normal_vector = subst_vector(base_to_intersection, multi_vector(cylinder.orientation_vec,
 			bti_dot_orientation));
@@ -271,14 +271,14 @@ int	calculate_intersections_color(t_cylinder cylinder, t_light light, t_vector d
 	// 直接光の入射ベクトル
 	incidence_vec = normalize_vector(subst_vector(light.coordinates_vec, intersection_vec));
 	// 法線ベクトルと入射ベクトルの内積 これを0-1の範囲にする(負の値の時は光は当たらないため)
-	normal_dot_incindence = dot_vector(normal_vec, incidence_vec);
+	normal_dot_incindence = calculate_inner_product(normal_vec, incidence_vec);
 	if (normal_dot_incindence < 0.0)
 		normal_dot_incindence = 0.0;
 	if (normal_dot_incindence > 1.0)
 		normal_dot_incindence = 1.0;
 	reflection_vec = subst_vector(multi_vector(normal_vec, 2 * normal_dot_incindence), incidence_vec);
 	inverse_camera_orientation_vec = normalize_vector(multi_vector(dir_vec, -1));
-	inverse_dot_reflection = dot_vector(inverse_camera_orientation_vec, reflection_vec);
+	inverse_dot_reflection = calculate_inner_product(inverse_camera_orientation_vec, reflection_vec);
 	if (inverse_dot_reflection < 0.0)
 		inverse_dot_reflection = 0.0;
 	if (inverse_dot_reflection > 1.0)
@@ -301,7 +301,7 @@ double	a_coef(t_vector dir_vec, double co_dot_dir, double co_dot_co)
 {
 	double	dir_dot_dir;
 
-	dir_dot_dir = dot_vector(dir_vec, dir_vec);
+	dir_dot_dir = calculate_inner_product(dir_vec, dir_vec);
 	return (dir_dot_dir - pow(co_dot_dir, 2) / co_dot_co);
 }
 
@@ -314,7 +314,7 @@ double	c_coef(t_vector camera_to_cylinder, t_cylinder cylinder, double co_dot_ct
 {
 	double	ctc_dot_ctc;
 
-	ctc_dot_ctc = dot_vector(camera_to_cylinder, camera_to_cylinder);
+	ctc_dot_ctc = calculate_inner_product(camera_to_cylinder, camera_to_cylinder);
 	return (ctc_dot_ctc - pow(co_dot_ctc, 2) / co_dot_co - pow(cylinder.diameter / 2, 2));
 }
 
@@ -327,10 +327,10 @@ void	calculate_intersections_num(t_coef *coef, t_cylinder cylinder, t_camera cam
 	double		co_dot_ctc;
 
 	camera_to_cylinder = subst_vector(camera.coordinates_vec, cylinder.coordinates_vec);
-	co_dot_dir = dot_vector(cylinder.orientation_vec, dir_vec);
-	co_dot_co = dot_vector(cylinder.orientation_vec, cylinder.orientation_vec);
-	dir_dot_ctc = dot_vector(dir_vec, camera_to_cylinder);
-	co_dot_ctc = dot_vector(cylinder.orientation_vec, camera_to_cylinder);
+	co_dot_dir = calculate_inner_product(cylinder.orientation_vec, dir_vec);
+	co_dot_co = calculate_inner_product(cylinder.orientation_vec, cylinder.orientation_vec);
+	dir_dot_ctc = calculate_inner_product(dir_vec, camera_to_cylinder);
+	co_dot_ctc = calculate_inner_product(cylinder.orientation_vec, camera_to_cylinder);
 	coef->a = a_coef(dir_vec, co_dot_dir, co_dot_co);
 	coef->b = b_coef(co_dot_dir, dir_dot_ctc, co_dot_ctc, co_dot_co);
 	coef->c = c_coef(camera_to_cylinder, cylinder, co_dot_ctc, co_dot_co);
@@ -351,8 +351,8 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_cylinder cylinder, t_ligh
 		multi_vector(dir_vec, ((-1 * coef.b) + sqrt(coef.d)) / (2 * coef.a)));
 	cylinder_bottom_vec = subst_vector(cylinder.coordinates_vec,
 		multi_vector(cylinder.orientation_vec, cylinder.height / 2));
-	i1_dot_co = dot_vector(subst_vector(intersec1, cylinder_bottom_vec), cylinder.orientation_vec);
-	i2_dot_co = dot_vector(subst_vector(intersec2, cylinder_bottom_vec), cylinder.orientation_vec);
+	i1_dot_co = calculate_inner_product(subst_vector(intersec1, cylinder_bottom_vec), cylinder.orientation_vec);
+	i2_dot_co = calculate_inner_product(subst_vector(intersec2, cylinder_bottom_vec), cylinder.orientation_vec);
 	if (i1_dot_co >= 0 && i1_dot_co <= cylinder.height)
 	{
 		my_pixel_put(xs, ys, mlx.img, calculate_intersections_color(cylinder, light, dir_vec, ambient_lightning,
@@ -385,12 +385,12 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector d
 	
 	// d: 円柱の軸の方向ベクトル  D: 視線の方向ベクトル  O: カメラの位置ベクトル  C: 円柱の位置ベクトル
 	// t_vector	camera_to_cylinder = subst_vector(camera.coordinates_vec, cylinder.coordinates_vec);
-	// double	D_dot_D = dot_vector(dir_vec, dir_vec);
-	// double	d_dot_D = dot_vector(cylinder.orientation_vec, dir_vec);
-	// double	d_dot_d = dot_vector(cylinder.orientation_vec, cylinder.orientation_vec);
-	// double	D_dot_OC = dot_vector(dir_vec, camera_to_cylinder);
-	// double	d_dot_OC = dot_vector(cylinder.orientation_vec, camera_to_cylinder);
-	// double	OC_dot_OC = dot_vector(camera_to_cylinder, camera_to_cylinder);
+	// double	D_dot_D = calculate_inner_product(dir_vec, dir_vec);
+	// double	d_dot_D = calculate_inner_product(cylinder.orientation_vec, dir_vec);
+	// double	d_dot_d = calculate_inner_product(cylinder.orientation_vec, cylinder.orientation_vec);
+	// double	D_dot_OC = calculate_inner_product(dir_vec, camera_to_cylinder);
+	// double	d_dot_OC = calculate_inner_product(cylinder.orientation_vec, camera_to_cylinder);
+	// double	OC_dot_OC = calculate_inner_product(camera_to_cylinder, camera_to_cylinder);
 
 	// A = D_dot_D - pow(d_dot_D, 2) / d_dot_d;
 	// B = 2.0 * (D_dot_OC - d_dot_D * d_dot_OC / d_dot_d);
@@ -404,11 +404,11 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector d
 	//printf("%lf ", d_dot_d);
 
 	// 交点がない場合は背景色を置いてreturn
-	if (coef.d < 0)
-	{
-		my_pixel_put(xs, ys, mlx.img, BACKGROUND_COLOR);
-		return ;
-	}
+	// if (coef.d < 0)
+	// {
+	// 	my_pixel_put(xs, ys, mlx.img, BACKGROUND_COLOR);
+	// 	return ;
+	// }
 	put_color_on_intersection_pixel(xs, ys, cylinder, light, dir_vec, mlx, camera, ambient_lightning, coef);
 
 	// 交わるときの係数tを計算 P = s + td の t  (P:視線と物体の交点 s:カメラの位置ベクトル d:カメラの方向ベクトル)
@@ -429,8 +429,8 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector d
 	//t_vector	C1 = add_vector(cylinder.coordinates_vec, multi_vector(cylinder.orientation_vec, cylinder.height / 2));
 
 	// 円柱の軸方向ベクトルと中心から交点へのベクトルの内積を計算
-	// double	R1_dot_d = dot_vector(subst_vector(R1, C0), cylinder.orientation_vec);
-	// double	R2_dot_d = dot_vector(subst_vector(R2, C0), cylinder.orientation_vec);
+	// double	R1_dot_d = calculate_inner_product(subst_vector(R1, C0), cylinder.orientation_vec);
+	// double	R2_dot_d = calculate_inner_product(subst_vector(R2, C0), cylinder.orientation_vec);
 
 	// 交点と円柱の中心のy座標の差を計算
 	//H1 = cylinder.coordinates_vec.y - Py1;
