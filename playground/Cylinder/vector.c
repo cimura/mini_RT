@@ -51,6 +51,11 @@ t_vector	multi_vector(t_vector v, double c)
 	return (result);
 }
 
+double	len_vector(t_vector v)
+{
+	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
+}
+
 // ベクトルの内積
 double	calculate_inner_product(t_vector a, t_vector b)
 {

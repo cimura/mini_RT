@@ -22,6 +22,7 @@ void		init_vector3(t_vector *pe3, t_vector *pc3);
 void		set(t_vector *v, double _x, double _y, double _z);
 double		abst_squared(t_vector v);
 t_vector	multi_vector(t_vector v, double c);
+double		len_vector(t_vector v);
 double		calculate_inner_product(t_vector a, t_vector b);
 t_vector	normalize_vector(t_vector v);
 double		inner_product(t_vector a, t_vector b);
