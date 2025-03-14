@@ -95,6 +95,7 @@ typedef struct	s_ray
 {
 	t_vector	coordinates_vec;
 	t_vector	orientation_vec;
+	double		len;
 }	t_ray;
 
 typedef struct s_coef
@@ -114,7 +115,7 @@ typedef struct s_coef
 // 鏡面反射係数
 #define SPECULAR_COEFFICIENT 0.5
 // 光沢度
-#define SHININESS 32
+#define SHININESS 64
 // shadow rayを計算するための微小値
 #define EPSILON 0.01
 
@@ -195,22 +196,21 @@ double calculate_lighting(t_color color, t_vector de, t_vector n, t_vector l)
 
 // 視線と円柱の表面の法線ベクトルを計算する (円柱データ、交点、円柱の底面の位置ベクトル)
 t_vector	calculate_cylinder_normal_vector(t_cylinder cylinder, t_vector intersection,
-		t_vector base, int dir_flag)
+		int dir_flag)
 {
 	t_vector	normal_vector;
-	t_vector	base_to_intersection;
-	double		bti_dot_orientation;
+	t_vector	cc_to_intersection;
+	double		cti_dot_orientation;
 
-	base_to_intersection = subst_vector(intersection, base);
-	bti_dot_orientation = calculate_inner_product(base_to_intersection, cylinder.orientation_vec);
+	cc_to_intersection = subst_vector(intersection, cylinder.coordinates_vec);
+	cti_dot_orientation = calculate_inner_product(cc_to_intersection, cylinder.orientation_vec);
 	if (dir_flag == I1)
-		normal_vector = subst_vector(base_to_intersection, multi_vector(cylinder.orientation_vec,
-			bti_dot_orientation));
+		normal_vector = subst_vector(cc_to_intersection, multi_vector(cylinder.orientation_vec,
+			cti_dot_orientation));
 	else
-		normal_vector = subst_vector(multi_vector(cylinder.orientation_vec, bti_dot_orientation),
-			base_to_intersection);
-	normal_vector = normalize_vector(normal_vector);
-	return (normal_vector);
+		normal_vector = subst_vector(multi_vector(cylinder.orientation_vec, cti_dot_orientation),
+			cc_to_intersection);
+	return (normalize_vector(normal_vector));
 }
 
 void	set_light_ratio(t_light_ratio *light, t_rgb rgb, double coefficient)
@@ -268,53 +268,100 @@ void	double_swap(double *a, double *b)
 
 void	calculate_cylinder_intersections_num(t_coef *coef, t_cylinder cylinder, t_vector start_vec, t_vector dir_vec);
 
-bool	is_under_shadow(t_light_ratio *a, t_light light, t_cylinder cylinder, t_vector incidence_vec, t_vector intersection_vec)
+bool	is_intersection_in_cylinder_height_range(t_cylinder cylinder, t_vector intersection);
+
+bool	is_intersecting_cylinder(t_ray shadow_ray, t_cylinder cylinder)
 {
-	t_vector	shadow_ray_vec;
-	double		shadow_ray_len;
-	t_coef		coef;
-	//t_vector	othrer_obj_intersection_vec1;
-	t_vector	othrer_obj_intersection_vec2;
-	t_vector	cylinder_bottom_vec;
+	t_coef	coef;
 	double		shadow_ray_distance1;
 	double		shadow_ray_distance2;
-	//double		i1_dot_co;
-	double		i2_dot_co;
-	t_ray		shadow_ray;
+	t_vector	intersec1;
+	t_vector	intersec2;
 
-	(void)a;
-	shadow_ray_vec = subst_vector(light.coordinates_vec, intersection_vec);
-	//shadow_ray_vec = add_vector(intersection_vec, multi_vector(shadow_ray_vec, EPSILON));
-	shadow_ray_len = len_vector(shadow_ray_vec);
-	shadow_ray.coordinates_vec = add_vector(intersection_vec, multi_vector(shadow_ray_vec, EPSILON));
-	//shadow_ray.coordinates_vec = intersection_vec;
-	shadow_ray.orientation_vec = incidence_vec;
-	// whileでオブジェクトの個数分チェックする
 	calculate_cylinder_intersections_num(&coef, cylinder, shadow_ray.coordinates_vec, shadow_ray.orientation_vec);
-	if (coef.d <= 0.0)
+	if (coef.d < 0)
 		return (false);
-	//printf("%lf ", coef.d);
 	shadow_ray_distance1 = ((-1 * coef.b) - sqrt(coef.d)) / (2 * coef.a);
 	shadow_ray_distance2 = ((-1 * coef.b) + sqrt(coef.d)) / (2 * coef.a);
 	if (shadow_ray_distance1 > shadow_ray_distance2)
 		double_swap(&shadow_ray_distance1, &shadow_ray_distance2);
-	//if (shadow_ray_distance1 < 0)
-	//	return (a->blue = 1.0, false);
 	if (shadow_ray_distance2 < 0)
-		return (/*a->blue = 1.0, */false);
-	//othrer_obj_intersection_vec1 = add_vector(shadow_ray.coordinates_vec,
-	//	multi_vector(shadow_ray.orientation_vec, shadow_ray_distance1));
-	othrer_obj_intersection_vec2 = add_vector(shadow_ray.coordinates_vec,
+		return (false);
+	intersec1 = add_vector(shadow_ray.coordinates_vec,
+		multi_vector(shadow_ray.orientation_vec, shadow_ray_distance1));
+	intersec2 = add_vector(shadow_ray.coordinates_vec,
 		multi_vector(shadow_ray.orientation_vec, shadow_ray_distance2));
-	cylinder_bottom_vec = subst_vector(cylinder.coordinates_vec,
-		multi_vector(cylinder.orientation_vec, cylinder.height / 2));
-	//i1_dot_co = calculate_inner_product(subst_vector(othrer_obj_intersection_vec1, cylinder_bottom_vec), cylinder.orientation_vec);
-	i2_dot_co = calculate_inner_product(subst_vector(othrer_obj_intersection_vec2, cylinder_bottom_vec), cylinder.orientation_vec);
-	//if (i1_dot_co >= 0 && i1_dot_co <= cylinder.height && shadow_ray_distance1 > 0 && shadow_ray_distance1 < shadow_ray_len)
-	//	return (a->red = 1.0, true);
-	/*else */if (i2_dot_co >= 0 && i2_dot_co <= cylinder.height && shadow_ray_distance2 > 0 && shadow_ray_distance2 < shadow_ray_len)
-		return (/*a->red = 1.0, */true);
-	return (/*a->green = 1.0, */false);
+	if (shadow_ray_distance1 >= 0 && shadow_ray_distance1 < shadow_ray.len
+		&& is_intersection_in_cylinder_height_range(cylinder, intersec1) == true)
+		return (true);
+	if (shadow_ray_distance2 >= 0 && shadow_ray_distance2 < shadow_ray.len
+		&& is_intersection_in_cylinder_height_range(cylinder, intersec2) == true)
+		return (true);
+	return (false);
+}
+
+bool	is_under_shadow(t_light light, t_cylinder cylinder, t_vector intersection_vec)
+{
+	t_vector	shadow_ray_vec;
+	t_ray		shadow_ray;
+
+	shadow_ray_vec = subst_vector(light.coordinates_vec, intersection_vec);
+	shadow_ray.len = len_vector(shadow_ray_vec);
+	shadow_ray.coordinates_vec = add_vector(intersection_vec, multi_vector(shadow_ray_vec, EPSILON));
+	shadow_ray.orientation_vec = normalize_vector(shadow_ray_vec);
+	// whileでオブジェクトの個数分チェックする
+	if (is_intersecting_cylinder(shadow_ray, cylinder) == true)
+		return (true);
+	return (false);
+}
+
+// double型の変数を範囲内に落とし込む関数 (min <= max)
+static void	double_compressor(double *d, double min, double max)
+{
+	if (*d < min)
+		*d = min;
+	if (*d > max)
+		*d = max;
+}
+
+// xxx_coefficient: 反射係数 物体の表面の色によって変わる
+// xxx_light:		光の強度xあたる向きの内積 光源の色によって変わる
+
+t_light_ratio	calculate_ambient_light_ratio(t_ambient_lightning ambient_lightning, t_cylinder cylinder)
+{
+	t_light_ratio	ambient_coefficient;
+	t_light_ratio	ambient_light;
+
+	set_light_ratio(&ambient_coefficient, cylinder.rgb, AMBIENT_COEFFICIENT);
+	set_light_ratio(&ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
+	return (multi_light_ratio(ambient_light, ambient_coefficient));
+}
+
+t_light_ratio	calculate_diffuse_light_ratio(t_light light, t_cylinder cylinder, double normal_dot_incidence)
+{
+	t_light_ratio	diffuse_coefficient;
+	t_light_ratio	diffuse_light;
+
+	set_light_ratio(&diffuse_coefficient, cylinder.rgb, DIFFUSE_COEFFICIENT);
+	set_light_ratio(&diffuse_light, light.rgb, light.ratio * normal_dot_incidence);
+	return (multi_light_ratio(diffuse_light, diffuse_coefficient));
+}
+
+t_light_ratio calculate_specular_light_ratio(t_light light, t_cylinder cylinder, t_vector dir_vec, t_vector reflection_vec)
+{
+	t_light_ratio	specular_coefficient;
+	t_light_ratio	specular_light;
+	// 視線ベクトルの逆ベクトル
+	t_vector		inverse_camera_orientation_vec;
+	// 視線逆ベクトルと光源の正反射ベクトルの内積
+	double			inverse_dot_reflection;
+
+	inverse_camera_orientation_vec = normalize_vector(multi_vector(dir_vec, -1));
+	inverse_dot_reflection = calculate_inner_product(inverse_camera_orientation_vec, reflection_vec);
+	double_compressor(&inverse_dot_reflection, 0.0, 1.0);
+	set_light_ratio(&specular_coefficient, cylinder.rgb, SPECULAR_COEFFICIENT);
+	set_light_ratio(&specular_light, light.rgb, light.ratio * pow(inverse_dot_reflection, SHININESS));
+	return (multi_light_ratio(specular_light, specular_coefficient));
 }
 
 // 交点があったピクセルの色を計算する
@@ -322,54 +369,27 @@ int	calculate_intersections_color(t_cylinder cylinder, t_light light, t_vector d
 {
 	// 直接光の入射ベクトル
 	t_vector			incidence_vec;
-	double				normal_dot_incindence;
+	// 法線ベクトルと入射ベクトルの内積
+	double				normal_dot_incidence;
 	// 光源の正反射ベクトル
 	t_vector			reflection_vec;
-	// 視線ベクトルの逆ベクトル
-	t_vector			inverse_camera_orientation_vec;
-	// 視線逆ベクトルと正反射ベクトルの内積
-	double				inverse_dot_reflection;
-	// 物体の表面の色によって変える
-	t_light_ratio		ambient_coefficient;
-	t_light_ratio		diffuse_coefficient;
-	t_light_ratio		specular_coefficient;
-	// 光の色によって変える
-	t_light_ratio		ambient_light;
-	t_light_ratio		diffuse_light;
-	t_light_ratio		specular_light;
-	t_light_ratio		result_color;
+	t_light_ratio		result_light;
 
 	// 直接光の入射ベクトル
 	incidence_vec = normalize_vector(subst_vector(light.coordinates_vec, intersection_vec));
-	// 法線ベクトルと入射ベクトルの内積 これを0-1の範囲にする(負の値の時は光は当たらないため)
-	normal_dot_incindence = calculate_inner_product(normal_vec, incidence_vec);
-	if (normal_dot_incindence < 0.0)
-		normal_dot_incindence = 0.0;
-	if (normal_dot_incindence > 1.0)
-		normal_dot_incindence = 1.0;
-	reflection_vec = subst_vector(multi_vector(normal_vec, 2 * normal_dot_incindence), incidence_vec);
-	inverse_camera_orientation_vec = normalize_vector(multi_vector(dir_vec, -1));
-	inverse_dot_reflection = calculate_inner_product(inverse_camera_orientation_vec, reflection_vec);
-	if (inverse_dot_reflection < 0.0)
-		inverse_dot_reflection = 0.0;
-	if (inverse_dot_reflection > 1.0)
-		inverse_dot_reflection = 1.0;
-	set_light_ratio(&ambient_coefficient, cylinder.rgb, AMBIENT_COEFFICIENT);
-	set_light_ratio(&ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
-	ambient_light = multi_light_ratio(ambient_light, ambient_coefficient);
+	result_light = calculate_ambient_light_ratio(ambient_lightning, cylinder);
 	// 影の中にいたら環境光のみ
-	if (is_under_shadow(&ambient_light, light, cylinder, incidence_vec, intersection_vec) == true)
-		return (rgb_to_colorcode(ambient_light));
-	set_light_ratio(&diffuse_coefficient, cylinder.rgb, DIFFUSE_COEFFICIENT);
-	set_light_ratio(&diffuse_light, light.rgb, light.ratio * normal_dot_incindence);
-	diffuse_light = multi_light_ratio(diffuse_light, diffuse_coefficient);
-	set_light_ratio(&specular_coefficient, cylinder.rgb, SPECULAR_COEFFICIENT);
-	set_light_ratio(&specular_light, light.rgb, light.ratio * pow(inverse_dot_reflection, SHININESS));
-	specular_light = multi_light_ratio(specular_light, specular_coefficient);
-	result_color = add_light_ratio(ambient_light, diffuse_light);
-	result_color = add_light_ratio(result_color, specular_light);
-	//result_color = specular_light; // debug
-	return (rgb_to_colorcode(result_color));
+	if (is_under_shadow(light, cylinder, intersection_vec) == true)
+		return (rgb_to_colorcode(result_light));
+	// 法線ベクトルと入射ベクトルの内積 これを0-1の範囲にする(負の値の時は光は当たらないため)
+	normal_dot_incidence = calculate_inner_product(normal_vec, incidence_vec);
+	if (normal_dot_incidence < 0)
+		return (rgb_to_colorcode(result_light));
+	double_compressor(&normal_dot_incidence, 0.0, 1.0);
+	result_light = add_light_ratio(result_light, calculate_diffuse_light_ratio(light, cylinder, normal_dot_incidence));
+	reflection_vec = subst_vector(multi_vector(normal_vec, 2 * normal_dot_incidence), incidence_vec);
+	result_light = add_light_ratio(result_light, calculate_specular_light_ratio(light, cylinder, dir_vec, reflection_vec));
+	return (rgb_to_colorcode(result_light));
 }
 
 double	a_coef(t_vector dir_vec, double co_dot_dir, double co_dot_co)
@@ -412,15 +432,15 @@ void	calculate_cylinder_intersections_num(t_coef *coef, t_cylinder cylinder, t_v
 	coef->d = pow(coef->b, 2) - 4 * coef->a * coef->c;
 }
 
-bool	is_intersection_in_cylinder_height_range(t_cylinder cylinder, t_vector intersection, t_vector cylinder_bottom_vec)
+bool	is_intersection_in_cylinder_height_range(t_cylinder cylinder, t_vector intersection)
 {
-	//t_vector	cylinder_bottom_vec;
 	double		i_dot_co;
 
-	//cylinder_bottom_vec = subst_vector(cylinder.coordinates_vec,
-	//	multi_vector(cylinder.orientation_vec, cylinder.height / 2));
-	i_dot_co = calculate_inner_product(subst_vector(intersection, cylinder_bottom_vec), cylinder.orientation_vec);
-	if (i_dot_co >= 0 && i_dot_co <= cylinder.height)
+	i_dot_co = calculate_inner_product(subst_vector(intersection, cylinder.coordinates_vec),
+		cylinder.orientation_vec);
+	if (i_dot_co < 0)
+		i_dot_co *= -1;
+	if (i_dot_co <= cylinder.height / 2)
 		return (true);
 	else
 		return (false);
@@ -432,9 +452,6 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_cylinder cylinder, t_ligh
 	double		camera_intersec_distance2;
 	t_vector	intersec1;
 	t_vector	intersec2;
-	t_vector	cylinder_bottom_vec;
-	//double		i1_dot_co;
-	//double		i2_dot_co;
 
 	camera_intersec_distance1 = ((-1 * coef.b) - sqrt(coef.d)) / (2 * coef.a);
 	camera_intersec_distance2 = ((-1 * coef.b) + sqrt(coef.d)) / (2 * coef.a);
@@ -444,19 +461,15 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_cylinder cylinder, t_ligh
 		multi_vector(dir_vec, ((-1 * coef.b) - sqrt(coef.d)) / (2 * coef.a)));
 	intersec2 = add_vector(camera.coordinates_vec,
 		multi_vector(dir_vec, ((-1 * coef.b) + sqrt(coef.d)) / (2 * coef.a)));
-	cylinder_bottom_vec = subst_vector(cylinder.coordinates_vec,
-		multi_vector(cylinder.orientation_vec, cylinder.height / 2));
-	//i1_dot_co = calculate_inner_product(subst_vector(intersec1, cylinder_bottom_vec), cylinder.orientation_vec);
-	//i2_dot_co = calculate_inner_product(subst_vector(intersec2, cylinder_bottom_vec), cylinder.orientation_vec);
-	if (/*i1_dot_co >= 0 && i1_dot_co <= cylinder.height*/is_intersection_in_cylinder_height_range(cylinder, intersec1, cylinder_bottom_vec) == true)
+	if (is_intersection_in_cylinder_height_range(cylinder, intersec1) == true)
 	{
 		my_pixel_put(xs, ys, mlx.img, calculate_intersections_color(cylinder, light, dir_vec, ambient_lightning,
-			calculate_cylinder_normal_vector(cylinder, intersec1, cylinder_bottom_vec, I1), intersec1));
+			calculate_cylinder_normal_vector(cylinder, intersec1, I1), intersec1));
 	}
-	else if (/*i2_dot_co >= 0 && i2_dot_co <= cylinder.height*/is_intersection_in_cylinder_height_range(cylinder, intersec2, cylinder_bottom_vec) == true)
+	else if (is_intersection_in_cylinder_height_range(cylinder, intersec2) == true)
 	{
 		my_pixel_put(xs, ys, mlx.img, calculate_intersections_color(cylinder, light, dir_vec, ambient_lightning,
-			calculate_cylinder_normal_vector(cylinder, intersec2, cylinder_bottom_vec, I2), intersec2));
+			calculate_cylinder_normal_vector(cylinder, intersec2, I2), intersec2));
 	}
 	else
 		my_pixel_put(xs, ys, mlx.img, BACKGROUND_COLOR);
@@ -466,7 +479,6 @@ void	debug_printer(int xs, int ys, t_coef cy_coef, t_cylinder cylinder, t_light 
 {
 	t_cylinder	debug;
 	t_coef		coef;
-	t_vector	cylinder_bottom_vec;
 	double		intersec_debug1;
 	double		intersec_debug2;
 	double		intersec1;
@@ -485,58 +497,21 @@ void	debug_printer(int xs, int ys, t_coef cy_coef, t_cylinder cylinder, t_light 
 	intersec_debug2 = ((-1 * coef.b) + sqrt(coef.d)) / (2 * coef.a);
 	if (intersec_debug1 > intersec_debug2)
 		double_swap(&intersec_debug1, &intersec_debug2);
-	cylinder_bottom_vec = subst_vector(cylinder.coordinates_vec,
-		multi_vector(cylinder.orientation_vec, cylinder.height / 2));
-	(void)cylinder_bottom_vec;
 	if (coef.d >= 0 && (cy_coef.d < 0 || (is_intersection_in_cylinder_height_range(cylinder, add_vector(camera.coordinates_vec,
-		multi_vector(dir_vec, intersec1)), cylinder_bottom_vec) == true && intersec_debug1 <= intersec1)
+		multi_vector(dir_vec, intersec1))) == true && intersec_debug1 <= intersec1)
 		|| (is_intersection_in_cylinder_height_range(cylinder, add_vector(camera.coordinates_vec,
-		multi_vector(dir_vec, intersec1)), cylinder_bottom_vec) == false && intersec_debug1 <= intersec2)
+		multi_vector(dir_vec, intersec1))) == false && intersec_debug1 <= intersec2)
 		||  (is_intersection_in_cylinder_height_range(cylinder, add_vector(camera.coordinates_vec,
-			multi_vector(dir_vec, intersec1)), cylinder_bottom_vec) == false && is_intersection_in_cylinder_height_range(cylinder, add_vector(camera.coordinates_vec,
-				multi_vector(dir_vec, intersec2)), cylinder_bottom_vec) == false)))
+			multi_vector(dir_vec, intersec1))) == false && is_intersection_in_cylinder_height_range(cylinder, add_vector(camera.coordinates_vec,
+				multi_vector(dir_vec, intersec2))) == false)))
 		my_pixel_put(xs, ys, mlx.img, 0xFF00FF);
-	//else if (coef.d >= 0 && ((cy_coef.d < 0 || is_intersection_in_cylinder_height_range(cylinder, add_vector(camera.coordinates_vec,
-	//	multi_vector(dir_vec, intersec1)), cylinder_bottom_vec) == false) || (intersec_debug1 <= intersec1 && intersec_debug1 <= intersec2)))
-	//	my_pixel_put(xs, ys, mlx.img, 0xFF00FF);
 }
 
 void render_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera, t_ambient_lightning ambient_lightning)
 {
-	// t_vector de, p_i, n, l;
-
-	// At^2 + Bt + C = 0 判別式D 交わるときのt二つT1,T2 交点のy座標二つPy1,Py2
-	// double	A, B, C, D, T1, T2/*, Py1, Py2*/;
-	// 円柱の中心のy座標 - 交点のy座標二つ H1, H2
-	//double H1, H2;
-
-	//A = pow(dir_vec.x, 2) + pow(dir_vec.z, 2);
-	//B = 2 * (dir_vec.x * (camera.coordinates_vec.x - cylinder.coordinates_vec.x)
-	//	 + dir_vec.z * (camera.coordinates_vec.z - cylinder.coordinates_vec.z));
-	//C = (pow((camera.coordinates_vec.x - cylinder.coordinates_vec.x), 2) + pow((camera.coordinates_vec.z - cylinder.coordinates_vec.z), 2)) - pow(cylinder.diameter / 2, 2);
-
-	//D = pow(B, 2) - 4 * A * C;
-	
-	// d: 円柱の軸の方向ベクトル  D: 視線の方向ベクトル  O: カメラの位置ベクトル  C: 円柱の位置ベクトル
-	// t_vector	camera_to_cylinder = subst_vector(camera.coordinates_vec, cylinder.coordinates_vec);
-	// double	D_dot_D = calculate_inner_product(dir_vec, dir_vec);
-	// double	d_dot_D = calculate_inner_product(cylinder.orientation_vec, dir_vec);
-	// double	d_dot_d = calculate_inner_product(cylinder.orientation_vec, cylinder.orientation_vec);
-	// double	D_dot_OC = calculate_inner_product(dir_vec, camera_to_cylinder);
-	// double	d_dot_OC = calculate_inner_product(cylinder.orientation_vec, camera_to_cylinder);
-	// double	OC_dot_OC = calculate_inner_product(camera_to_cylinder, camera_to_cylinder);
-
-	// A = D_dot_D - pow(d_dot_D, 2) / d_dot_d;
-	// B = 2.0 * (D_dot_OC - d_dot_D * d_dot_OC / d_dot_d);
-	// C = OC_dot_OC - pow(d_dot_OC, 2) / d_dot_d - pow(cylinder.diameter / 2, 2);
-
-	// 判別式
-	// D = pow(B, 2) - 4 * A * C;
 	t_coef	coef;
+
 	calculate_cylinder_intersections_num(&coef, cylinder, camera.coordinates_vec, dir_vec);
-
-	//printf("%lf ", d_dot_d);
-
 	// 交点がない場合は背景色を置いてreturn  余分な計算を省くことができる
 	 if (coef.d < 0)
 	 {
@@ -544,58 +519,8 @@ void render_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector d
 	 	return ;
 	 }
 	put_color_on_intersection_pixel(xs, ys, cylinder, light, dir_vec, mlx, camera, ambient_lightning, coef);
-
 	// Debug
 	//debug_printer(xs, ys, coef, cylinder, light, dir_vec, mlx, camera);
-
-	// 交わるときの係数tを計算 P = s + td の t  (P:視線と物体の交点 s:カメラの位置ベクトル d:カメラの方向ベクトル)
-	// t1 = ((-1 * coef.b) - sqrt(coef.d)) / (2 * coef.a);
-	// t2 = ((-1 * coef.b) + sqrt(coef.d)) / (2 * coef.a);
-
-// 交点がある場合
-	// 交点のy座標を計算
-	//Py1 = camera.coordinates_vec.y + T1 * dir_vec.y;
-	//Py2 = camera.coordinates_vec.y + T2 * dir_vec.y;
-
-	// 交点の位置ベクトルを計算 R1 R2は交点1, 2
-	// t_vector	R1 = add_vector(camera.coordinates_vec, multi_vector(dir_vec, t1));
-	// t_vector	R2 = add_vector(camera.coordinates_vec, multi_vector(dir_vec, t2));
-
-	// 円柱の底面の座標2つ C0, C1
-	// t_vector	C0 = subst_vector(cylinder.coordinates_vec, multi_vector(cylinder.orientation_vec, cylinder.height / 2));
-	//t_vector	C1 = add_vector(cylinder.coordinates_vec, multi_vector(cylinder.orientation_vec, cylinder.height / 2));
-
-	// 円柱の軸方向ベクトルと中心から交点へのベクトルの内積を計算
-	// double	R1_dot_d = calculate_inner_product(subst_vector(R1, C0), cylinder.orientation_vec);
-	// double	R2_dot_d = calculate_inner_product(subst_vector(R2, C0), cylinder.orientation_vec);
-
-	// 交点と円柱の中心のy座標の差を計算
-	//H1 = cylinder.coordinates_vec.y - Py1;
-	//H2 = cylinder.coordinates_vec.y - Py2;
-	//printf("%lf ", D);
-	// 交点が円筒の高さ範囲内にあるかどうか
-	//if (D >= 0 && ((H1 >= -1 * (cylinder.height / 2) && H1 <= cylinder.height / 2)
-	//	|| (H2 >= -1 * (cylinder.height / 2) && H2 <= cylinder.height / 2)))
-	//	my_pixel_put(xs, ys, mlx.img, 0xFF0000);
-	//else
-	//	my_pixel_put(xs, ys, mlx.img, 0x0000FF);
-
-	// 視線と円柱の曲名との交点における法線ベクトル
-	// t_vector	normal_vector;
-
-	// 交点の円柱高さ範囲内チェック
-	// if (R1_dot_d >= 0 && R1_dot_d <= cylinder.height)
-	// {
-	// 	normal_vector = calculate_cylinder_normal_vector(cylinder, R1, C0, I1);
-	// 	my_pixel_put(xs, ys, mlx.img, calculate_intersections_color(cylinder, light, dir_vec, ambient_lightning, normal_vector, R1));
-	// }
-	// else if (R2_dot_d >= 0 && R2_dot_d <= cylinder.height)
-	// {
-	// 	normal_vector = calculate_cylinder_normal_vector(cylinder, R2, C0, I2);
-	// 	my_pixel_put(xs, ys, mlx.img, calculate_intersections_color(cylinder, light, dir_vec, ambient_lightning, normal_vector, R2));
-	// }
-	// else
-	// 	my_pixel_put(xs, ys, mlx.img, 0xaaaaaa);
 }
 
 // いったんカメラの位置ベクトル、方向ベクトル、FOV（視野角）を固定する（原点上のx,yにスクリーンを張る）
@@ -624,7 +549,6 @@ void render_scene(t_mlx mlx, t_cylinder cylinder, t_light light, t_camera camera
 			render_pixel(xs, ys, cylinder, light, dir_vec, mlx, camera, ambient_lightning);
 			xs++;
 		}
-		//printf("\n");
 		ys++;
 	}
 }
@@ -647,10 +571,10 @@ int	main() {
 	cylinder.height = 2.0;
 	cylinder.diameter = 2.0;
 	set(&cylinder.coordinates_vec, 0, 0, 5);
-	set(&cylinder.orientation_vec, 1/sqrt(3), 1/sqrt(3), 1/sqrt(3));
-	cylinder.rgb.red = 255;
+	set(&cylinder.orientation_vec, 0, 1/sqrt(2), 1/sqrt(2));
+	cylinder.rgb.red = 0;
 	cylinder.rgb.green = 255;
-	cylinder.rgb.blue = 0;
+	cylinder.rgb.blue = 255;
 
 	t_ambient_lightning	ambient_lightning;
 	ambient_lightning.ratio = 0.2;
@@ -659,7 +583,7 @@ int	main() {
 	ambient_lightning.rgb.blue = 155;
 
 	t_light	light;
-	set(&light.coordinates_vec, 7, 0, 6);
+	set(&light.coordinates_vec, 0, 5, 5);
 	light.ratio = 0.6;
 	light.rgb.red = 255;
 	light.rgb.green = 255;
