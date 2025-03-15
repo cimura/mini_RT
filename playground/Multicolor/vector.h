@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 14:16:43 by ttakino           #+#    #+#             */
+/*   Updated: 2025/02/25 14:38:00 by ttakino          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef VECTOR_H
 # define VECTOR_H
 
-#include "draw.h"
 
 typedef struct s_vector
 {
@@ -9,6 +20,8 @@ typedef struct s_vector
 	double	y;
 	double	z;
 }	t_vector;
+
+#include "draw.h"
 
 t_vector	subst_vector(t_vector a, t_vector b);
 t_vector	add_vector(t_vector a, t_vector b);

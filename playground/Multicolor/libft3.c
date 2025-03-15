@@ -1,41 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_mlx.h                                           :+:      :+:    :+:   */
+/*   libft2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 14:16:57 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 18:53:47 by ttakino          ###   ########.fr       */
+/*   Created: 2025/02/26 16:11:44 by ttakino           #+#    #+#             */
+/*   Updated: 2025/02/26 16:54:36 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_MLX_H
-# define FT_MLX_H
+#include "parser.h"
 
-# include "draw.h"
-# include "mlx.h"
-
-# define ESC_KEY 65307
-
-typedef struct s_imge
+int	ft_char_count(char *src, char target)
 {
-	void	*ptr;
-	char	*pixel_ptr;
-	int		bpp;
-	int		endian;
-	int		line_length;
-}	t_imge;
+	int	c;
 
-typedef struct s_mlx
-{
-	void	*ptr;
-	void	*win_ptr;
-	t_imge	*img;
-}	t_mlx;
-
-// *** ft_mlx.c ***
-void	my_pixel_put(int x, int y, t_imge *img, int color);
-int		init_mlx(t_mlx *mlx);
-
-#endif
+	c = 0;
+	while (*src)
+	{
+		if (*src == target)
+			c++;
+		src++;
+	}
+	return (c);
+}

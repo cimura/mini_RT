@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:49 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 18:38:30 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/15 18:53:45 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void	on_destroy(t_world world)
 	exit(0);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_world	world;
 
@@ -173,9 +173,8 @@ int	main(void)
 		return (1);
 	if (init_mlx(&world.mlx) != 0)
 		return (1);
-// parse arguments()
 
-	t_sphere	sphere[3];
+	t_sphere_draw	sphere[3];
 	t_vector	pe;
 	set_vector(&pe, 0, 0, -2);
 	set_vector(&sphere[0].center, -0.4, 0, 5);
