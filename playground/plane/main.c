@@ -15,15 +15,6 @@
 	𝑅𝑠：直接光の鏡面反射光の放射輝度
 */
 
-/*
-	𝑅𝑠=𝑘𝑠𝐼𝑖(𝐯⃗ ⋅𝐫⃗ )𝛼
-	𝑘𝑠：鏡面反射係数
-	𝐼𝑖：光源の光の強度
-	𝐯⃗ ：視線ベクトルの逆ベクトル(∣∣𝐯⃗ ∣∣=1)
-	𝐫⃗ ：入射光の正反射ベクトル(∣∣𝐫⃗ ∣∣=1)
-	𝛼：光沢度(1≤𝛼)
-*/
-
 // RGB 計算しやすく0.0~1.0の範囲で表す
 typedef struct	s_rgb
 {
@@ -131,11 +122,6 @@ typedef struct	s_ray
 // 背景色
 #define BACKGROUND_COLOR 0xaaaaaa
 
-double	a_coef(t_vector dir_vec, double co_dot_dir, double co_dot_co);
-double	b_coef(double co_dot_dir, double dir_dot_ctc, double co_dot_ctc, double co_dot_co);
-double	c_coef(t_vector camera_to_cylinder, t_cylinder cylinder, double co_dot_ctc, double co_dot_co);
-
-
 t_vector calculate_normal(t_vector p_i, t_vector pc)
 {
 	t_vector n_tmp = subst_vector(p_i, pc);
@@ -187,87 +173,12 @@ int	rgb_to_colorcode(t_light_ratio light)
 	return (result);
 }
 
-// double型の変数を範囲内に落とし込む関数 (min <= max)
-static void	double_compressor(double *d, double min, double max)
-{
-	if (*d < min)
-		*d = min;
-	if (*d > max)
-		*d = max;
-}
-
-// xxx_coefficient: 反射係数 物体の表面の色によって変わる
-// xxx_light:		光の強度xあたる向きの内積 光源の色によって変わる
-
-t_light_ratio	calculate_ambient_light_ratio(t_ambient_lightning ambient_lightning, t_cylinder cylinder)
-{
-	t_light_ratio	ambient_coefficient;
-	t_light_ratio	ambient_light;
-
-	set_light_ratio(&ambient_coefficient, cylinder.rgb, AMBIENT_COEFFICIENT);
-	set_light_ratio(&ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
-	return (multi_light_ratio(ambient_light, ambient_coefficient));
-}
-
-t_light_ratio	calculate_diffuse_light_ratio(t_light light, t_cylinder cylinder, double normal_dot_incidence)
-{
-	t_light_ratio	diffuse_coefficient;
-	t_light_ratio	diffuse_light;
-
-	set_light_ratio(&diffuse_coefficient, cylinder.rgb, DIFFUSE_COEFFICIENT);
-	set_light_ratio(&diffuse_light, light.rgb, light.ratio * normal_dot_incidence);
-	return (multi_light_ratio(diffuse_light, diffuse_coefficient));
-}
-
-t_light_ratio calculate_specular_light_ratio(t_light light, t_cylinder cylinder, t_vector dir_vec, t_vector reflection_vec)
-{
-	t_light_ratio	specular_coefficient;
-	t_light_ratio	specular_light;
-	// 視線ベクトルの逆ベクトル
-	t_vector		inverse_camera_orientation_vec;
-	// 視線逆ベクトルと光源の正反射ベクトルの内積
-	double			inverse_dot_reflection;
-
-	inverse_camera_orientation_vec = normalize_vector(multi_vector(dir_vec, -1));
-	inverse_dot_reflection = calculate_inner_product(inverse_camera_orientation_vec, reflection_vec);
-	double_compressor(&inverse_dot_reflection, 0.0, 1.0);
-	set_light_ratio(&specular_coefficient, cylinder.rgb, SPECULAR_COEFFICIENT);
-	set_light_ratio(&specular_light, light.rgb, light.ratio * pow(inverse_dot_reflection, SHININESS));
-	return (multi_light_ratio(specular_light, specular_coefficient));
-}
-
-// 交点があったピクセルの色を計算する
-int	calculate_intersections_color(t_cylinder cylinder, t_light light, t_vector dir_vec, t_ambient_lightning ambient_lightning, t_vector normal_vec, t_vector intersection_vec)
-{
-	// 直接光の入射ベクトル
-	t_vector			incidence_vec;
-	// 法線ベクトルと入射ベクトルの内積
-	double				normal_dot_incidence;
-	// 光源の正反射ベクトル
-	t_vector			reflection_vec;
-	t_light_ratio		result_light;
-
-	// 直接光の入射ベクトル
-	incidence_vec = normalize_vector(subst_vector(light.coordinates_vec, intersection_vec));
-	result_light = calculate_ambient_light_ratio(ambient_lightning, cylinder);
-
-	// 法線ベクトルと入射ベクトルの内積 これを0-1の範囲にする(負の値の時は光は当たらないため)
-	normal_dot_incidence = calculate_inner_product(normal_vec, incidence_vec);
-	if (normal_dot_incidence < 0)
-		return (rgb_to_colorcode(result_light));
-	double_compressor(&normal_dot_incidence, 0.0, 1.0);
-	result_light = add_light_ratio(result_light, calculate_diffuse_light_ratio(light, cylinder, normal_dot_incidence));
-	reflection_vec = subst_vector(multi_vector(normal_vec, 2 * normal_dot_incidence), incidence_vec);
-	result_light = add_light_ratio(result_light, calculate_specular_light_ratio(light, cylinder, dir_vec, reflection_vec));
-	return (rgb_to_colorcode(result_light));
-}
-
 // 平面の方程式　ax + by + cz + d = 0
 // 法線ベクトル　n (0, 0, -10)
 // -> 1/√3(x - 0) + 1/√3(y - 0) + 1/√3(z + 10) = 0
 // -> 1/√3x + 1/√3y + 1/√3z + 10/√3 = 0
 
-void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera, t_ambient_lightning ambient_lightning, t_coef coef)
+void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera, t_ambient_lightning ambient_lightning)
 {
 	double	t;
 	int		color_value;
@@ -290,9 +201,6 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light ligh
 	t_light_ratio		diffuse_light;
 	t_light_ratio		specular_light;
 	t_light_ratio		result_color;
-
-	// t = (10 - (camera.coordinates_vec.x + camera.coordinates_vec.y + camera.coordinates_vec.z))
-	// 	/ (dir_vec.x + dir_vec.y + dir_vec.z);
 
 	if (calculate_inner_product(dir_vec, plane.orientation_vec) == 0)
 	{
@@ -347,12 +255,6 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light ligh
 		my_pixel_put(xs, ys, mlx.img, BACKGROUND_COLOR);
 }
 
-void render_pixel(int xs, int ys, t_plane plane, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera, t_ambient_lightning ambient_lightning)
-{
-	t_coef	coef;
-	put_color_on_intersection_pixel(xs, ys, plane, light, dir_vec, mlx, camera, ambient_lightning, coef);
-}
-
 // いったんカメラの位置ベクトル、方向ベクトル、FOV（視野角）を固定する（原点上のx,yにスクリーンを張る）
 void render_scene(t_mlx mlx, t_plane plane, t_light light, t_camera camera, t_ambient_lightning ambient_lightning)
 {
@@ -391,7 +293,8 @@ void render_scene(t_mlx mlx, t_plane plane, t_light light, t_camera camera, t_am
 					/ (dir_vec.x + dir_vec.y + dir_vec.z)
 			*/
 
-			render_pixel(xs, ys, plane, light, dir_vec, mlx, camera, ambient_lightning);
+			//render_pixel(xs, ys, plane, light, dir_vec, mlx, camera, ambient_lightning);
+			put_color_on_intersection_pixel(xs, ys, plane, light, dir_vec, mlx, camera, ambient_lightning);
 			xs++;
 		}
 		//printf("\n");
@@ -403,14 +306,6 @@ int	main() {
 	t_mlx	mlx;
 	init(&mlx);
 
-	// t_cylinder	cylinder;
-	// cylinder.height = 2.0;
-	// cylinder.diameter = 2.0;
-	// set(&cylinder.coordinates_vec, 0, 0, 5);
-	// set(&cylinder.orientation_vec, 1/sqrt(3), 1/sqrt(3), 1/sqrt(3));
-	// cylinder.rgb.red = 246;
-	// cylinder.rgb.green = 246;
-	// cylinder.rgb.blue = 38;
 	t_plane	plane;
 	set(&plane.coordinates_vec, 0, -1, 0);
 	set(&plane.orientation_vec, 0, 1, 0);

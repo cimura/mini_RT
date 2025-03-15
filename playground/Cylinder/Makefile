@@ -4,7 +4,7 @@ SRCS    := main.c ft_mlx.c map.c vector.c
 MLX_INC := ../../mlx
 MLX     := $(MLX_INC)/libmlx.a
 
-FLAGS   := -g -Wall -Wextra -Werror
+#FLAGS   := -g -Wall -Wextra -Werror
 OBJS    := $(SRCS:%.c=%.o)
 
 UNAME_S := $(shell uname -s)
