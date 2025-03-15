@@ -21,8 +21,11 @@ endif
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(OBJS) $(LD_FLAGS) -o $(NAME)
+$(NAME): $(LIBFT) $(OBJS)
+	$(CC) $(OBJS) $(LD_FLAGS) -o $(NAME) $(LFLAGS)
+
+$(LIBFT):
+	$(MAKE) bonus -C $(LIBFT_DIR)
 
 clean:
 	rm -f $(OBJS) $(NAME)
