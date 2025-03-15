@@ -543,6 +543,8 @@ void render_scene(t_mlx mlx, t_cylinder cylinder, t_light light, t_camera camera
 		{
 			// スクリーン上の点の3次元空間における位置ベクトルを計算
 			yw = 1.0 - 2 * ys / HEIGHT;
+			xw = 1.0 - 2 * xs / WIDTH;
+			yw = 1.0 - 2 * ys / HEIGHT;
 			xw = 2 * xs / WIDTH - 1.0;
 			set(&screen_vec, xw, yw, 0);
 			dir_vec = normalize_vector(subst_vector(screen_vec, camera.coordinates_vec));
@@ -571,6 +573,8 @@ int	main() {
 	cylinder.height = 2.0;
 	cylinder.diameter = 2.0;
 	set(&cylinder.coordinates_vec, 0, 0, 5);
+	set(&cylinder.orientation_vec, 1/sqrt(3), 1/sqrt(3), 1/sqrt(3));
+	cylinder.rgb.red = 200;
 	set(&cylinder.orientation_vec, 0, 1/sqrt(2), 1/sqrt(2));
 	cylinder.rgb.red = 0;
 	cylinder.rgb.green = 255;
@@ -591,7 +595,7 @@ int	main() {
 
 	t_camera	camera;
 	set(&camera.coordinates_vec, 0, 0, -5);
-	set(&camera.orientation_vec, 0, 0, 1);
+	set(&camera.orientation_vec, 0, 0, 0);
 
 	render_scene(mlx, cylinder, light, camera, ambient_lightning);
 

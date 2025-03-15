@@ -51,6 +51,7 @@ t_vector	multi_vector(t_vector v, double c)
 	return (result);
 }
 
+<<<<<<< HEAD
 double	len_vector(t_vector v)
 {
 	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
@@ -58,6 +59,10 @@ double	len_vector(t_vector v)
 
 // ベクトルの内積
 double	calculate_inner_product(t_vector a, t_vector b)
+=======
+// ベクトルの内積
+double	dot_vector(t_vector a, t_vector b)
+>>>>>>> 9ea33b2 (任意の向きの円柱に対応できるようになった)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
