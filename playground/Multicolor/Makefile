@@ -1,8 +1,18 @@
+<<<<<<< HEAD
 NAME    := exc
 CC      := cc
 SRCS    := display.c ft_mlx.c main.c map.c vector.c
 MLX_INC := ../mlx
 MLX     := $(MLX_INC)/libmlx.a
+=======
+NAME    	:= exc
+CC      	:= cc
+SRCS    	:= display.c ft_mlx.c libft2.c main.c map.c parse_objects.c parser.c vector.c
+MLX_INC 	:= ../mlx
+MLX     	:= $(MLX_INC)/libmlx.a
+LIBFT_DIR	:=	./libft
+LIBFT		:=	$(LIBFT_DIR)/libft.a
+>>>>>>> ad29cdf (ambient_lightning構造体のparserが完成)
 
 FLAGS   := -g -Wall -Wextra -Werror
 OBJS    := $(SRCS:%.c=%.o)
