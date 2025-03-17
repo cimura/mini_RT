@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 14:17:07 by ttakino           #+#    #+#             */
+/*   Updated: 2025/02/25 14:37:47 by ttakino          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef DRAW_H
 # define DRAW_H
 
@@ -33,8 +45,6 @@ typedef struct s_const
 	double	I_i;
 }	t_const;
 
-#include "vector.h"
-
 typedef struct s_color
 {
 	double	value;
@@ -42,12 +52,14 @@ typedef struct s_color
 	t_const	constant;
 }	t_color;
 
-typedef struct s_sphere
+#include "vector.h"
+
+typedef struct s_sphere_draw
 {
 	t_color		color;
 	t_vector	center;
 	double		radius;
-}	t_sphere;
+}	t_sphere_draw;
 
 __int32_t	map(t_color red, t_color green, t_color blue);
 

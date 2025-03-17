@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 14:16:49 by ttakino           #+#    #+#             */
+/*   Updated: 2025/03/15 18:53:45 by ttakino          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "draw.h"
-#include "ft_mlx.h"
-#include "vector.h"
+#include "mini_rt.h"
 
 /*	de:	視線ベクトル
 	pe: 視線位置
@@ -107,7 +118,7 @@ void	render_pixel(int xs, int ys, t_vector pe, t_vector *pc_list, t_vector d_lig
 		my_pixel_put(xs, ys, mlx.img, 0x303030);
 }
 
-void	render_scene(t_mlx mlx, t_color red, t_color green, t_color blue, t_vector pe, t_vector *pc_list, t_vector d_light)
+void	render_world(t_mlx mlx, t_color red, t_color green, t_color blue, t_vector pe, t_vector *pc_list, t_vector d_light)
 {
 	t_vector	pw;
 	double xs, ys;
@@ -136,29 +147,34 @@ void	init_color(t_color *color, double value, double k_a, double k_d, double k_s
 }
 
 // プログラムを終了するときに呼ぶ mlx関係のポインタをfreeする mlx以外をfreeするようにしてもいいかも
-void	on_destroy(t_mlx mlx)
+void	on_destroy(t_world world)
 {
-	if (mlx.img && mlx.img->ptr)
-		mlx_destroy_image(mlx.ptr, mlx.img->ptr);
-	if (mlx.win_ptr)
-		mlx_destroy_window(mlx.ptr, mlx.win_ptr);
-	if (mlx.ptr)
+	if (world.mlx.img && world.mlx.img->ptr)
+		mlx_destroy_image(world.mlx.ptr, world.mlx.img->ptr);
+	if (world.mlx.win_ptr)
+		mlx_destroy_window(world.mlx.ptr, world.mlx.win_ptr);
+	if (world.mlx.ptr)
 	{
-		mlx_destroy_display(mlx.ptr);
-		free(mlx.ptr);
+		mlx_destroy_display(world.mlx.ptr);
+		free(world.mlx.ptr);
 	}
+	ft_lstclear(&world.objects, NULL);
 	exit(0);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	t_mlx	mlx;
+	t_world	world;
 
-	if (init_mlx(&mlx) != 0)
+	(void)argc;
+	(void)argv;
+	// parse arguments()
+	if (parse_arguments(&world, argc, argv) != 0)
 		return (1);
-// parse arguments()
+	if (init_mlx(&world.mlx) != 0)
+		return (1);
 
-	t_sphere	sphere[3];
+	t_sphere_draw	sphere[3];
 	t_vector	pe;
 	set_vector(&pe, 0, 0, -2);
 	set_vector(&sphere[0].center, -0.4, 0, 5);
@@ -175,7 +191,7 @@ int	main(void)
 	//d_light.x = 5;
 	//d_light.y = 5;
 	//d_light.z = -5;
-	render_scene(mlx, red, green, blue, pe, &sphere[0].center, d_light);
-	display_in_mlx(mlx);
+	render_world(world.mlx, red, green, blue, pe, &sphere[0].center, d_light);
+	display_in_mlx(world);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:11:44 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/17 14:46:23 by cimy             ###   ########.fr       */
+/*   Updated: 2025/02/26 16:54:36 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ static double	update_result(char **nptr, double result, double *factor)
 		// 	return ((int)LONG_MAX);
 		// else if (check_overflow(sign, result, **nptr) == -1)
 		// 	return ((int)LONG_MIN);
-		printf("**nptr = %c\n", **nptr);
+		//printf("**nptr = %c\n", **nptr);
 		result = result * 10 + (**nptr - '0');
-		printf("result = %lf\n", result);
+		//printf("result = %lf\n", result);
 		if (factor != NULL)
 			*factor *= 10;
 		(*nptr)++;

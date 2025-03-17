@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_mlx.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 14:16:57 by ttakino           #+#    #+#             */
+/*   Updated: 2025/03/15 18:53:47 by ttakino          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_MLX_H
 # define FT_MLX_H
 
@@ -13,7 +25,7 @@ typedef struct s_imge
 	int		bpp;
 	int		endian;
 	int		line_length;
-}				t_imge;
+}	t_imge;
 
 typedef struct s_mlx
 {
@@ -22,14 +34,8 @@ typedef struct s_mlx
 	t_imge	*img;
 }	t_mlx;
 
-// *** diaplay.c ***
-void	display_in_mlx(t_mlx mlx);
-
 // *** ft_mlx.c ***
 void	my_pixel_put(int x, int y, t_imge *img, int color);
 int		init_mlx(t_mlx *mlx);
-
-// *** main.c ***
-void	on_destroy(t_mlx mlx);
 
 #endif
