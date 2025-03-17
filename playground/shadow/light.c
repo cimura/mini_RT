@@ -49,7 +49,6 @@ int	calculate_color(t_light light, t_object *objects, t_vector dir_vec, t_ambien
 {
 	double	normal_dot_incidence;
 	double	inverse_dot_reflection;
-	double	normal_dot_incidence;
 
 	t_vector	incidence_vec;
 	t_vector	reflection_vec;
@@ -58,6 +57,7 @@ int	calculate_color(t_light light, t_object *objects, t_vector dir_vec, t_ambien
 	t_light_info	light_info;
 	incidence_vec = normalize_vector(subst_vector(light.coordinates_vec, intersection_point));
 	normal_dot_incidence = calculate_inner_product(objects->orientation_vec, incidence_vec);
+	//printf("%f\n", normal_dot_incidence);
 	if (normal_dot_incidence < 0.0)
 		normal_dot_incidence = 0.0;
 	if (normal_dot_incidence > 1.0)
@@ -66,12 +66,14 @@ int	calculate_color(t_light light, t_object *objects, t_vector dir_vec, t_ambien
 	reflection_vec = subst_vector(multi_vector(objects->orientation_vec, 2 * normal_dot_incidence), incidence_vec);
 	inverse_camera_orientation_vec = normalize_vector(multi_vector(dir_vec, -1));
 	inverse_dot_reflection = calculate_inner_product(inverse_camera_orientation_vec, reflection_vec);
+
 	if (inverse_dot_reflection < 0.0)
 		inverse_dot_reflection = 0.0;
 	if (inverse_dot_reflection > 1.0)
 		inverse_dot_reflection = 1.0;
 
 	set_light_ratio(&light_info.ambient_coefficient, objects->rgb, AMBIENT_COEFFICIENT);
+	//printf("%f\n", objects->rgb.blue);
 	set_light_ratio(&light_info.ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
 	light_info.ambient_light = multi_light_ratio(light_info.ambient_light, light_info.ambient_coefficient);
 	set_light_ratio(&light_info.diffuse_coefficient, objects->rgb, DIFFUSE_COEFFICIENT);

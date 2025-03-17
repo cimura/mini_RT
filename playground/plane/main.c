@@ -230,6 +230,7 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light ligh
 		reflection_vec = subst_vector(multi_vector(plane.orientation_vec, 2 * normal_dot_incindence), incidence_vec);
 		inverse_camera_orientation_vec = normalize_vector(multi_vector(dir_vec, -1));
 		inverse_dot_reflection = calculate_inner_product(inverse_camera_orientation_vec, reflection_vec);
+
 		if (inverse_dot_reflection < 0.0)
 			inverse_dot_reflection = 0.0;
 		if (inverse_dot_reflection > 1.0)
@@ -237,6 +238,7 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light ligh
 
 		set_light_ratio(&ambient_coefficient, plane.rgb, AMBIENT_COEFFICIENT);
 		set_light_ratio(&ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
+
 		ambient_light = multi_light_ratio(ambient_light, ambient_coefficient);
 		set_light_ratio(&diffuse_coefficient, plane.rgb, DIFFUSE_COEFFICIENT);
 		set_light_ratio(&diffuse_light, light.rgb, light.ratio * normal_dot_incindence);
@@ -248,7 +250,7 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light ligh
 		result_color = add_light_ratio(result_color, specular_light);
 
 		color_value = rgb_to_colorcode(result_color);
-		// printf("%d ", color_value);
+		//printf("%d ", color_value);
 		my_pixel_put(xs, ys, mlx.img, color_value);
 	}
 	else
@@ -295,8 +297,8 @@ int	main() {
 	init(&mlx);
 
 	t_plane	plane;
-	set(&plane.coordinates_vec, -1, 0, 0);
-	set(&plane.orientation_vec, 1, 0, 0);
+	set(&plane.coordinates_vec, 0, -1, 0);
+	set(&plane.orientation_vec, 0, 1, 0);
 	plane.rgb.red = 0;
 	plane.rgb.green = 246;
 	plane.rgb.blue = 246;
