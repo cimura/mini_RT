@@ -281,18 +281,6 @@ void render_scene(t_mlx mlx, t_plane plane, t_light light, t_camera camera, t_am
 			set(&screen_vec, xw, yw, 0);
 			// ray = s + tdの d, sはカメラベクトル
 			dir_vec = normalize_vector(subst_vector(screen_vec, camera.coordinates_vec));
-
-			/*
-				camera: (0, 0, -5) + td = (a, b, c)
-				(a, b, c)・(1/√3, 1/√3, 1/√3) = 10/√3    s + tdを平面の式に代入
-				1/√3 ・ (a + b + c) = 10/√3
-				a + b + c = 10
-
-				10 = camera.coordinates_vec.x + t*dir_vec.x + ...
-				t = (10 - (camera.coordinates_vec.x + camera.coordinates_vec.y + camera.coordinates_vec.z))
-					/ (dir_vec.x + dir_vec.y + dir_vec.z)
-			*/
-
 			//render_pixel(xs, ys, plane, light, dir_vec, mlx, camera, ambient_lightning);
 			put_color_on_intersection_pixel(xs, ys, plane, light, dir_vec, mlx, camera, ambient_lightning);
 			xs++;
@@ -307,8 +295,8 @@ int	main() {
 	init(&mlx);
 
 	t_plane	plane;
-	set(&plane.coordinates_vec, 0, -1, 0);
-	set(&plane.orientation_vec, 0, 1, 0);
+	set(&plane.coordinates_vec, -1, 0, 0);
+	set(&plane.orientation_vec, 1, 0, 0);
 	plane.rgb.red = 0;
 	plane.rgb.green = 246;
 	plane.rgb.blue = 246;
@@ -320,8 +308,8 @@ int	main() {
 	ambient_lightning.rgb.blue = 155;
 
 	t_light	light;
-	set(&light.coordinates_vec, -1, 8, 5);
-	light.ratio = 0.6;
+	set(&light.coordinates_vec, 0, 0.9, 2.5);
+	light.ratio = 1;
 	light.rgb.red = 255;
 	light.rgb.green = 255;
 	light.rgb.blue = 255;
