@@ -543,8 +543,6 @@ void render_scene(t_mlx mlx, t_cylinder cylinder, t_light light, t_camera camera
 		{
 			// スクリーン上の点の3次元空間における位置ベクトルを計算
 			yw = 1.0 - 2 * ys / HEIGHT;
-			xw = 1.0 - 2 * xs / WIDTH;
-			yw = 1.0 - 2 * ys / HEIGHT;
 			xw = 2 * xs / WIDTH - 1.0;
 			set(&screen_vec, xw, yw, 0);
 			dir_vec = normalize_vector(subst_vector(screen_vec, camera.coordinates_vec));
