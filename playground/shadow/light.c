@@ -45,7 +45,7 @@ int	rgb_to_colorcode(t_light_ratio light)
 	return (result);
 }
 
-int	calculate_color(t_light light, t_object *objects, t_vector dir_vec, t_ambient_lightning ambient_lightning, t_vector intersection_point)
+int	calculate_color(t_world world, t_object *objects, t_vector dir_vec, t_vector intersection_point)
 {
 	double	normal_dot_incidence;
 	double	inverse_dot_reflection;
@@ -55,6 +55,12 @@ int	calculate_color(t_light light, t_object *objects, t_vector dir_vec, t_ambien
 	t_vector	inverse_camera_orientation_vec;
 
 	t_light_info	light_info;
+
+	t_light	light;
+	t_ambient_lightning	ambient_lightning;
+
+	light = world.light;
+	ambient_lightning = world.ambient_lightning;
 	incidence_vec = normalize_vector(subst_vector(light.coordinates_vec, intersection_point));
 	normal_dot_incidence = calculate_inner_product(objects->orientation_vec, incidence_vec);
 	//printf("%f\n", normal_dot_incidence);

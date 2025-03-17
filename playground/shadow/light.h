@@ -38,4 +38,4 @@ void	set_light_ratio(t_light_ratio *light, t_rgb rgb, double coefficient);
 t_light_ratio	add_light_ratio(t_light_ratio l1, t_light_ratio l2);
 t_light_ratio	multi_light_ratio(t_light_ratio l1, t_light_ratio l2);
 int	rgb_to_colorcode(t_light_ratio light);
-int	calculate_color(t_light light, t_object *objects, t_vector dir_vec, t_ambient_lightning ambient_lightning, t_vector intersection_point);
+int	calculate_color(t_world world, t_object *objects, t_vector dir_vec, t_vector intersection_point);
