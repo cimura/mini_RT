@@ -8,18 +8,22 @@
 
 // 諸々の定数を定義しておく あとで全体の構造体に入れる
 // 環境光反射係数
-#define	AMBIENT_COEFFICIENT 0.2
+# define	AMBIENT_COEFFICIENT 0.2
 // 拡散反射光反射係数
-#define	DIFFUSE_COEFFICIENT 0.69
+# define	DIFFUSE_COEFFICIENT 0.69
 // 鏡面反射係数
-#define SPECULAR_COEFFICIENT 0.8
+# define SPECULAR_COEFFICIENT 0.8
 // 光沢度
-#define SHININESS 8
+# define SHININESS 8
 // shadow rayを計算するための微小値
-#define EPSILON 0.002
+# define EPSILON 0.002
+
+// 仮想スクリーンの大きさ
+# define SCREEN_WIDTH 2.0
+# define SCREEN_HEIGHT 2.0
 
 // 背景色
-#define BACKGROUND_COLOR 0xaaaaaa
+# define BACKGROUND_COLOR 0xaaaaaa
 
 
 typedef struct	s_light_ratio

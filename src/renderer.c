@@ -21,18 +21,54 @@ static void render_pixel(t_world world, t_xy in_screen, t_ray gaze_ray)
 	//debug_printer(xs, ys, coef, object, light, dir_vec, mlx, camera);
 }
 
+static void	set_screen_normalized_basis_vectors(t_camera camera, t_vector *basisx, t_vector *basisy)
+{
+	// 今回はカメラの回転は指定されないので、x軸に水平でy軸に平行な角度
+	// x
+	basisx->y = 0;
+	basisx->x = camera.orientation_vec.z
+		/ sqrt(pow(camera.orientation_vec.z, 2)
+		+ pow(camera.orientation_vec.x, 2));
+	basisx->z = -1 * camera.orientation_vec.x
+		/ sqrt(pow(camera.orientation_vec.x, 2)
+		+ pow(camera.orientation_vec.z, 2));
+	// y
+	*basisy = cross_product(camera.orientation_vec, *basisx);
+}
+
+static t_vector	get_rays_orientation_vector(t_xy in_screen, t_vector center_of_screen, t_vector basis_x, t_vector basis_y)
+{
+	t_vector	orientation_vec;
+	t_vector	coordinates_in_screen_basis;
+
+	coordinates_in_screen_basis = add_vector(multi_vector(basis_x, 2 * in_screen.x / WIDTH - SCREEN_WIDTH / 2),
+		multi_vector(basis_y, SCREEN_HEIGHT / 2 - 2 * in_screen.y/ HEIGHT)); 
+	orientation_vec = add_vector(center_of_screen, coordinates_in_screen_basis);
+	return (normalize_vector(orientation_vec));
+}
+
+
 // いったんカメラの位置ベクトル、方向ベクトル、FOV（視野角）を固定する（原点上のx,yにスクリーンを張る）
 void render_scene(t_world world)
 {
 	// スクリーンの位置ベクトル
-	t_vector	screen_vec;
+	//t_vector	screen_vec;
 	// カメラから2次元スクリーン上の任意の点(x,y)の方向ベクトル
 	t_ray		gaze_ray;
 	// 2次元スクリーン上のxs,ys
 	t_xy		in_screen;
 	// 3次元ワールド上のxw,yw
-	t_xy		in_world;
+	//t_vector	in_world;
+	// スクリーンの中心の位置
+	t_vector	center_of_screen;
+	// スクリーン上の正規化直交基底ベクトル
+	t_vector	screen_basis_x;
+	t_vector	screen_basis_y;
 
+	set_screen_normalized_basis_vectors(world.camera, &screen_basis_x, &screen_basis_y);
+	center_of_screen = multi_vector(world.camera.orientation_vec, (SCREEN_WIDTH / 2)
+	* (1 / tan(world.camera.horizontal_fov / 2 * (M_PI / 180))));
+	printf("center_of_screen(%lf,%lf,%lf)\n", center_of_screen.x, center_of_screen.y, center_of_screen.z);
 	gaze_ray.coordinates_vec = world.camera.coordinates_vec;
 	in_screen.y = 0;
 	while (in_screen.y < HEIGHT - 1)
@@ -41,10 +77,11 @@ void render_scene(t_world world)
 		while (in_screen.x < WIDTH - 1)
 		{
 			// スクリーン上の点の3次元空間における位置ベクトルを計算
-			in_world.y = 1.0 - 2 * in_screen.y / HEIGHT;
-			in_world.x = 2 * in_screen.x / WIDTH - 1.0;
-			set(&screen_vec, in_world.x, in_world.y, 0);
-			gaze_ray.orientation_vec = normalize_vector(subst_vector(screen_vec, world.camera.coordinates_vec));
+			//in_world.y = 1.0 - 2 * in_screen.y / HEIGHT;
+			//in_world.x = 2 * in_screen.x / WIDTH - 1.0;
+			//set(&screen_vec, in_world.x, in_world.y, 0);
+			//gaze_ray.orientation_vec = normalize_vector(subst_vector(screen_vec, world.camera.coordinates_vec));
+			gaze_ray.orientation_vec = get_rays_orientation_vector(in_screen, center_of_screen, screen_basis_x, screen_basis_y);
 			render_pixel(world, in_screen, gaze_ray);
 			in_screen.x++;
 		}
