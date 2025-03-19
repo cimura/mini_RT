@@ -69,6 +69,9 @@ typedef struct	s_intersection
 // *** calculate_pixel_color.c ***
 int				calculate_pixel_color(t_world world, t_intersection i, t_ray ray);
 
+// *** canera.c ***
+void			init_camera(t_camera *camera);
+
 // *** cylinder_utils.c ***
 void			calculate_cylinder_intersections_num(t_coef *coef, t_object cylinder, t_ray ray);
 

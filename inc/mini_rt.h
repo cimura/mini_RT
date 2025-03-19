@@ -65,6 +65,11 @@ typedef struct	s_camera
 	t_vector	orientation_vec;// 3d normalized_orientation vector
 	// FOV 水平方向の視野角 範囲は[0,180]
 	int			horizontal_fov;
+	// スクリーン正規化直交基底ベクトル
+	t_vector	x_basis;
+	t_vector	y_basis;
+	// スクリーンの中心点のベクトル
+	t_vector	center_of_screen;
 }	t_camera;
 
 // 光源 Light
