@@ -51,7 +51,6 @@ typedef struct s_coef
 // レイと一番近い物体の交点の情報
 typedef struct	s_intersection
 {
-	bool		has_intersection;
 	// 係数t
 	double		t;
 	t_vector	coordinates_vec;
