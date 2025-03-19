@@ -152,34 +152,34 @@ void	init_world(t_world *world)
 }
 
 // debug
-void	print_world_objects(t_world world)
-{
-	t_object	*obj;
+//void	print_world_objects(t_world world)
+//{
+//	t_object	*obj;
 
-	if (world.ambient_lightning.identifier)
-	{
-		printf("A ratio:%lf rgb(%lf,%lf,%lf)\n", world.ambient_lightning.ratio, world.ambient_lightning.rgb.red, world.ambient_lightning.rgb.green, world.ambient_lightning.rgb.blue);
-	}
-	if (world.camera.identifier)
-	{
-		printf("C coordinates(%lf,%lf,%lf) orientation(%lf,%lf,%lf), FOV:%d\n", world.camera.coordinates_vec.x, world.camera.coordinates_vec.y, world.camera.coordinates_vec.z, world.camera.orientation_vec.x, world.camera.orientation_vec.y, world.camera.orientation_vec.z, world.camera.horizontal_fov);
-	}
-	if (world.light.identifier)
-	{
-		printf("L coordinates(%lf,%lf,%lf), ratio:%lf, rgb(%lf,%lf,%lf)\n", world.light.coordinates_vec.x, world.light.coordinates_vec.y, world.light.coordinates_vec.z, world.light.ratio, world.light.rgb.red, world.light.rgb.green, world.light.rgb.blue);
-	}
-	while (world.objects != NULL)
-	{
-		obj = (t_object *)world.objects->content;
-		if (obj->identifier == SPHERE)
-			printf("sp coordinates(%lf,%lf,%lf) diameter:%lf, rgb(%lf,%lf,%lf)\n", obj->coordinates_vec.x, obj->coordinates_vec.y, obj->coordinates_vec.z, obj->diameter, obj->rgb.red, obj->rgb.green, obj->rgb.blue);
-		else if (obj->identifier == PLANE)
-			printf("pl coordinates(%lf,%lf,%lf) orientation(%lf,%lf,%lf) rgb(%lf,%lf,%lf)\n", obj->coordinates_vec.x, obj->coordinates_vec.y, obj->coordinates_vec.z, obj->orientation_vec.x, obj->orientation_vec.y, obj->orientation_vec.z, obj->rgb.red, obj->rgb.green, obj->rgb.blue);
-		else if (obj->identifier == CYLINDER)
-			printf("cy coordinates(%lf,%lf,%lf) orientation(%lf,%lf,%lf) diameter:%lf height:%lf rgb(%lf,%lf,%lf)\n", obj->coordinates_vec.x, obj->coordinates_vec.y, obj->coordinates_vec.z, obj->orientation_vec.x, obj->orientation_vec.y, obj->orientation_vec.z, obj->diameter, obj->height, obj->rgb.red, obj->rgb.green, obj->rgb.blue);
-		world.objects = world.objects->next;
-	}
-}
+//	if (world.ambient_lightning.identifier)
+//	{
+//		printf("A ratio:%lf rgb(%lf,%lf,%lf)\n", world.ambient_lightning.ratio, world.ambient_lightning.rgb.red, world.ambient_lightning.rgb.green, world.ambient_lightning.rgb.blue);
+//	}
+//	if (world.camera.identifier)
+//	{
+//		printf("C coordinates(%lf,%lf,%lf) orientation(%lf,%lf,%lf), FOV:%d\n", world.camera.coordinates_vec.x, world.camera.coordinates_vec.y, world.camera.coordinates_vec.z, world.camera.orientation_vec.x, world.camera.orientation_vec.y, world.camera.orientation_vec.z, world.camera.horizontal_fov);
+//	}
+//	if (world.light.identifier)
+//	{
+//		printf("L coordinates(%lf,%lf,%lf), ratio:%lf, rgb(%lf,%lf,%lf)\n", world.light.coordinates_vec.x, world.light.coordinates_vec.y, world.light.coordinates_vec.z, world.light.ratio, world.light.rgb.red, world.light.rgb.green, world.light.rgb.blue);
+//	}
+//	while (world.objects != NULL)
+//	{
+//		obj = (t_object *)world.objects->content;
+//		if (obj->identifier == SPHERE)
+//			printf("sp coordinates(%lf,%lf,%lf) diameter:%lf, rgb(%lf,%lf,%lf)\n", obj->coordinates_vec.x, obj->coordinates_vec.y, obj->coordinates_vec.z, obj->diameter, obj->rgb.red, obj->rgb.green, obj->rgb.blue);
+//		else if (obj->identifier == PLANE)
+//			printf("pl coordinates(%lf,%lf,%lf) orientation(%lf,%lf,%lf) rgb(%lf,%lf,%lf)\n", obj->coordinates_vec.x, obj->coordinates_vec.y, obj->coordinates_vec.z, obj->orientation_vec.x, obj->orientation_vec.y, obj->orientation_vec.z, obj->rgb.red, obj->rgb.green, obj->rgb.blue);
+//		else if (obj->identifier == CYLINDER)
+//			printf("cy coordinates(%lf,%lf,%lf) orientation(%lf,%lf,%lf) diameter:%lf height:%lf rgb(%lf,%lf,%lf)\n", obj->coordinates_vec.x, obj->coordinates_vec.y, obj->coordinates_vec.z, obj->orientation_vec.x, obj->orientation_vec.y, obj->orientation_vec.z, obj->diameter, obj->height, obj->rgb.red, obj->rgb.green, obj->rgb.blue);
+//		world.objects = world.objects->next;
+//	}
+//}
 
 int	parse_arguments(t_world *world, int argc, char **argv)
 {
@@ -199,6 +199,6 @@ int	parse_arguments(t_world *world, int argc, char **argv)
 	if (parse_rt_file(world, buf) != 0)
 		return (1);
 	// setup world data from .rt file
-	print_world_objects(*world);
+	//print_world_objects(*world);
 	return (0);
 }

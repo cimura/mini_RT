@@ -37,22 +37,21 @@ enum	e_obj_identifier
 };
 
 // RGB 計算しやすく0.0~1.0の範囲で表す
-typedef struct	s_rgb
+typedef struct	s_color
 {
 	double	red;
 	double	green;
 	double	blue;
-}	t_rgb;
-
+}	t_color;
 
 // 環境光 Ambient lightning
 typedef struct	s_ambient_lightning
 {
 	int		identifier;
 	// 環境光の比率 ambient_lightning_ratio 範囲は[0.0-1.0]
-	double	ratio;
+	// 光の強度
 	// RGB 範囲は0.0-1.0 ( red,green,blue )
-	t_rgb	rgb;
+	t_color	intensity;
 }	t_ambient_lightning;
 
 // カメラ Camera
@@ -79,10 +78,20 @@ typedef struct	s_light
 	// 座標 ( x,y,z )
 	t_vector	coordinates_vec;
 	// 光の明るさ比率 範囲は[0.0,1.0]
-	double		ratio;
+	// 光の強さ
 	// ※mandatoryでは不使用 RGB 範囲は0.0-1.0
-	t_rgb		rgb;
+	t_color		intensity;
 }	t_light;
+
+typedef struct	s_material
+{
+	// 拡散反射係数
+	t_color	diffuse_coef;
+	// 鏡面反射係数
+	t_color	specular_coef;
+	// 光沢度
+	double	shinness;
+}	t_material;
 
 // オブジェクト汎用
 typedef struct s_object
@@ -96,8 +105,7 @@ typedef struct s_object
 	double		diameter;
 	// 円柱
 	double		height;
-	// RGB 範囲は0.0-1.0
-	t_rgb		rgb;
+	t_material	material;
 }	t_object;
 
 // 描画対象の図形（円、平面、円柱）は複数個扱えるように配列にする

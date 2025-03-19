@@ -85,7 +85,7 @@ int	register_rgb(t_rgb *rgb, char *str)
 
 // この関数は座標やベクトル(x,y,zからなるもの)を構造体に登録する
 // 範囲はminとmaxに。範囲がないときはminとmaxを同じ値に
-int	register_vector(t_vector *xyz, char *str, double min, double max)
+int	set_vector(t_vector *xyz, char *str, double min, double max)
 {
 	char	**xyz_str;
 	double	xyz_double[3];
@@ -169,9 +169,9 @@ int	parse_camera(t_world *world, char **per_word_pointer)
 	if (world->camera.identifier[0] != '\0')
 		return (print_err_msg(TOO_MANY_PARAM, per_word_pointer[0]), 1);
 	camera.identifier = CAMERA;
-	if (register_vector(&camera.coordinates_vec, per_word_pointer[1], 0, 0) != 0)
+	if (set_vector(&camera.coordinates_vec, per_word_pointer[1], 0, 0) != 0)
 		return (1);
-	if (register_vector(&camera.orientation_vec, per_word_pointer[2], -1, 1) != 0)
+	if (set_vector(&camera.orientation_vec, per_word_pointer[2], -1, 1) != 0)
 		return (1);
 	if (normalize_checker(camera.orientation_vec, per_word_pointer[2]) != 0)
 		return (1);
@@ -195,7 +195,7 @@ int	parse_light(t_world *world, char **per_word_pointer)
 	if (world->light.identifier[0] != '\0')
 		return (print_err_msg(TOO_MANY_PARAM, per_word_pointer[0]), 1);
 	light.identifier = LIGHT;
-	if (register_vector(&light.coordinates_vec, per_word_pointer[1], 0, 0) != 0)
+	if (set_vector(&light.coordinates_vec, per_word_pointer[1], 0, 0) != 0)
 		return (1);
 	light.ratio = ft_atod(per_word_pointer[2]);
 	if (light.ratio < 0.0 || light.ratio > 1.0)
@@ -218,7 +218,7 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 	if (sphere == NULL)
 		return (1);
 	sphere->identifier = SPHERE;
-	if (register_vector(&sphere->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
+	if (set_vector(&sphere->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
 		return (1);
 	sphere->diameter = ft_atod(per_word_pointer[2]);
 	if (sphere->diameter < 0)
@@ -240,9 +240,9 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 	if (plane == NULL)
 		return (1);
 	plane->identifier = PLANE;
-	if (register_vector(&plane->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
+	if (set_vector(&plane->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
 		return (1);
-	if (register_vector(&plane->orientation_vec, per_word_pointer[2], -1, 1) != 0)
+	if (set_vector(&plane->orientation_vec, per_word_pointer[2], -1, 1) != 0)
 		return (1);
 	if (normalize_checker(plane->orientation_vec, per_word_pointer[2]) != 0)
 		return (1);
@@ -263,9 +263,9 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 	if (cylinder == NULL)
 		return (1);
 	cylinder->identifier = CYLINDER;
-	if (register_vector(&cylinder->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
+	if (set_vector(&cylinder->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
 		return (1);
-	if (register_vector(&cylinder->orientation_vec, per_word_pointer[2], -1, 1) != 0)
+	if (set_vector(&cylinder->orientation_vec, per_word_pointer[2], -1, 1) != 0)
 		return (1);
 	if (normalize_checker(cylinder->orientation_vec, per_word_pointer[2]) != 0)
 		return (1);

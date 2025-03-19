@@ -14,8 +14,8 @@ static bool	is_intersection_in_cylinder_height_range(t_object cylinder, t_vector
 		return (false);
 }
 
-// 交点があれば一番近い交点の情報を返す
-void	get_cylinder_intersection(t_intersection *i, t_ray ray, t_object object)
+// 交点があれば一番近い交点の情報を登録する
+void	set_cylinder_intersection(t_intersection *i, t_ray ray, t_object object)
 {
 	t_coef			coef;
 	t_intersection	i1;
@@ -51,20 +51,16 @@ t_vector	calculate_cylinder_normal_vector(t_object cylinder, t_vector intersecti
 	t_vector	cc_to_intersection;
 	t_vector	normal_and_co_intersec;
 	double		cti_dot_orientation;
-	//double		ray_dot_noramal;
+	double		ray_dot_noramal;
 
 	cc_to_intersection = subst_vector(intersection, cylinder.coordinates_vec);
 	cti_dot_orientation = calculate_inner_product(cc_to_intersection, cylinder.orientation_vec);
 	normal_and_co_intersec = multi_vector(cylinder.orientation_vec,
 		cti_dot_orientation);
-	if (len_vector(subst_vector(normal_and_co_intersec, ray.coordinates_vec))
-		> len_vector(subst_vector(cc_to_intersection, ray.coordinates_vec)))
-		normal_vector = subst_vector(cc_to_intersection, normal_and_co_intersec);
-	else
-		normal_vector = subst_vector(normal_and_co_intersec, cc_to_intersection);
-	//ray_dot_noramal = calculate_inner_product(ray.orientation_vec, normal_vector);
-	//if (ray_dot_noramal >= 0)
-	//normal_vector = multi_vector(normal_vector, -1);
+	normal_vector = subst_vector(cc_to_intersection, normal_and_co_intersec);
+	ray_dot_noramal = calculate_inner_product(ray.orientation_vec, normal_vector);
+	if (ray_dot_noramal >= 0)
+	normal_vector = multi_vector(normal_vector, -1);
 	return (normalize_vector(normal_vector));
 }
 

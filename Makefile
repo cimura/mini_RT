@@ -2,8 +2,8 @@ NAME		:=	exc
 CC			:=	cc
 INC_DIR		:=	inc/
 SRC_DIR		:=	src/
-SRC			:=	calculate_pixel_color.c camera.c cylinder_utils.c cylinder.c display.c ft_mlx.c \
-				intersections.c libft2.c libft3.c light_ratio_utils.c main.c parse_objects.c \
+SRC			:=	calculate_pixel_color.c camera.c color.c cylinder_utils.c cylinder.c \
+				display.c ft_mlx.c intersections.c libft2.c libft3.c main.c parse_objects.c \
 				parser.c renderer.c utils.c vector.c
 OBJ_DIR		:=	obj/
 OBJ			:=	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))

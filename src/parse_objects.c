@@ -97,7 +97,7 @@ static char	**split_values(char *str)
 }
 
 //この関数は255,255,255のようなフォーマットを展開してrgbに登録する
-int	register_rgb(t_rgb *rgb, char *str)
+int	set_rgb(t_color *rgb, char *str)
 {
 	char		**rgb_str;
 	double		rgb_double[3];
@@ -123,7 +123,7 @@ int	register_rgb(t_rgb *rgb, char *str)
 
 // この関数は座標やベクトル(x,y,zからなるもの)を構造体に登録する
 // 範囲はminとmaxに。範囲がないときはminとmaxを同じ値に
-int	register_vector(t_vector *xyz, char *str, double min, double max)
+int	set_vector(t_vector *xyz, char *str, double min, double max)
 {
 	char	**xyz_str;
 	double	xyz_double[3];
@@ -171,9 +171,21 @@ int	add_object_to_lst(t_world *world, t_object *object)
 	return (0);
 }
 
+t_material	init_material(t_color color, t_color specular_coef, double shinness)
+{
+	t_material	material;
+
+	material.diffuse_coef = color;
+	material.specular_coef = specular_coef;
+	material.shinness = shinness;
+	return (material);
+}
+
 int	parse_ambient_lightning(t_world *world, char **per_word_pointer)
 {
 	t_ambient_lightning	ambient_lightning;
+	double				ratio;
+	t_color				rgb;
 
 	if (per_word_pointer == NULL)
 		return (1);
@@ -184,11 +196,12 @@ int	parse_ambient_lightning(t_world *world, char **per_word_pointer)
 	ambient_lightning.identifier = AMBIENT_LIGHTNING;
 	if (!ft_is_valid_double(per_word_pointer[1]))
 		return (print_err_msg(INV_NUMBER, per_word_pointer[1]), 1);
-	ambient_lightning.ratio = ft_atod(per_word_pointer[1]);
-	if (ambient_lightning.ratio < 0.0 || ambient_lightning.ratio > 1.0)
+	ratio = ft_atod(per_word_pointer[1]);
+	if (ratio < 0.0 || ratio > 1.0)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[1]), 1);
-	if (register_rgb(&ambient_lightning.rgb, per_word_pointer[2]) != 0)
+	if (set_rgb(&rgb, per_word_pointer[2]) != 0)
 		return (1);
+	ambient_lightning.intensity = multi_coef_color(rgb, ratio);
 	world->ambient_lightning = ambient_lightning;
 	return (0);
 }
@@ -204,9 +217,9 @@ int	parse_camera(t_world *world, char **per_word_pointer)
 	if (world->camera.identifier)
 		return (print_err_msg(TOO_MANY_PARAM, per_word_pointer[0]), 1);
 	camera.identifier = CAMERA;
-	if (register_vector(&camera.coordinates_vec, per_word_pointer[1], 0, 0) != 0)
+	if (set_vector(&camera.coordinates_vec, per_word_pointer[1], 0, 0) != 0)
 		return (1);
-	if (register_vector(&camera.orientation_vec, per_word_pointer[2], -1, 1) != 0)
+	if (set_vector(&camera.orientation_vec, per_word_pointer[2], -1, 1) != 0)
 		return (1);
 	if (normalize_checker(&camera.orientation_vec, per_word_pointer[2]) != 0)
 		return (1);
@@ -222,6 +235,8 @@ int	parse_camera(t_world *world, char **per_word_pointer)
 int	parse_light(t_world *world, char **per_word_pointer)
 {
 	t_light	light;
+	double	ratio;
+	t_color	rgb;
 
 	if (per_word_pointer == NULL)
 		return (1);
@@ -230,13 +245,14 @@ int	parse_light(t_world *world, char **per_word_pointer)
 	if (world->light.identifier)
 		return (print_err_msg(TOO_MANY_PARAM, per_word_pointer[0]), 1);
 	light.identifier = LIGHT;
-	if (register_vector(&light.coordinates_vec, per_word_pointer[1], 0, 0) != 0)
+	if (set_vector(&light.coordinates_vec, per_word_pointer[1], 0, 0) != 0)
 		return (1);
-	light.ratio = ft_atod(per_word_pointer[2]);
-	if (light.ratio < 0.0 || light.ratio > 1.0)
+	ratio = ft_atod(per_word_pointer[2]);
+	if (ratio < 0.0 || ratio > 1.0)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[2]), 1);
-	if (register_rgb(&light.rgb, per_word_pointer[3]) != 0)
+	if (set_rgb(&rgb, per_word_pointer[3]) != 0)
 		return (1);
+	light.intensity = multi_coef_color(rgb, ratio);
 	world->light = light;
 	return (0);
 }
@@ -244,6 +260,7 @@ int	parse_light(t_world *world, char **per_word_pointer)
 int	parse_sphere(t_world *world, char **per_word_pointer)
 {
 	t_object	*sphere;
+	t_color		color;
 
 	if (per_word_pointer == NULL)
 		return (1);
@@ -253,19 +270,22 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 	if (sphere == NULL)
 		return (1);
 	sphere->identifier = SPHERE;
-	if (register_vector(&sphere->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
+	if (set_vector(&sphere->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
 		return (1);
 	sphere->diameter = ft_atod(per_word_pointer[2]);
 	if (sphere->diameter < 0)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[2]), 1);
-	if (register_rgb(&sphere->rgb, per_word_pointer[3]) != 0)
+	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (1);
+	sphere->material = init_material(color,
+		init_color(SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT), SHININESS);
 	return (add_object_to_lst(world, sphere));
 }
 
 int	parse_plane(t_world *world, char **per_word_pointer)
 {
 	t_object	*plane;
+	t_color		color;
 
 	if (per_word_pointer == NULL)
 		return (1);
@@ -275,20 +295,23 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 	if (plane == NULL)
 		return (1);
 	plane->identifier = PLANE;
-	if (register_vector(&plane->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
+	if (set_vector(&plane->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
 		return (1);
-	if (register_vector(&plane->orientation_vec, per_word_pointer[2], -1, 1) != 0)
+	if (set_vector(&plane->orientation_vec, per_word_pointer[2], -1, 1) != 0)
 		return (1);
 	if (normalize_checker(&plane->orientation_vec, per_word_pointer[2]) != 0)
 		return (1);
-	if (register_rgb(&plane->rgb, per_word_pointer[3]) != 0)
+	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (1);
+	plane->material = init_material(color,
+		init_color(SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT), SHININESS);
 	return (add_object_to_lst(world, plane));
 }
 
 int	parse_cylinder(t_world *world, char **per_word_pointer)
 {
 	t_object	*cylinder;
+	t_color		color;
 
 	if (per_word_pointer == NULL)
 		return (1);
@@ -298,9 +321,9 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 	if (cylinder == NULL)
 		return (1);
 	cylinder->identifier = CYLINDER;
-	if (register_vector(&cylinder->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
+	if (set_vector(&cylinder->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
 		return (1);
-	if (register_vector(&cylinder->orientation_vec, per_word_pointer[2], -1, 1) != 0)
+	if (set_vector(&cylinder->orientation_vec, per_word_pointer[2], -1, 1) != 0)
 		return (1);
 	if (normalize_checker(&cylinder->orientation_vec, per_word_pointer[2]) != 0)
 		return (1);
@@ -310,7 +333,9 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 	cylinder->height = ft_atod(per_word_pointer[4]);
 	if (cylinder->height < 0)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[4]), 1);
-	if (register_rgb(&cylinder->rgb, per_word_pointer[5]) != 0)
+	if (set_rgb(&color, per_word_pointer[5]) != 0)
 		return (1);
+	cylinder->material = init_material(color,
+		init_color(SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT), SHININESS);
 	return (add_object_to_lst(world, cylinder));
 }

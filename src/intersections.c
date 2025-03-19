@@ -26,11 +26,12 @@ t_intersection	find_intersection_minimum_distance(t_world world, t_ray ray)
 		else if (object.identifier == PLANE)
 			;// get_plane_intersection
 		else if (object.identifier == CYLINDER)
-			get_cylinder_intersection(&now_intersec, ray, object);// get_cylinder_intersection
+			set_cylinder_intersection(&now_intersec, ray, object);// set_cylinder_intersection
 		if (min_intersec.t < 0 && now_intersec.t >= 0)
 			min_intersec = now_intersec;
-		else if (min_intersec.t >= 0 && now_intersec.t >= 0
-				&& min_intersec.t > now_intersec.t)
+		else if ((min_intersec.t < 0 && now_intersec.t >= 0)
+			|| (min_intersec.t >= 0 && now_intersec.t >= 0 
+			&& min_intersec.t > now_intersec.t))
 			min_intersec = now_intersec;
 		world.objects = world.objects->next;
 	}

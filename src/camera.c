@@ -18,5 +18,5 @@ void	init_camera(t_camera *camera)
 	set_screen_normalized_basis_vectors(*camera, &camera->x_basis, &camera->y_basis);
 	camera->center_of_screen = multi_vector(camera->orientation_vec, (SCREEN_WIDTH / 2)
 	* (1 / tan(camera->horizontal_fov / 2 * (M_PI / 180))));
-	printf("camera->center_of_screen(%lf,%lf,%lf)\n", camera->center_of_screen.x, camera->center_of_screen.y, camera->center_of_screen.z);
+	printf("center_of_screen(%lf,%lf,%lf)\n", camera->center_of_screen.x, camera->center_of_screen.y, camera->center_of_screen.z);
 }
