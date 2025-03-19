@@ -22,11 +22,11 @@ t_intersection	find_intersection_minimum_distance(t_world world, t_ray ray)
 	{
 		object = *(t_object *)world.objects->content;
 		if (object.identifier == SPHERE)
-			;// get_sphere_intersection
+			set_sphere_intersection(&now_intersec, object, ray);// get_sphere_intersection
 		else if (object.identifier == PLANE)
-			;// get_plane_intersection
+			set_plane_intersection(&now_intersec, object, ray);// get_plane_intersection
 		else if (object.identifier == CYLINDER)
-			set_cylinder_intersection(&now_intersec, ray, object);// set_cylinder_intersection
+			set_cylinder_intersection(&now_intersec, object, ray);// set_cylinder_intersection
 		if (min_intersec.t < 0 && now_intersec.t >= 0)
 			min_intersec = now_intersec;
 		else if ((min_intersec.t < 0 && now_intersec.t >= 0)
@@ -41,9 +41,9 @@ t_intersection	find_intersection_minimum_distance(t_world world, t_ray ray)
 void	calculate_intersections_normal_vector(t_intersection *i, t_ray ray)
 {
 	if (i->object.identifier == SPHERE)
-		;// calculate_sphere_normal_vector
+		i->normal_vec = get_sphere_normal_vector(i->coordinates_vec, i->object, ray);// calculate_sphere_normal_vector
 	else if (i->object.identifier == PLANE)
-		;// calculate_plane_normal_vector
+		i->normal_vec = get_plane_normal_vector(i->coordinates_vec, i->object, ray);// calculate_plane_normal_vector
 	else if (i->object.identifier == CYLINDER)
-		i->normal_vec = calculate_cylinder_normal_vector(i->object, i->coordinates_vec, ray);
+		i->normal_vec = get_cylinder_normal_vector(i->coordinates_vec, i->object, ray);
 }

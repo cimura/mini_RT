@@ -15,13 +15,13 @@ static bool	is_intersection_in_cylinder_height_range(t_object cylinder, t_vector
 }
 
 // 交点があれば一番近い交点の情報を登録する
-void	set_cylinder_intersection(t_intersection *i, t_ray ray, t_object object)
+void	set_cylinder_intersection(t_intersection *i, t_object cylinder, t_ray ray)
 {
 	t_coef			coef;
 	t_intersection	i1;
 	t_intersection	i2;
 
-	calculate_cylinder_intersections_num(&coef, object, ray);
+	calculate_cylinder_intersections_num(&coef, cylinder, ray);
 	if (coef.d < 0)
 		return ;
 	i1.t = ((-1 * coef.b) - sqrt(coef.d)) / (2 * coef.a);
@@ -34,18 +34,18 @@ void	set_cylinder_intersection(t_intersection *i, t_ray ray, t_object object)
 		multi_vector(ray.orientation_vec, i1.t));
 	i2.coordinates_vec = add_vector(ray.coordinates_vec,
 		multi_vector(ray.orientation_vec, i2.t));
-	i1.object = object;
-	i2.object = object;
+	i1.object = cylinder;
+	i2.object = cylinder;
 	if (i1.t >= 0
-		&& is_intersection_in_cylinder_height_range(object, i1.coordinates_vec) == true)
+		&& is_intersection_in_cylinder_height_range(cylinder, i1.coordinates_vec) == true)
 		*i = i1;
 	else if (i2.t >= 0
-		&& is_intersection_in_cylinder_height_range(object, i2.coordinates_vec) == true)
+		&& is_intersection_in_cylinder_height_range(cylinder, i2.coordinates_vec) == true)
 		*i = i2;
 }
 
 // 視線と円柱の表面の法線ベクトルを計算する (円柱データ、交点、円柱の底面の位置ベクトル)
-t_vector	calculate_cylinder_normal_vector(t_object cylinder, t_vector intersection, t_ray ray)
+t_vector	get_cylinder_normal_vector(t_vector intersection, t_object cylinder, t_ray ray)
 {
 	t_vector	normal_vector;
 	t_vector	cc_to_intersection;
