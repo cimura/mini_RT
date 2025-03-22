@@ -97,7 +97,7 @@ static char	**split_values(char *str)
 }
 
 //この関数は255,255,255のようなフォーマットを展開してrgbに登録する
-int	set_rgb(t_color *rgb, char *str)
+int	set_rgb(t_dcolor *rgb, char *str)
 {
 	char		**rgb_str;
 	double		rgb_double[3];
@@ -171,13 +171,19 @@ int	add_object_to_lst(t_world *world, t_object *object)
 	return (0);
 }
 
-t_material	init_material(t_color color, t_color specular_coef, double shinness)
+t_material	init_material(t_dcolor diffuse_coef, t_dcolor specular_coef, double shinness,
+	t_dcolor perfect_reflectance_coef)
 {
 	t_material	material;
 
-	material.diffuse_coef = color;
+	material.diffuse_coef = diffuse_coef;
 	material.specular_coef = specular_coef;
 	material.shinness = shinness;
+	material.use_perfect_reflectance = false;
+	if (perfect_reflectance_coef.red > 0 || perfect_reflectance_coef.green > 0
+		|| perfect_reflectance_coef.blue > 0)
+		material.use_perfect_reflectance = true;
+	material.perfect_reflectance = perfect_reflectance_coef;
 	return (material);
 }
 
@@ -185,7 +191,7 @@ int	parse_ambient_lightning(t_world *world, char **per_word_pointer)
 {
 	t_ambient_lightning	ambient_lightning;
 	double				ratio;
-	t_color				rgb;
+	t_dcolor				rgb;
 
 	if (per_word_pointer == NULL)
 		return (1);
@@ -201,7 +207,7 @@ int	parse_ambient_lightning(t_world *world, char **per_word_pointer)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[1]), 1);
 	if (set_rgb(&rgb, per_word_pointer[2]) != 0)
 		return (1);
-	ambient_lightning.intensity = multi_coef_color(rgb, ratio);
+	ambient_lightning.intensity = dcolor_coef_multi(rgb, ratio);
 	world->ambient_lightning = ambient_lightning;
 	return (0);
 }
@@ -236,7 +242,7 @@ int	parse_light(t_world *world, char **per_word_pointer)
 {
 	t_light	light;
 	double	ratio;
-	t_color	rgb;
+	t_dcolor	rgb;
 
 	if (per_word_pointer == NULL)
 		return (1);
@@ -252,7 +258,7 @@ int	parse_light(t_world *world, char **per_word_pointer)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[2]), 1);
 	if (set_rgb(&rgb, per_word_pointer[3]) != 0)
 		return (1);
-	light.intensity = multi_coef_color(rgb, ratio);
+	light.intensity = dcolor_coef_multi(rgb, ratio);
 	world->light = light;
 	return (0);
 }
@@ -260,7 +266,7 @@ int	parse_light(t_world *world, char **per_word_pointer)
 int	parse_sphere(t_world *world, char **per_word_pointer)
 {
 	t_object	*sphere;
-	t_color		color;
+	t_dcolor	color;
 
 	if (per_word_pointer == NULL)
 		return (1);
@@ -278,14 +284,17 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (1);
 	sphere->material = init_material(color,
-		init_color(SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT), SHININESS);
+		dcolor_init(SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT), SHININESS,
+		dcolor_init(1, 1, 1));
+	//if (sphere->material.use_perfect_reflectance == true)
+	//	printf("true\n");
 	return (add_object_to_lst(world, sphere));
 }
 
 int	parse_plane(t_world *world, char **per_word_pointer)
 {
 	t_object	*plane;
-	t_color		color;
+	t_dcolor		color;
 
 	if (per_word_pointer == NULL)
 		return (1);
@@ -304,14 +313,15 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (1);
 	plane->material = init_material(color,
-		init_color(SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT), SHININESS);
+		dcolor_init(SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT), SHININESS,
+		dcolor_init(0, 0, 0));
 	return (add_object_to_lst(world, plane));
 }
 
 int	parse_cylinder(t_world *world, char **per_word_pointer)
 {
 	t_object	*cylinder;
-	t_color		color;
+	t_dcolor		color;
 
 	if (per_word_pointer == NULL)
 		return (1);
@@ -336,6 +346,7 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 	if (set_rgb(&color, per_word_pointer[5]) != 0)
 		return (1);
 	cylinder->material = init_material(color,
-		init_color(SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT), SHININESS);
+		dcolor_init(SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT), SHININESS,
+		dcolor_init(0, 0, 0));
 	return (add_object_to_lst(world, cylinder));
 }

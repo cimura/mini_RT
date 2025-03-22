@@ -1,8 +1,8 @@
 #include "renderer.h"
 
-t_color	multi_coef_color(t_color rgb, double coefficient)
+t_dcolor	dcolor_coef_multi(t_dcolor rgb, double coefficient)
 {
-	t_color	color;
+	t_dcolor	color;
 
 	color.red = rgb.red * coefficient;
 	color.green = rgb.green * coefficient;
@@ -10,9 +10,9 @@ t_color	multi_coef_color(t_color rgb, double coefficient)
 	return (color);
 }
 
-t_color	init_color(double red, double green, double blue)
+t_dcolor	dcolor_init(double red, double green, double blue)
 {
-	t_color	color;
+	t_dcolor	color;
 
 	color.red = red;
 	color.green = green;
@@ -20,9 +20,9 @@ t_color	init_color(double red, double green, double blue)
 	return (color);
 }
 
-t_color	add_color(t_color l1, t_color l2)
+t_dcolor	dcolor_add(t_dcolor l1, t_dcolor l2)
 {
-	t_color	result;
+	t_dcolor	result;
 
 	result.red = l1.red + l2.red;
 	if (result.red > 1.0)
@@ -36,9 +36,9 @@ t_color	add_color(t_color l1, t_color l2)
 	return (result);
 }
 
-t_color	multi_color(t_color l1, t_color l2)
+t_dcolor	dcolor_multi(t_dcolor l1, t_dcolor l2)
 {
-	t_color	result;
+	t_dcolor	result;
 
 	result.red = l1.red * l2.red;
 	result.green = l1.green * l2.green;
@@ -46,7 +46,7 @@ t_color	multi_color(t_color l1, t_color l2)
 	return (result);
 }
 
-int	rgb_to_colorcode(t_color light)
+int	rgb_to_colorcode(t_dcolor light)
 {
 	int	result;
 

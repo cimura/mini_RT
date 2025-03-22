@@ -7,10 +7,10 @@ static bool	is_under_shadow(t_world world, t_vector intersection_vec)
 	double		shadow_ray_len;
 	double		distance;
 
-	shadow_ray_vec = subst_vector(world.light.coordinates_vec, intersection_vec);
+	shadow_ray_vec = normalize_vector(subst_vector(world.light.coordinates_vec, intersection_vec));
 	shadow_ray_len = len_vector(shadow_ray_vec);
 	shadow_ray.coordinates_vec = add_vector(intersection_vec, multi_vector(shadow_ray_vec, EPSILON));
-	shadow_ray.orientation_vec = normalize_vector(shadow_ray_vec);
+	shadow_ray.orientation_vec = shadow_ray_vec;
 	distance = find_intersection_minimum_distance(world, shadow_ray).t;
 	if (distance >= 0 && distance < shadow_ray_len)
 		return (true);
@@ -20,43 +20,43 @@ static bool	is_under_shadow(t_world world, t_vector intersection_vec)
 // xxx_coefficient: 反射係数 物体の表面の色によって変わる
 // xxx_light:		光の強度xあたる向きの内積 光源の色によって変わる
 
-//static t_color	calculate_ambient_color(t_ambient_lightning ambient_lightning, t_object object)
+//static t_dcolor	calculate_ambient_color(t_ambient_lightning ambient_lightning, t_object object)
 //{
-//	t_color	ambient_coefficient;
-//	t_color	ambient_light;
+//	t_dcolor	ambient_coefficient;
+//	t_dcolor	ambient_light;
 
 //	set_color(&ambient_coefficient, object.rgb, AMBIENT_COEFFICIENT);
 //	set_color(&ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
 //	ambient_light = ambient_lightning.intensity;
-//	return (multi_color(ambient_light, ambient_coefficient));
+//	return (dcolor_multi(ambient_light, ambient_coefficient));
 //}
 
-static t_color	calculate_diffuse_color(t_light light, t_object object, double normal_dot_incidence)
+static t_dcolor	calculate_diffuse_color(t_light light, t_object object, double normal_dot_incidence)
 {
-	t_color	diffuse_light;
+	t_dcolor	diffuse_light;
 
-	diffuse_light = multi_coef_color(light.intensity, normal_dot_incidence);
-	return (multi_color(diffuse_light, object.material.diffuse_coef));
+	diffuse_light = dcolor_coef_multi(light.intensity, normal_dot_incidence);
+	return (dcolor_multi(diffuse_light, object.material.diffuse_coef));
 }
 
-static t_color calculate_specular_color(t_light light, t_object object, t_vector dir_vec, t_vector reflection_vec)
+static t_dcolor calculate_specular_color(t_light light, t_object object, t_vector dir_vec, t_vector reflection_vec)
 {
-	t_color			specular_light;
+	t_dcolor		specular_light;
 	// 視線ベクトルの逆ベクトル
-	t_vector		inverse_camera_orientation_vec;
+	t_vector		inverse_dir_vec;
 	// 視線逆ベクトルと光源の正反射ベクトルの内積
 	double			inverse_dot_reflection;
 
-	inverse_camera_orientation_vec = normalize_vector(multi_vector(dir_vec, -1));
-	inverse_dot_reflection = calculate_inner_product(inverse_camera_orientation_vec, reflection_vec);
+	inverse_dir_vec = normalize_vector(multi_vector(dir_vec, -1));
+	inverse_dot_reflection = calculate_inner_product(inverse_dir_vec, reflection_vec);
 	double_compressor(&inverse_dot_reflection, 0.0, 1.0);
 	//set_color(&specular_light, light.rgb, light.ratio * pow(inverse_dot_reflection, SHININESS));
-	specular_light = multi_coef_color(light.intensity, pow(inverse_dot_reflection, object.material.shinness));
-	return (multi_color(specular_light, object.material.specular_coef));
+	specular_light = dcolor_coef_multi(light.intensity, pow(inverse_dot_reflection, object.material.shinness));
+	return (dcolor_multi(specular_light, object.material.specular_coef));
 }
 
 // 交点があったピクセルの色を計算する
-int	calculate_pixel_color(t_world world, t_intersection i, t_ray ray)
+t_dcolor	calculate_phong_radiance(t_world world, t_intersection i, t_ray ray)
 {
 	// 直接光の入射ベクトル
 	t_vector	incidence_vec;
@@ -64,22 +64,21 @@ int	calculate_pixel_color(t_world world, t_intersection i, t_ray ray)
 	double		normal_dot_incidence;
 	// 光源の正反射ベクトル
 	t_vector	reflection_vec;
-	t_color		result_light;
+	t_dcolor	result_color;
 
 	// 直接光の入射ベクトル
 	incidence_vec = normalize_vector(subst_vector(world.light.coordinates_vec, i.coordinates_vec));
-	//result_light = calculate_ambient_color(world.ambient_lightning, i.object);
-	result_light = world.ambient_lightning.intensity;
+	result_color = world.ambient_lightning.intensity;
 	// 影の中にいたら環境光のみ
 	if (is_under_shadow(world, i.coordinates_vec) == true)
-		return (rgb_to_colorcode(result_light));
+		return (result_color);
 	// 法線ベクトルと入射ベクトルの内積 これを0-1の範囲にする(負の値の時は光は当たらないため)
 	normal_dot_incidence = calculate_inner_product(i.normal_vec, incidence_vec);
 	if (normal_dot_incidence < 0)
-		return (rgb_to_colorcode(result_light));
+		return (result_color);
 	double_compressor(&normal_dot_incidence, 0.0, 1.0);
-	result_light = add_color(result_light, calculate_diffuse_color(world.light, i.object, normal_dot_incidence));
+	result_color = dcolor_add(result_color, calculate_diffuse_color(world.light, i.object, normal_dot_incidence));
 	reflection_vec = subst_vector(multi_vector(i.normal_vec, 2 * normal_dot_incidence), incidence_vec);
-	result_light = add_color(result_light, calculate_specular_color(world.light, i.object, ray.orientation_vec, reflection_vec));
-	return (rgb_to_colorcode(result_light));
+	result_color = dcolor_add(result_color, calculate_specular_color(world.light, i.object, ray.orientation_vec, reflection_vec));
+	return (result_color);
 }

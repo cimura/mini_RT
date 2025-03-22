@@ -42,7 +42,7 @@ typedef struct	s_color
 	double	red;
 	double	green;
 	double	blue;
-}	t_color;
+}	t_dcolor;
 
 // 環境光 Ambient lightning
 typedef struct	s_ambient_lightning
@@ -51,7 +51,7 @@ typedef struct	s_ambient_lightning
 	// 環境光の比率 ambient_lightning_ratio 範囲は[0.0-1.0]
 	// 光の強度
 	// RGB 範囲は0.0-1.0 ( red,green,blue )
-	t_color	intensity;
+	t_dcolor	intensity;
 }	t_ambient_lightning;
 
 // カメラ Camera
@@ -80,17 +80,21 @@ typedef struct	s_light
 	// 光の明るさ比率 範囲は[0.0,1.0]
 	// 光の強さ
 	// ※mandatoryでは不使用 RGB 範囲は0.0-1.0
-	t_color		intensity;
+	t_dcolor		intensity;
 }	t_light;
 
 typedef struct	s_material
 {
 	// 拡散反射係数
-	t_color	diffuse_coef;
+	t_dcolor	diffuse_coef;
 	// 鏡面反射係数
-	t_color	specular_coef;
+	t_dcolor	specular_coef;
 	// 光沢度
-	double	shinness;
+	double		shinness;
+	// 完全鏡面反射を使うかどうか
+	bool		use_perfect_reflectance;
+	// 完全鏡面反射係数
+	t_dcolor	perfect_reflectance;
 }	t_material;
 
 // オブジェクト汎用

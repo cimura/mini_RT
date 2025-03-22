@@ -12,9 +12,11 @@
 // 拡散反射光反射係数
 //# define DIFFUSE_COEFFICIENT 0.69
 // 鏡面反射係数
-# define SPECULAR_COEFFICIENT 0.8
+# define SPECULAR_COEFFICIENT 0.0//0.8
 // 光沢度
 # define SHININESS 8
+// 完全鏡面反射をするときの再帰関数の深さ限度
+# define MAX_RECURSIVE_LEVEL 8
 // shadow rayを計算するための微小値
 # define EPSILON 1.0 / 512
 
@@ -23,7 +25,9 @@
 # define SCREEN_HEIGHT 2.0
 
 // 背景色
-# define BACKGROUND_COLOR 0xAAAAAA
+# define BACKGROUND_COLOR_RED 0.7
+# define BACKGROUND_COLOR_GREEN 0.7
+# define BACKGROUND_COLOR_BLUE 0.7
 
 // 2次元の座標を表す構造体
 typedef struct	s_xy
@@ -58,8 +62,8 @@ typedef struct	s_intersection
 	t_object	object;
 }	t_intersection;
 
-// *** calculate_pixel_color.c ***
-int				calculate_pixel_color(t_world world, t_intersection i, t_ray ray);
+// *** calculate_phong_radiance.c ***
+t_dcolor		calculate_phong_radiance(t_world world, t_intersection i, t_ray ray);
 
 // *** canera.c ***
 void			init_camera(t_camera *camera);
@@ -69,8 +73,8 @@ void			set_sphere_intersection(t_intersection *i, t_object sphere, t_ray ray);
 t_vector		get_sphere_normal_vector(t_vector intersection, t_object sphere, t_ray ray);
 
 // *** plane.c ***
-void		set_plane_intersection(t_intersection *i, t_object plane, t_ray ray);
-t_vector	get_plane_normal_vector(t_vector intersection, t_object plane, t_ray ray);
+void			set_plane_intersection(t_intersection *i, t_object plane, t_ray ray);
+t_vector		get_plane_normal_vector(t_vector intersection, t_object plane, t_ray ray);
 
 // *** cylinder.c ***
 void			set_cylinder_intersection(t_intersection *i, t_object object, t_ray ray);
@@ -84,12 +88,12 @@ void			swap_intersection(t_intersection *i1, t_intersection *i2);
 t_intersection	find_intersection_minimum_distance(t_world world, t_ray ray);
 void			calculate_intersections_normal_vector(t_intersection *i, t_ray ray);
 
-// *** color.c ***
-t_color			multi_coef_color(t_color rgb, double coefficient);
-t_color			init_color(double red, double green, double blue);
-t_color			add_color(t_color l1, t_color l2);
-t_color			multi_color(t_color l1, t_color l2);
-int				rgb_to_colorcode(t_color light);
+// *** dcolor.c ***
+t_dcolor		dcolor_coef_multi(t_dcolor rgb, double coefficient);
+t_dcolor		dcolor_init(double red, double green, double blue);
+t_dcolor		dcolor_add(t_dcolor l1, t_dcolor l2);
+t_dcolor		dcolor_multi(t_dcolor l1, t_dcolor l2);
+int				rgb_to_colorcode(t_dcolor light);
 
 // *** renderer.c ***
 void 			render_scene(t_world world);

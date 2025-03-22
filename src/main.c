@@ -54,7 +54,7 @@
 //	return multi_vector(n_tmp, 1 / sqrt(abst_squared(n_tmp)));
 //}
 
-//double calculate_lighting(t_color color, t_vector de, t_vector n, t_vector l)
+//double calculate_lighting(t_dcolor color, t_vector de, t_vector n, t_vector l)
 //{
 //	double R_a = color.constant.k_a * color.constant.I_a;
 //	double R_d = color.constant.k_d * color.constant.I_i * inner_product(n, l);
