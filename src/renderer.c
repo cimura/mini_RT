@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   renderer.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
+/*   Updated: 2025/03/24 23:04:57 by ttakino          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "renderer.h"
 
 // This function returns pixel's color
@@ -30,7 +42,7 @@ static t_dcolor	ray_trace_recursive(t_world world, t_ray ray, int recursion_leve
 		re_ray.coordinates_vec = add_vector(closest_intersection.coordinates_vec,
 			multi_vector(re_ray.orientation_vec, EPSILON));
 		color = dcolor_add(color, dcolor_multi(ray_trace_recursive(world, re_ray, recursion_level + 1),
-			closest_intersection.object.material.perfect_reflectance));
+			closest_intersection.object.material.catadioptric_factor));
 	}
 	return (color);
 }

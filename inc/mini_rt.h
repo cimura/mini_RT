@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 17:16:45 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/24 23:06:23 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,32 @@ typedef struct	s_light
 	t_dcolor		intensity;
 }	t_light;
 
+// 完全鏡面反射する鏡は銀で出来ていることにする
+enum	e_material
+{
+	GLASS,
+	IRON,
+	SILVER,
+	WOOD,
+};
+
 typedef struct	s_material
 {
 	// 拡散反射係数
-	t_dcolor	diffuse_coef;
+	t_dcolor	diffuse;
 	// 鏡面反射係数
-	t_dcolor	specular_coef;
+	t_dcolor	specular;
 	// 光沢度
 	double		shinness;
 	// 完全鏡面反射を使うかどうか
 	bool		use_perfect_reflectance;
-	// 完全鏡面反射係数
-	t_dcolor	perfect_reflectance;
+	// 完全鏡面反射・屈折係数
+	t_dcolor	catadioptric_factor;
+	// 屈折を使うかどうか
+	bool		use_refraction;
+	// 絶対屈折率
+	t_dcolor	refraction_index;
+	
 }	t_material;
 
 // オブジェクト汎用
