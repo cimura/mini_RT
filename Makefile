@@ -2,8 +2,8 @@ NAME		:=	exc
 CC			:=	cc
 INC_DIR		:=	inc/
 SRC_DIR		:=	src/
-SRC			:=	calculate_phong_radiance.c camera.c dcolor.c cylinder_utils.c cylinder.c \
-				display.c ft_mlx.c intersections.c libft2.c libft3.c main.c material.c \
+SRC			:=	calculate_phong_radiance.c camera.c catadioptric.c cylinder_utils.c cylinder.c \
+				dcolor.c display.c ft_mlx.c intersections.c libft2.c libft3.c main.c material.c \
 				parse_objects_utils.c parse_objects.c parse_scene.c parser.c plane.c \
 				renderer.c sphere.c utils.c vector.c
 OBJ_DIR		:=	obj/

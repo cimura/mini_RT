@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:53 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/24 23:04:57 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/25 23:45:17 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,26 @@ static double	shinness_init(int material_id)
 	return (shinness);
 }
 
-static void	perfect_reflectance_set(t_material *material, int material_id)
+static void	catadioptric_set(t_material *material, int material_id)
 {
 	if (material_id == SILVER)
 	{
 		material->use_perfect_reflectance = true;
 		material->catadioptric_factor = dcolor_init(1.0, 1.0, 1.0);
+		material->use_refraction = false;
+	}
+	else if (material_id == GLASS)
+	{
+		material->use_perfect_reflectance = true;
+		material->catadioptric_factor = dcolor_init(1.0, 1.0, 1.0);
+		material->use_refraction = true;
+		material->refractive_index = 1.51;
 	}
 	else
 	{
 		material->use_perfect_reflectance = false;
 		material->catadioptric_factor = dcolor_init(0.0, 0.0, 0.0);
+		material->use_refraction = false;
 	}
 }
 
@@ -63,6 +72,6 @@ t_material	material_init(int material_id, t_dcolor color)
 	material.diffuse = color;
 	material.specular = specular_init(material_id);
 	material.shinness = shinness_init(material_id);
-	perfect_reflectance_set(&material, material_id);
+	catadioptric_set(&material, material_id);
 	return (material);
 }

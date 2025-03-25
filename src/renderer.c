@@ -6,44 +6,36 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/24 23:04:57 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/25 23:38:17 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
 
+#define PERFECT_REFLECTANCE 2
+
 // This function returns pixel's color
-static t_dcolor	ray_trace_recursive(t_world world, t_ray ray, int recursion_level)
+t_dcolor	ray_trace_recursive(t_world world, t_ray ray, int recursion_level)
 {
 	t_dcolor		color;
 	t_intersection	closest_intersection;
-	t_vector		inverce_ray_vec;
-	double			inverce_ray_dot_normal;
-	t_ray			re_ray;
 
-	color = dcolor_init(BACKGROUND_COLOR_RED, BACKGROUND_COLOR_GREEN, BACKGROUND_COLOR_BLUE);
+	color = dcolor_init(BACKGROUND_COLOR_RED,
+		BACKGROUND_COLOR_GREEN, BACKGROUND_COLOR_BLUE);
 	if (recursion_level > MAX_RECURSIVE_LEVEL)
 		return (color);
+	// 交点の数を計算
 	closest_intersection = find_intersection_minimum_distance(world, ray);
 	// 交点がない場合は背景色を置いてreturn  余分な計算を省くことができる
 	if (closest_intersection.t < 0)
 		return (color);
+	// 法線ベクトルを計算
 	calculate_intersections_normal_vector(&closest_intersection, ray);
+	// Phong反射モデルに則ってピクセルの色を計算
 	color = calculate_phong_radiance(world, closest_intersection, ray);
-	if (closest_intersection.object.material.use_perfect_reflectance == true)
-	{
-		inverce_ray_vec = multi_vector(ray.orientation_vec, -1);
-		inverce_ray_dot_normal = calculate_inner_product(inverce_ray_vec,
-			closest_intersection.normal_vec);
-		if (inverce_ray_dot_normal <= 0)
-			return (color);
-		re_ray.orientation_vec = normalize_vector(subst_vector(
-			multi_vector(closest_intersection.normal_vec, inverce_ray_dot_normal * 2), inverce_ray_vec));
-		re_ray.coordinates_vec = add_vector(closest_intersection.coordinates_vec,
-			multi_vector(re_ray.orientation_vec, EPSILON));
-		color = dcolor_add(color, dcolor_multi(ray_trace_recursive(world, re_ray, recursion_level + 1),
-			closest_intersection.object.material.catadioptric_factor));
-	}
+	// もし完全鏡面反射か屈折をするならばそれらの色を足す
+	color = dcolor_add(color,
+		calculate_catadioptric_radiance(world, closest_intersection, ray, recursion_level));
 	return (color);
 }
 

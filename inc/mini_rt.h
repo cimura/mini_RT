@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/24 23:06:23 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/25 23:04:24 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,9 @@ typedef struct	s_material
 	// 屈折を使うかどうか
 	bool		use_refraction;
 	// 絶対屈折率
-	t_dcolor	refraction_index;
-	
+	double		refractive_index;
+	// 面が表と裏を共有するかどうか（円柱や平面などはtrue 球体はfalse）
+	bool		use_thin_surfase;
 }	t_material;
 
 // オブジェクト汎用
@@ -130,6 +131,8 @@ typedef struct s_object
 typedef struct	s_world
 {
 	t_mlx				mlx;
+	// 大気の絶対屈折率
+	double				global_refraction_index;
 	t_ambient_lightning	ambient_lightning;
 	t_camera			camera;
 	t_light				light;
