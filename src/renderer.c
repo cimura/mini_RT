@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/25 23:38:17 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/26 23:20:43 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void render_scene(t_world world)
 
 	init_camera(&world.camera);
 	gaze_ray.coordinates_vec = world.camera.coordinates_vec;
+	gaze_ray.prev_refractive_index = world.global_refraction_index;
 	in_screen.y = 0;
 	while (in_screen.y < HEIGHT - 1)
 	{
@@ -79,6 +80,11 @@ void render_scene(t_world world)
 		{
 			// スクリーン上の点の3次元空間における位置ベクトルを計算
 			gaze_ray.orientation_vec = get_rays_orientation_vector(in_screen, world.camera);
+			//t_vector screen_vec;
+			//screen_vec.y = 1.0 - 2 * in_screen.y / HEIGHT;
+			//screen_vec.x = 2 * in_screen.x / WIDTH - 1.0;
+			//screen_vec.z = 0;
+			//gaze_ray.orientation_vec = normalize_vector(subst_vector(screen_vec, world.camera.coordinates_vec));
 			color = ray_trace(world, gaze_ray);
 			my_pixel_put(in_screen.x, in_screen.y, world.mlx.img, rgb_to_colorcode(color));
 			in_screen.x++;

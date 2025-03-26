@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 18:52:58 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/26 20:59:03 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (1);
 	sphere->material = material_init(SILVER, color);
+	if (ft_lstsize(world->objects) != 0)
+		sphere->material = material_init(GLASS, color);
 	return (add_object_to_lst(world, sphere));
 }
 

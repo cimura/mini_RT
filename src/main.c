@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/25 21:15:23 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/26 22:35:45 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ int	main(int argc, char **argv)
 	if (parse_arguments(&world, argc, argv) != 0)
 		return (1);
 	world = world_init(world);
+	world.global_refraction_index = 1.0;
+	printf("refraction_index: %lf\n", world.global_refraction_index);
 	if (init_mlx_struct(&world.mlx) != 0)
 		return (1);
 	render_scene(world);
