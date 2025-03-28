@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/25 23:04:24 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/28 22:52:21 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
 // オブジェクトの識別子
 enum	e_obj_identifier
 {
-	AMBIENT_LIGHTNING = 3,
+	ATOMOSPHERE = 3,
+	AMBIENT_LIGHTNING,
 	CAMERA,
 	LIGHT,
 	SPHERE,
@@ -116,6 +117,7 @@ typedef struct	s_material
 typedef struct s_object
 {
 	int			identifier;
+	int			id;
 	// オブジェクトの位置ベクトル
 	t_vector	coordinates_vec;
 	// オブジェクトの正規化されている方向ベクトル 範囲は[-1,1]  平面、円柱
@@ -131,8 +133,8 @@ typedef struct s_object
 typedef struct	s_world
 {
 	t_mlx				mlx;
-	// 大気の絶対屈折率
-	double				global_refraction_index;
+	// シーン全体のオブジェクトの情報 （大気など）
+	t_object			scene_wide_object;
 	t_ambient_lightning	ambient_lightning;
 	t_camera			camera;
 	t_light				light;

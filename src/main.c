@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/26 22:35:45 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/28 22:53:43 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,10 @@ void	on_destroy(t_world world)
 
 t_world	world_init(t_world world)
 {
+	world.scene_wide_object.identifier = ATOMOSPHERE;
+	world.scene_wide_object.id = 0;
 	// 標準状態(1気圧20℃)における大気の屈折率
-	world.global_refraction_index = 1.000293;
+	world.scene_wide_object.material.refractive_index = 1.000293;
 	return (world);
 }
 
@@ -132,8 +134,7 @@ int	main(int argc, char **argv)
 	if (parse_arguments(&world, argc, argv) != 0)
 		return (1);
 	world = world_init(world);
-	world.global_refraction_index = 1.0;
-	printf("refraction_index: %lf\n", world.global_refraction_index);
+	printf("refraction_index: %lf\n", world.scene_wide_object.material.refractive_index);
 	if (init_mlx_struct(&world.mlx) != 0)
 		return (1);
 	render_scene(world);

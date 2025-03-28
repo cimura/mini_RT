@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/25 23:37:27 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/28 23:16:59 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,19 @@ typedef struct	s_intersection
 	t_object	object;
 }	t_intersection;
 
+// 視線から逆算したレイの通ったオブジェクトたちの情報
+typedef struct	s_trajectory
+{
+	t_ray			ray;
+	t_list			*refractive_indexs;
+}	t_trajectory;
+
 // *** calculate_phong_radiance.c ***
 t_dcolor		calculate_phong_radiance(t_world world, t_intersection i, t_ray ray);
 
 // *** catadioptric.c ***
-t_dcolor		calculate_catadioptric_radiance(t_world world, t_intersection intersection, t_ray ray,
-	int recursion_level);
+t_dcolor		calculate_catadioptric_radiance(t_world world, t_intersection intersection,
+	t_trajectory trajectory, int recursion_level);
 
 // *** canera.c ***
 void			init_camera(t_camera *camera);
@@ -113,7 +120,7 @@ t_dcolor		dcolor_multi(t_dcolor l1, t_dcolor l2);
 int				rgb_to_colorcode(t_dcolor light);
 
 // *** renderer.c ***
-t_dcolor		ray_trace_recursive(t_world world, t_ray ray, int recursion_level);
+t_dcolor		ray_trace_recursive(t_world world, t_trajectory ray, int recursion_level);
 void 			render_scene(t_world world);
 
 #endif

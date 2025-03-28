@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:36 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 18:53:27 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/28 22:55:33 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	read_rt_file(char *filename, char *buf)
 	return (0);
 }
 
-int	parse_line(t_world *world, char *line)
+int	parse_line(t_world *world, char *line, int id)
 {
 	char	**per_word_pointer;
 	int		status;
@@ -108,11 +108,11 @@ int	parse_line(t_world *world, char *line)
 	else if (ft_strncmp(per_word_pointer[0], "L", 3) == 0)
 		status = parse_light(world, per_word_pointer);// parse_light
 	else if (ft_strncmp(per_word_pointer[0], "sp", 3) == 0)
-		status = parse_sphere(world, per_word_pointer);// parse_sphere
+		status = parse_sphere(world, per_word_pointer, id);// parse_sphere
 	else if (ft_strncmp(per_word_pointer[0], "pl", 3) == 0)
-		status = parse_plane(world, per_word_pointer);// parse_plane
+		status = parse_plane(world, per_word_pointer, id);// parse_plane
 	else if (ft_strncmp(per_word_pointer[0], "cy", 3) == 0)
-		status = parse_cylinder(world, per_word_pointer);// parse_cylinder
+		status = parse_cylinder(world, per_word_pointer, id);// parse_cylinder
 	else
 		return (print_err_msg(INV_IDENTIFIER, per_word_pointer[0]), 1);
 	free_double_pointer(per_word_pointer);
@@ -131,7 +131,7 @@ int	parse_rt_file(t_world *world, char *buf)
 	while (per_row_pointer[i] != NULL)
 	{
 		// TODO t_sceneに当てはめる
-		if (parse_line(world, per_row_pointer[i]) != 0)
+		if (parse_line(world, per_row_pointer[i], i + 1) != 0)
 		{
 			free_double_pointer(per_row_pointer);
 			return (1);

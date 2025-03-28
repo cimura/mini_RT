@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/26 20:59:03 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/28 22:57:07 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	add_object_to_lst(t_world *world, t_object *object)
 	return (0);
 }
 
-int	parse_sphere(t_world *world, char **per_word_pointer)
+int	parse_sphere(t_world *world, char **per_word_pointer, int id)
 {
 	t_object	*sphere;
 	t_dcolor	color;
@@ -46,10 +46,11 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 	sphere->material = material_init(SILVER, color);
 	if (ft_lstsize(world->objects) != 0)
 		sphere->material = material_init(GLASS, color);
+	sphere->id = id;
 	return (add_object_to_lst(world, sphere));
 }
 
-int	parse_plane(t_world *world, char **per_word_pointer)
+int	parse_plane(t_world *world, char **per_word_pointer, int id)
 {
 	t_object	*plane;
 	t_dcolor	color;
@@ -71,10 +72,11 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (1);
 	plane->material = material_init(IRON, color);
+	plane->id = id;
 	return (add_object_to_lst(world, plane));
 }
 
-int	parse_cylinder(t_world *world, char **per_word_pointer)
+int	parse_cylinder(t_world *world, char **per_word_pointer, int id)
 {
 	t_object	*cylinder;
 	t_dcolor	color;
@@ -102,5 +104,6 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 	if (set_rgb(&color, per_word_pointer[5]) != 0)
 		return (1);
 	cylinder->material = material_init(IRON, color);
+	cylinder->id = id;
 	return (add_object_to_lst(world, cylinder));
 }
