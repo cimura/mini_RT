@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:38 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 18:53:33 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/30 11:34:21 by cimy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ int		parse_light(t_world *world, char **per_word_pointer);
 int		parse_sphere(t_world *world, char **per_word_pointer);
 int		parse_plane(t_world *world, char **per_word_pointer);
 int		parse_cylinder(t_world *world, char **per_word_pointer);
+int		parse_triangle(t_world *world, char **per_word_pointer);
 
 #endif

@@ -4,7 +4,7 @@ INC_DIR		:=	inc/
 SRC_DIR		:=	src/
 SRC			:=	calculate_phong_radiance.c camera.c dcolor.c cylinder_utils.c cylinder.c \
 				display.c ft_mlx.c intersections.c libft2.c libft3.c main.c parse_objects.c \
-				parser.c plane.c renderer.c sphere.c utils.c vector.c
+				parser.c plane.c renderer.c sphere.c utils.c vector.c triangle.c
 OBJ_DIR		:=	obj/
 OBJ			:=	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 LIBFT_DIR	:=	libft/

@@ -83,6 +83,10 @@ t_vector		get_cylinder_normal_vector(t_vector intersection, t_object cylinder, t
 // *** cylinder_utils.c ***
 void			calculate_cylinder_intersections_num(t_coef *coef, t_object cylinder, t_ray ray);
 
+// *** triangle.c ***
+void			set_triangle_intersection(t_intersection *i, t_object triangle, t_ray ray);
+t_vector		get_triangle_normal_vector(t_vector intersection, t_object triangle, t_ray ray);
+
 /// *** intersections.c ***
 void			swap_intersection(t_intersection *i1, t_intersection *i2);
 t_intersection	find_intersection_minimum_distance(t_world world, t_ray ray);

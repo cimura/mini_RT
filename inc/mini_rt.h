@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 17:16:45 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/30 12:30:37 by cimy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ enum	e_obj_identifier
 	SPHERE,
 	PLANE,
 	CYLINDER,
+	TRIANGLE,
+	SQUARE
 };
 
 // RGB 計算しやすく0.0~1.0の範囲で表す
@@ -97,6 +99,13 @@ typedef struct	s_material
 	t_dcolor	perfect_reflectance;
 }	t_material;
 
+typedef	struct s_vertex
+{
+	t_vector	v1;
+	t_vector	v2;
+	t_vector	v3;
+}	t_vertex;
+
 // オブジェクト汎用
 typedef struct s_object
 {
@@ -109,6 +118,10 @@ typedef struct s_object
 	double		diameter;
 	// 円柱
 	double		height;
+	// 三角形平面
+	t_vertex	vertex;
+	// 四角形平面
+	double		side_len;
 	t_material	material;
 }	t_object;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:36 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 18:53:27 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/30 11:34:28 by cimy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,10 @@ int	parse_line(t_world *world, char *line)
 		status = parse_plane(world, per_word_pointer);// parse_plane
 	else if (ft_strncmp(per_word_pointer[0], "cy", 3) == 0)
 		status = parse_cylinder(world, per_word_pointer);// parse_cylinder
+	else if (ft_strncmp(per_word_pointer[0], "tr", 3) == 0)
+		status = parse_triangle(world, per_word_pointer);// parse_triangle
+	//else if (ft_strncmp(per_word_pointer[0], "sq", 3) == 0)
+	//	status = parse_square(world, per_word_pointer);// parse_square
 	else
 		return (print_err_msg(INV_IDENTIFIER, per_word_pointer[0]), 1);
 	free_double_pointer(per_word_pointer);

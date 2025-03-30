@@ -106,6 +106,45 @@ void	on_destroy(t_world world)
 	exit(0);
 }
 
+// オブジェクトの識別子
+//enum	e_obj_identifier
+//{
+//	AMBIENT_LIGHTNING = 3,
+//	CAMERA,
+//	LIGHT,
+//	SPHERE,
+//	PLANE,
+//	CYLINDER,
+//	TRIANGLE,
+//	SQUARE
+//};
+
+void	debug_display_list(t_world world)
+{
+	t_list	*current = world.objects;
+	t_object	*obj;
+	while (current != NULL)
+	{
+		obj = (t_object *)current->content;
+		if (obj->identifier == AMBIENT_LIGHTNING)
+			printf("ambient\n");
+		else if (obj->identifier == CAMERA)
+			printf("camera\n");
+		else if (obj->identifier == LIGHT)
+			printf("light\n");
+		else if (obj->identifier == SPHERE)
+			printf("spph\n");
+		else if (obj->identifier == PLANE)
+			printf("plane\n");
+		else if (obj->identifier == CYLINDER)
+			printf("cyli\n");
+		else if (obj->identifier == TRIANGLE)
+			printf("tri\n");
+		current = current->next;
+	}
+	exit(1);
+}
+
 int	main(int argc, char **argv)
 {
 	t_world	world;
@@ -114,6 +153,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if (init_mlx_struct(&world.mlx) != 0)
 		return (1);
+	//debug_display_list(world);
 	render_scene(world);
 	display_in_mlx(world);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 18:52:58 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/30 12:52:08 by cimy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,4 +349,35 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 		dcolor_init(SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT), SHININESS,
 		dcolor_init(0, 0, 0));
 	return (add_object_to_lst(world, cylinder));
+}
+
+int	parse_triangle(t_world *world, char **per_word_pointer)
+{
+	t_object	*triangle;
+	t_dcolor		color;
+	t_vector	center;
+
+	if (per_word_pointer == NULL)
+		return (1);
+	if (ft_double_pointer_size(per_word_pointer) != 5)
+		return (print_err_msg(NOT_MATCH_PARAM_NUM, per_word_pointer[0]), 1);
+	triangle = malloc(sizeof(t_object));
+	if (triangle == NULL)
+		return (1);
+	triangle->identifier = TRIANGLE;
+	if (set_vector(&triangle->vertex.v1, per_word_pointer[1], 0, 0) != 0)
+		return (1);
+	if (set_vector(&triangle->vertex.v2, per_word_pointer[2], 0, 0) != 0)
+		return (1);
+	if (set_vector(&triangle->vertex.v3, per_word_pointer[3], 0, 0) != 0)
+		return (1);
+	center = calculate_center(triangle->vertex.v1, triangle->vertex.v2, triangle->vertex.v3);
+	triangle->coordinates_vec = center;
+	if (set_rgb(&color, per_word_pointer[4]) != 0)
+		return (1);
+	triangle->material = init_material(color,
+		dcolor_init(SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT, SPECULAR_COEFFICIENT), SHININESS,
+		dcolor_init(0, 0, 0));
+	printf("parse triangle\n");
+	return (add_object_to_lst(world, triangle));
 }

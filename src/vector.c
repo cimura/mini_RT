@@ -1,5 +1,16 @@
 #include "vector.h"
 
+t_vector	calculate_center(t_vector v1, t_vector v2, t_vector v3)
+{
+	t_vector	result;
+
+	result = add_vector(v1, add_vector(v2, v3));
+	result.x /= 3;
+	result.y /= 3;
+	result.z /= 3;
+	return (result);
+}
+
 t_vector	subst_vector(t_vector a, t_vector b)
 {
 	t_vector	result;

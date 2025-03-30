@@ -29,5 +29,6 @@ t_vector	normalize_vector(t_vector v);
 double		inner_product(t_vector a, t_vector b);
 t_vector	cross_product(t_vector a, t_vector b);
 //double		calculate_mirror_reflection(t_const constant, t_vector de, t_vector n, t_vector l);
+t_vector	calculate_center(t_vector v1, t_vector v2, t_vector v3);
 
 #endif
