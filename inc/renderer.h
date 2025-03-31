@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/28 23:16:59 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/31 23:19:52 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 // 光沢度
 # define SHININESS 8
 // 完全鏡面反射をするときの再帰関数の深さ限度
-# define MAX_RECURSIVE_LEVEL 8
+# define MAX_RECURSIVE_LEVEL 6
 // shadow rayを計算するための微小値
 # define EPSILON 1.0 / 512
 
@@ -79,7 +79,9 @@ typedef struct	s_intersection
 typedef struct	s_trajectory
 {
 	t_ray			ray;
-	t_list			*refractive_indexs;
+	//t_list			*refractive_indexs;
+	int				head_i;
+	double			*objects_trajectory;
 }	t_trajectory;
 
 // *** calculate_phong_radiance.c ***
@@ -87,7 +89,7 @@ t_dcolor		calculate_phong_radiance(t_world world, t_intersection i, t_ray ray);
 
 // *** catadioptric.c ***
 t_dcolor		calculate_catadioptric_radiance(t_world world, t_intersection intersection,
-	t_trajectory trajectory, int recursion_level);
+	t_trajectory *trajectory, t_ray ray, int recursion_level);
 
 // *** canera.c ***
 void			init_camera(t_camera *camera);
@@ -120,7 +122,7 @@ t_dcolor		dcolor_multi(t_dcolor l1, t_dcolor l2);
 int				rgb_to_colorcode(t_dcolor light);
 
 // *** renderer.c ***
-t_dcolor		ray_trace_recursive(t_world world, t_trajectory ray, int recursion_level);
-void 			render_scene(t_world world);
+t_dcolor		ray_trace_recursive(t_world world, t_trajectory *trajectory, t_ray ray, int recursion_level);
+int 			render_scene(t_world world);
 
 #endif

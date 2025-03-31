@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/28 22:52:21 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/03/31 22:49:36 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ enum	e_material
 	IRON,
 	SILVER,
 	WOOD,
+	WATER,
 };
 
 typedef struct	s_material
