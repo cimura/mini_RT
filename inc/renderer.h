@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/31 23:19:52 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/01 11:53:23 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@
 # define SCREEN_HEIGHT 2.0
 
 // 背景色
-# define BACKGROUND_COLOR_RED 0.7
-# define BACKGROUND_COLOR_GREEN 0.7
-# define BACKGROUND_COLOR_BLUE 0.7
+# define BACKGROUND_COLOR_RED 0.12
+# define BACKGROUND_COLOR_GREEN 0.56
+# define BACKGROUND_COLOR_BLUE 1.0
 
 // 2次元の座標を表す構造体
 typedef struct	s_xy

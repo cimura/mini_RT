@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 21:23:24 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/01 00:07:18 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/01 11:47:37 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ t_dcolor	calculate_catadioptric_radiance(t_world world, t_intersection intersect
 {
 	t_dcolor		color;
 	t_trajectory	rfl_trajectory;
-	//t_trajectory	rfr_trajectory;
+	t_trajectory	rfr_trajectory;
 	t_ray			rfl_ray;
 	t_ray			rfr_ray;
 	double			refraction_index1;
@@ -186,23 +186,23 @@ t_dcolor	calculate_catadioptric_radiance(t_world world, t_intersection intersect
 	//ft_lstclear(&rfl_trajectory->refractive_indexs, NULL);
 	if (intersection.object.material.use_refraction == false)
 		return (color);
-	//trajectory_lst_content = *(t_object *)trajectory->refractive_indexs->content;
-	refraction_index1 = trajectory->objects_trajectory[trajectory->head_i];
+	if (trajectory_copy(&rfr_trajectory, *trajectory) != 0)
+		return (color);//trajectory_lst_content = *(t_object *)trajectory->refractive_indexs->content;
+	refraction_index1 = rfr_trajectory.objects_trajectory[rfr_trajectory.head_i];
 	//refraction_index1 = *(double *)(trajectory->refractive_indexs)->content;
 	refraction_index2 = intersection.object.material.refractive_index;
-	if (is_same_object_in_trajectory(intersection.object, *trajectory) == true)
+	if (is_same_object_in_trajectory(intersection.object, rfr_trajectory) == true)
 	{
-			
-		if (trajectory->head_i >= 0)
-		{
-			double tmp = 1.51;
-			if (trajectory->head_i == 1 && trajectory->objects_trajectory[0] == world.scene_wide_object.material.refractive_index)
-					color = dcolor_init(255,0,0);
-			if (trajectory->head_i == 1 && trajectory->objects_trajectory[1] == tmp)
-			{
-				//printf(";");
-				color = dcolor_init(0,0,255);
-			}
+		//if (rfr_trajectory.head_i >= 0)
+		//{
+		//	double tmp = 1.51;
+		//	if (rfr_trajectory.head_i == 1 && rfr_trajectory.objects_trajectory[0] == world.scene_wide_object.material.refractive_index)
+		//			color = dcolor_init(255,0,0);
+		//	if (rfr_trajectory.head_i == 1 && rfr_trajectory.objects_trajectory[1] == tmp)
+		//	{
+		//		//printf(";");
+		//		color = dcolor_init(0,0,255);
+		//	}
 			//int i = 0;
 			//printf("[");
 			//while (i <= trajectory->head_i)
@@ -214,19 +214,19 @@ t_dcolor	calculate_catadioptric_radiance(t_world world, t_intersection intersect
 			//printf("] ");
 			//color = dcolor_add(color, dcolor_init(200,0,0));
 			//color = dcolor_init(255,0,0);
-		}
+		//}
 		//color = dcolor_add(color, dcolor_init(100,0,0));
 		//delete_node_same_id(&trajectory->refractive_indexs, intersection.object.material.refractive_index);
-		trajectory_delete_same_index(intersection.object, trajectory);
+		trajectory_delete_same_index(intersection.object, &rfr_trajectory);
 		//trajectory_lst_content = *(t_object *)trajectory->refractive_indexs->content;
-		refraction_index2 = trajectory->objects_trajectory[trajectory->head_i];
+		refraction_index2 = rfr_trajectory.objects_trajectory[rfr_trajectory.head_i];
 		//refraction_index2 = *(double *)trajectory->refractive_indexs->content;
 		//printf("%lf:%lf ", refraction_index1, refraction_index2);
 	}
 	else
 	{
-		trajectory->head_i++;
-		trajectory->objects_trajectory[trajectory->head_i] = intersection.object.material.refractive_index;
+		rfr_trajectory.head_i++;
+		rfr_trajectory.objects_trajectory[rfr_trajectory.head_i] = intersection.object.material.refractive_index;
 		//ft_lstadd_front(&trajectory->refractive_indexs, ft_lstnew(&intersection.object.material.refractive_index));
 	}
 	rfr_2_1 = refraction_index2 / refraction_index1;
@@ -240,8 +240,15 @@ t_dcolor	calculate_catadioptric_radiance(t_world world, t_intersection intersect
 	s_polarized_light = -1 * omega / (rfr_2_1 * cos2 + cos1);
 	reflectance_index = (pow(p_polarized_light, 2) + pow(s_polarized_light, 2)) / 2;
 	color = dcolor_coef_multi(color, reflectance_index);
-	color = dcolor_add(color, dcolor_coef_multi(dcolor_multi(ray_trace_recursive(world, trajectory,
+	color = dcolor_add(color, dcolor_coef_multi(dcolor_multi(ray_trace_recursive(world, &rfr_trajectory,
 		rfr_ray, recursion_level + 1),
 		intersection.object.material.catadioptric_factor), 1.0 - reflectance_index));
+	free(rfr_trajectory.objects_trajectory);
+	//color = dcolor_add(color, dcolor_init(50,0,0));
+	//if (ray_from_back == false)
+	//{
+	//	trajectory->objects_trajectory[trajectory->head_i] = -1;
+	//	trajectory->head_i--;
+	//}
 	return (color);
 }

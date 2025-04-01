@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/31 23:18:00 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/01 11:45:46 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ static t_dcolor ray_trace(t_world world, t_trajectory *trajectory, t_ray ray)
 	t_dcolor	color;
 
 	color = ray_trace_recursive(world, trajectory, ray, 0);
+	//if (trajectory->head_i > 0)
+		//color = dcolor_init(100,0,0);
+		//printf("head_i: %d\n", trajectory->head_i);
 	return (color);
 }
 
