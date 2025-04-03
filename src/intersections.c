@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:04 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/24 22:59:25 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/03 21:04:30 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ t_intersection	find_intersection_minimum_distance(t_world world, t_ray ray)
 void	calculate_intersections_normal_vector(t_intersection *i, t_ray ray)
 {
 	if (i->object.identifier == SPHERE)
-		i->normal_vec = get_sphere_normal_vector(i->coordinates_vec, i->object, ray);// calculate_sphere_normal_vector
+		set_sphere_normal_vector(i, i->object, ray);
 	else if (i->object.identifier == PLANE)
-		i->normal_vec = get_plane_normal_vector(i->coordinates_vec, i->object, ray);// calculate_plane_normal_vector
+		set_plane_normal_vector(i, i->object, ray);
 	else if (i->object.identifier == CYLINDER)
-		i->normal_vec = get_cylinder_normal_vector(i->coordinates_vec, i->object, ray);
+		set_cylinder_normal_vector(i, i->object, ray);
 }

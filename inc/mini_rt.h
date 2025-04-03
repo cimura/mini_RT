@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/31 22:49:36 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/03 21:07:43 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ typedef struct	s_world
 	t_mlx				mlx;
 	// シーン全体のオブジェクトの情報 （大気など）
 	t_object			scene_wide_object;
+	double				global_refractive_index;
 	t_ambient_lightning	ambient_lightning;
 	t_camera			camera;
 	t_light				light;

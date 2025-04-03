@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/01 12:06:10 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/03 20:50:05 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_dcolor	calculate_phong_radiance(t_world world, t_intersection i, t_ray ray)
 	result_color = world.ambient_lightning.intensity;
 	// 影の中にいたら環境光のみ
 	if (is_under_shadow(world, i.coordinates_vec) == true)
-		(void)incidence_vec;//return (result_color);
+		return (result_color);
 	// 法線ベクトルと入射ベクトルの内積 これを0-1の範囲にする(負の値の時は光は当たらないため)
 	normal_dot_incidence = calculate_inner_product(i.normal_vec, incidence_vec);
 	if (normal_dot_incidence < 0)

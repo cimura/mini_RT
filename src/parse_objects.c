@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/01 12:07:54 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/03 20:50:08 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ int	parse_sphere(t_world *world, char **per_word_pointer, int id)
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (1);
 	if (ft_lstsize(world->objects) == 0)
-		sphere->material = material_init(WATER, color);
+		sphere->material = material_init(SILVER, color);
 	else if (ft_lstsize(world->objects) == 1)
 	{
-		sphere->material = material_init(WATER, color);
+		sphere->material = material_init(GLASS, color);
 	}
-	//else if (ft_lstsize(world->objects) == 2)
-	//	sphere->material = material_init(WATER, color);
+	else if (ft_lstsize(world->objects) == 2)
+		sphere->material = material_init(WATER, color);
 	sphere->id = id;
 	return (add_object_to_lst(world, sphere));
 }

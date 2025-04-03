@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:18 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/24 23:00:20 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/03 20:57:54 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,20 @@ void	set_sphere_intersection(t_intersection *i, t_object sphere, t_ray ray)
 		*i = i2;
 }
 
-t_vector	get_sphere_normal_vector(t_vector intersection, t_object sphere, t_ray ray)
+void	set_sphere_normal_vector(t_intersection *intersection,
+	t_object sphere, t_ray ray)
 {
 	t_vector	normal_vector;
 	double		ray_dot_noraml;
 
-	normal_vector = subst_vector(intersection, sphere.coordinates_vec);
+	normal_vector = subst_vector(intersection->coordinates_vec, sphere.coordinates_vec);
+	intersection->hit_on_back = false;
 	ray_dot_noraml = calculate_inner_product(ray.orientation_vec, normal_vector);
 	if (ray_dot_noraml >= 0)
+	{
 		normal_vector = multi_vector(normal_vector, -1);
-	return (normalize_vector(normal_vector));
+		intersection->hit_on_back = true;
+	}
+	normal_vector = normalize_vector(normal_vector);
+	intersection->normal_vec = normal_vector;
 }
