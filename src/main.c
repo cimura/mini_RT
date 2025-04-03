@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/03 21:17:07 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/04 00:14:26 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	main(int argc, char **argv)
 	world.global_refractive_index = 1.000293;
 	if (init_mlx_struct(&world.mlx) != 0)
 		return (1);
+	printf("rendering...\n");
 	render_scene(world);
+	printf("100%%\n");
 	display_in_mlx(world);
 }

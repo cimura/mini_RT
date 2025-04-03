@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/03 20:50:08 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/04 00:22:29 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	add_object_to_lst(t_world *world, t_object *object)
 	return (0);
 }
 
-int	parse_sphere(t_world *world, char **per_word_pointer, int id)
+int	parse_sphere(t_world *world, char **per_word_pointer)
 {
 	t_object	*sphere;
 	t_dcolor	color;
@@ -43,19 +43,29 @@ int	parse_sphere(t_world *world, char **per_word_pointer, int id)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[2]), 1);
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (1);
+	sphere->material = material_init(WOOD, color);
+	// 屈折の実装のため
 	if (ft_lstsize(world->objects) == 0)
+	{
 		sphere->material = material_init(SILVER, color);
+		printf("silver\n");
+	}
 	else if (ft_lstsize(world->objects) == 1)
 	{
 		sphere->material = material_init(GLASS, color);
+		printf("glass\n");
 	}
 	else if (ft_lstsize(world->objects) == 2)
+	{
 		sphere->material = material_init(WATER, color);
-	sphere->id = id;
+		printf("water\n");
+	}
+	// ここまで
+	sphere->material.use_thin_surfase = false;
 	return (add_object_to_lst(world, sphere));
 }
 
-int	parse_plane(t_world *world, char **per_word_pointer, int id)
+int	parse_plane(t_world *world, char **per_word_pointer)
 {
 	t_object	*plane;
 	t_dcolor	color;
@@ -77,11 +87,17 @@ int	parse_plane(t_world *world, char **per_word_pointer, int id)
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (1);
 	plane->material = material_init(WOOD, color);
-	plane->id = id;
+	// デバッグ用
+	if (ft_lstsize(world->objects) == 1)
+	{
+		plane->material = material_init(WATER, color);
+	}
+	// ここまで
+	plane->material.use_thin_surfase = true;
 	return (add_object_to_lst(world, plane));
 }
 
-int	parse_cylinder(t_world *world, char **per_word_pointer, int id)
+int	parse_cylinder(t_world *world, char **per_word_pointer)
 {
 	t_object	*cylinder;
 	t_dcolor	color;
@@ -108,7 +124,7 @@ int	parse_cylinder(t_world *world, char **per_word_pointer, int id)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[4]), 1);
 	if (set_rgb(&color, per_word_pointer[5]) != 0)
 		return (1);
-	cylinder->material = material_init(IRON, color);
-	cylinder->id = id;
+	cylinder->material = material_init(GLASS, color);
+	cylinder->material.use_thin_surfase = true;
 	return (add_object_to_lst(world, cylinder));
 }

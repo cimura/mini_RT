@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/03 21:17:44 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/03 23:28:21 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,6 @@ t_dcolor	ray_trace_recursive(t_world world, t_ray ray, int recursion_level)
 	// もし完全鏡面反射か屈折をするならばそれらの色を足す
 	color = dcolor_add(color,
 		calculate_catadioptric_radiance(world, closest_intersection, ray, recursion_level));
-	return (color);
-}
-
-//void	debug_printer(t_xy in_screen, t_world world, t_intersection i, t_ray ray)
-
-static t_dcolor ray_trace(t_world world, t_ray ray)
-{
-	t_dcolor	color;
-
-	color = ray_trace_recursive(world, ray, 0);
 	return (color);
 }
 
@@ -77,7 +67,7 @@ int render_scene(t_world world)
 		{
 			// スクリーン上の点の3次元空間における位置ベクトルを計算
 			gaze_ray.orientation_vec = get_rays_orientation_vector(in_screen, world.camera);
-			color = ray_trace(world, gaze_ray);
+			color = ray_trace_recursive(world, gaze_ray, 0);
 			my_pixel_put(in_screen.x, in_screen.y, world.mlx.img, rgb_to_colorcode(color));
 			in_screen.x++;
 		}

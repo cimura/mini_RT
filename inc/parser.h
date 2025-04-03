@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:38 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/28 22:55:57 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/03 23:36:53 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ int			parse_camera(t_world *world, char **per_word_pointer);
 int			parse_light(t_world *world, char **per_word_pointer);
 
 // *** parse_scene.c ***
-int			parse_sphere(t_world *world, char **per_word_pointer, int id);
-int			parse_plane(t_world *world, char **per_word_pointer, int id);
-int			parse_cylinder(t_world *world, char **per_word_pointer, int id);
+int			parse_sphere(t_world *world, char **per_word_pointer);
+int			parse_plane(t_world *world, char **per_word_pointer);
+int			parse_cylinder(t_world *world, char **per_word_pointer);
 
 
 #endif

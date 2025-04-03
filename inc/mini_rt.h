@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/03 21:07:43 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/03 23:39:43 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ typedef struct	s_material
 typedef struct s_object
 {
 	int			identifier;
-	int			id;
 	// オブジェクトの位置ベクトル
 	t_vector	coordinates_vec;
 	// オブジェクトの正規化されている方向ベクトル 範囲は[-1,1]  平面、円柱

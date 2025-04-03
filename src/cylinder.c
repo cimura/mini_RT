@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/03 21:03:34 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/04 00:01:51 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,7 @@ void	set_cylinder_normal_vector(t_intersection *intersection,
 	intersection->hit_on_back = false;
 	ray_dot_noramal = calculate_inner_product(ray.orientation_vec, normal_vector);
 	if (ray_dot_noramal >= 0)
-	{
 		normal_vector = multi_vector(normal_vector, -1);
-		intersection->hit_on_back = true;
-	}
 	normal_vector = normalize_vector(normal_vector);
 	intersection->normal_vec = normal_vector;
 }

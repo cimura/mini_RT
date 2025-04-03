@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/03 21:15:02 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/03 23:24:37 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,21 @@ typedef struct	s_intersection
 	t_object	object;
 }	t_intersection;
 
-// 視線から逆算したレイの通ったオブジェクトたちの情報
-typedef struct	s_trajectory
+// 完全鏡面反射と屈折を計算するための構造体
+typedef struct	s_catadioptric_vars
 {
-	t_ray			ray;
-	//t_list			*refractive_indexs;
-	int				head_i;
-	double			*objects_trajectory;
-}	t_trajectory;
+	t_vector	inverse_ray_vec;
+	double		inverse_ray_dot_normal;
+	double		refraction_index1;
+	double		refraction_index2;
+	double		rfl_2_1;
+	double		cos1;
+	double		cos2;
+	double		omega;
+	double		p_polarized_light;
+	double		s_polarized_light;
+	double		reflectance_index;
+}	t_catadioptric_vars;
 
 // *** calculate_phong_radiance.c ***
 t_dcolor		calculate_phong_radiance(t_world world, t_intersection i, t_ray ray);
