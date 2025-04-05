@@ -6,13 +6,15 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/03 23:39:43 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/05 23:16:18 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_RT_H
 
 # define MINI_RT_H
+
+# define DEBUG
 
 # include <stdio.h>
 # include <fcntl.h>
@@ -134,11 +136,10 @@ typedef struct	s_world
 {
 	t_mlx				mlx;
 	// シーン全体のオブジェクトの情報 （大気など）
-	t_object			scene_wide_object;
 	double				global_refractive_index;
 	t_ambient_lightning	ambient_lightning;
 	t_camera			camera;
-	t_light				light;
+	t_list				*lights;
 	t_list				*objects;
 }	t_world;
 

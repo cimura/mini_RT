@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: takat <takat@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:56:46 by takat             #+#    #+#             */
-/*   Updated: 2025/03/24 22:56:54 by takat            ###   ########.fr       */
+/*   Updated: 2025/04/05 22:54:34 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,21 @@ int	parse_camera(t_world *world, char **per_word_pointer)
 	return (0);
 }
 
+static int	add_light_to_lst(t_world *world, t_light *light)
+{
+	t_list	*new_node;
+
+	new_node = ft_lstnew(light);
+	if (new_node == NULL)
+		return (ft_lstclear(&world->lights, NULL),
+			ft_lstclear(&world->objects, NULL), 1);
+	ft_lstadd_back(&world->lights, new_node);
+	return (0);
+}
+
 int	parse_light(t_world *world, char **per_word_pointer)
 {
-	t_light		light;
+	t_light		*light;
 	double		ratio;
 	t_dcolor	rgb;
 
@@ -73,17 +85,17 @@ int	parse_light(t_world *world, char **per_word_pointer)
 		return (1);
 	if (ft_double_pointer_size(per_word_pointer) != 4)
 		return (print_err_msg(NOT_MATCH_PARAM_NUM, per_word_pointer[0]), 1);
-	if (world->light.identifier)
-		return (print_err_msg(TOO_MANY_PARAM, per_word_pointer[0]), 1);
-	light.identifier = LIGHT;
-	if (set_vector(&light.coordinates_vec, per_word_pointer[1], 0, 0) != 0)
+	light = malloc(sizeof(t_light));
+	if (light == NULL)
+		return (1);
+	light->identifier = LIGHT;
+	if (set_vector(&light->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
 		return (1);
 	ratio = ft_atod(per_word_pointer[2]);
 	if (ratio < 0.0 || ratio > 1.0)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[2]), 1);
 	if (set_rgb(&rgb, per_word_pointer[3]) != 0)
 		return (1);
-	light.intensity = dcolor_coef_multi(rgb, ratio);
-	world->light = light;
-	return (0);
+	light->intensity = dcolor_coef_multi(rgb, ratio);
+	return (add_light_to_lst(world, light));
 }

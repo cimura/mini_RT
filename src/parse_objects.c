@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/04 00:22:29 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/05 22:14:02 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int	add_object_to_lst(t_world *world, t_object *object)
 
 	node = ft_lstnew(object);
 	if (node == NULL)
-		return (ft_lstclear(&world->objects, NULL), 1);
+		return (ft_lstclear(&world->lights, NULL),
+			ft_lstclear(&world->objects, NULL), 1);
 	ft_lstadd_back(&world->objects, node);
 	return (0);
 }

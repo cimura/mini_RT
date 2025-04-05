@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:36 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/03 23:41:31 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/05 22:54:00 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void	init_world(t_world *world)
 {
 	world->ambient_lightning.identifier = 0;
 	world->camera.identifier = 0;
-	world->light.identifier = 0;
+	world->lights = NULL;
 	world->objects = NULL;
 }
 

@@ -6,62 +6,62 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 21:23:24 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/04 00:18:51 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/05 23:21:00 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
 
-static t_ray	get_reflection_ray(t_intersection intersection,
-	t_catadioptric_vars catadioptric_vars)
+static t_ray	get_reflection_ray(const t_intersection *intersection,
+	const t_catadioptric_vars *catadioptric_vars)
 {
 	t_ray	rfl_ray;
 
 	rfl_ray.orientation_vec = normalize_vector(subst_vector(multi_vector(
-		intersection.normal_vec, catadioptric_vars.inverse_ray_dot_normal * 2),
-		catadioptric_vars.inverse_ray_vec));
-	rfl_ray.coordinates_vec = add_vector(intersection.coordinates_vec,
+		intersection->normal_vec, catadioptric_vars->inverse_ray_dot_normal * 2),
+		catadioptric_vars->inverse_ray_vec));
+	rfl_ray.coordinates_vec = add_vector(intersection->coordinates_vec,
 		multi_vector(rfl_ray.orientation_vec, EPSILON));
 	return (rfl_ray);
 }
 
-static t_ray	get_refraction_ray(t_catadioptric_vars catadioptric_vars,
-	t_intersection intersection, t_ray ray)
+static t_ray	get_refraction_ray(const t_catadioptric_vars *catadioptric_vars,
+	const t_intersection *intersection, const t_ray *ray)
 {
 	t_ray	rfr_ray;
 	double	rfr_1_2;
 
-	rfr_1_2 = catadioptric_vars.refraction_index1
-	/ catadioptric_vars.refraction_index2;
+	rfr_1_2 = catadioptric_vars->refraction_index1
+	/ catadioptric_vars->refraction_index2;
 	rfr_ray.orientation_vec = normalize_vector(subst_vector(multi_vector(
-		ray.orientation_vec, rfr_1_2), multi_vector(
-		intersection.normal_vec, rfr_1_2 * catadioptric_vars.omega)));
-	rfr_ray.coordinates_vec = add_vector(intersection.coordinates_vec,
+		ray->orientation_vec, rfr_1_2), multi_vector(
+		intersection->normal_vec, rfr_1_2 * catadioptric_vars->omega)));
+	rfr_ray.coordinates_vec = add_vector(intersection->coordinates_vec,
 		multi_vector(rfr_ray.orientation_vec, EPSILON));
 	return (rfr_ray);
 }
 
 static void	catadioptric_vars_init(t_catadioptric_vars *catadioptric_vars,
-	t_intersection intersection, t_ray ray)
+	const t_intersection *intersection, const t_ray *ray)
 {
 	catadioptric_vars->inverse_ray_vec =
-		multi_vector(ray.orientation_vec, -1);
+		multi_vector(ray->orientation_vec, -1);
 	catadioptric_vars->inverse_ray_dot_normal =
 		calculate_inner_product(catadioptric_vars->inverse_ray_vec,
-		intersection.normal_vec);
+		intersection->normal_vec);
 }
 
 static void	set_catadioptric_vars(t_catadioptric_vars *cv,
-	t_world world, t_intersection intersection)
+	const t_world *world, const t_intersection *intersection)
 {
 	double	rfr_2_1;
 
-	cv->refraction_index1 = world.global_refractive_index;
-	cv->refraction_index2 = intersection.object.material.refractive_index;
-	if (intersection.hit_on_back == true)
+	cv->refraction_index1 = world->global_refractive_index;
+	cv->refraction_index2 = intersection->object->material.refractive_index;
+	if (intersection->hit_on_back == true)
 	{
-		cv->refraction_index1 = intersection.object.material.refractive_index;
-		cv->refraction_index2 = world.global_refractive_index;
+		cv->refraction_index1 = intersection->object->material.refractive_index;
+		cv->refraction_index2 = world->global_refractive_index;
 	}
 	rfr_2_1 = cv->refraction_index2 / cv->refraction_index1;
 	cv->cos1 = cv->inverse_ray_dot_normal;
@@ -75,37 +75,37 @@ static void	set_catadioptric_vars(t_catadioptric_vars *cv,
 		(pow(cv->p_polarized_light, 2) + pow(cv->s_polarized_light, 2)) / 2;
 }
 
-t_dcolor	calculate_catadioptric_radiance(t_world world,
-	t_intersection intersection, t_ray ray, int recursion_level)
+t_dcolor	calculate_catadioptric_radiance(const t_world *world,
+	t_intersection *intersection, const t_ray *ray, int recursion_level)
 {
 	t_dcolor			color;
 	t_catadioptric_vars	catadioptric_vars;
-	t_ray			rfl_ray;
-	t_ray			rfr_ray;
+	t_ray				rfl_ray;
+	t_ray				rfr_ray;
 
 	color = dcolor_init(0, 0, 0);
 	catadioptric_vars_init(&catadioptric_vars, intersection, ray);
-	if (intersection.object.material.use_perfect_reflectance == false)
+	if (intersection->object->material.use_perfect_reflectance == false)
 		return (color);
-	rfl_ray = get_reflection_ray(intersection, catadioptric_vars);
+	rfl_ray = get_reflection_ray(intersection, &catadioptric_vars);
 	color = dcolor_multi(ray_trace_recursive(world,
-		rfl_ray, recursion_level + 1),
-		intersection.object.material.catadioptric_factor);
-	if (intersection.object.material.use_refraction == false)
+		&rfl_ray, recursion_level + 1),
+		intersection->object->material.catadioptric_factor);
+	if (intersection->object->material.use_refraction == false)
 		return (color);
 	set_catadioptric_vars(&catadioptric_vars, world, intersection);
-	rfr_ray = get_refraction_ray(catadioptric_vars, intersection, ray);
-	if (intersection.object.material.use_thin_surfase == true)
+	rfr_ray = get_refraction_ray(&catadioptric_vars, intersection, ray);
+	if (intersection->object->material.use_thin_surfase == true)
 	{
-		intersection.hit_on_back = true;
+		intersection->hit_on_back = true;
 		set_catadioptric_vars(&catadioptric_vars, world, intersection);
-		rfr_ray = get_refraction_ray(catadioptric_vars, intersection, rfr_ray);
+		rfr_ray = get_refraction_ray(&catadioptric_vars, intersection, &rfr_ray);
 		color = dcolor_init(255,0,0);
 	}
 	color = dcolor_coef_multi(color, catadioptric_vars.reflectance_index);
 	color = dcolor_add(color, dcolor_coef_multi(
-		dcolor_multi(ray_trace_recursive(world, rfr_ray, recursion_level + 1),
-		intersection.object.material.catadioptric_factor),
+		dcolor_multi(ray_trace_recursive(world, &rfr_ray, recursion_level + 1),
+		intersection->object->material.catadioptric_factor),
 		1.0 - catadioptric_vars.reflectance_index));
 	return (color);
 }
