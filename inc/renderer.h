@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   renderer.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
+/*   Updated: 2025/04/03 23:24:37 by ttakino          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RENDERER_H
 
 # define RENDERER_H
@@ -16,7 +28,7 @@
 // 光沢度
 # define SHININESS 8
 // 完全鏡面反射をするときの再帰関数の深さ限度
-# define MAX_RECURSIVE_LEVEL 8
+# define MAX_RECURSIVE_LEVEL 6
 // shadow rayを計算するための微小値
 # define EPSILON 1.0 / 512
 
@@ -25,9 +37,9 @@
 # define SCREEN_HEIGHT 2.0
 
 // 背景色
-# define BACKGROUND_COLOR_RED 0.7
-# define BACKGROUND_COLOR_GREEN 0.7
-# define BACKGROUND_COLOR_BLUE 0.7
+# define BACKGROUND_COLOR_RED 0.12
+# define BACKGROUND_COLOR_GREEN 0.56
+# define BACKGROUND_COLOR_BLUE 1.0
 
 // 2次元の座標を表す構造体
 typedef struct	s_xy
@@ -41,6 +53,7 @@ typedef struct	s_ray
 {
 	t_vector	coordinates_vec;
 	t_vector	orientation_vec;
+	double		prev_refractive_index;
 }	t_ray;
 
 // P = S + td tの二次方程式の係数a,b,c 判別式d  (S: レイの始点 t: 実数(0<t) d: レイの正規化方向ベクトル)
@@ -57,28 +70,52 @@ typedef struct	s_intersection
 {
 	// 係数t
 	double		t;
+	bool		hit_on_back;
 	t_vector	coordinates_vec;
 	t_vector	normal_vec;
 	t_object	object;
 }	t_intersection;
 
+// 完全鏡面反射と屈折を計算するための構造体
+typedef struct	s_catadioptric_vars
+{
+	t_vector	inverse_ray_vec;
+	double		inverse_ray_dot_normal;
+	double		refraction_index1;
+	double		refraction_index2;
+	double		rfl_2_1;
+	double		cos1;
+	double		cos2;
+	double		omega;
+	double		p_polarized_light;
+	double		s_polarized_light;
+	double		reflectance_index;
+}	t_catadioptric_vars;
+
 // *** calculate_phong_radiance.c ***
 t_dcolor		calculate_phong_radiance(t_world world, t_intersection i, t_ray ray);
+
+// *** catadioptric.c ***
+t_dcolor	calculate_catadioptric_radiance(t_world world, t_intersection intersection,
+	t_ray ray, int recursion_level);
 
 // *** canera.c ***
 void			init_camera(t_camera *camera);
 
 // *** sphere.c ***
 void			set_sphere_intersection(t_intersection *i, t_object sphere, t_ray ray);
-t_vector		get_sphere_normal_vector(t_vector intersection, t_object sphere, t_ray ray);
+void			set_sphere_normal_vector(t_intersection *intersection,
+					t_object sphere, t_ray ray);
 
 // *** plane.c ***
 void			set_plane_intersection(t_intersection *i, t_object plane, t_ray ray);
-t_vector		get_plane_normal_vector(t_vector intersection, t_object plane, t_ray ray);
+void			set_plane_normal_vector(t_intersection *intersection,
+					t_object plane, t_ray ray);
 
 // *** cylinder.c ***
 void			set_cylinder_intersection(t_intersection *i, t_object object, t_ray ray);
-t_vector		get_cylinder_normal_vector(t_vector intersection, t_object cylinder, t_ray ray);
+void			set_cylinder_normal_vector(t_intersection *intersection,
+					t_object cylinder, t_ray ray);
 
 // *** cylinder_utils.c ***
 void			calculate_cylinder_intersections_num(t_coef *coef, t_object cylinder, t_ray ray);
@@ -96,6 +133,7 @@ t_dcolor		dcolor_multi(t_dcolor l1, t_dcolor l2);
 int				rgb_to_colorcode(t_dcolor light);
 
 // *** renderer.c ***
-void 			render_scene(t_world world);
+t_dcolor		ray_trace_recursive(t_world world, t_ray ray, int recursion_level);
+int 			render_scene(t_world world);
 
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   calculate_phong_radiance.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/24 22:58:07 by ttakino           #+#    #+#             */
+/*   Updated: 2025/04/03 20:50:05 by ttakino          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "renderer.h"
 
 static bool	is_under_shadow(t_world world, t_vector intersection_vec)
@@ -7,10 +19,10 @@ static bool	is_under_shadow(t_world world, t_vector intersection_vec)
 	double		shadow_ray_len;
 	double		distance;
 
-	shadow_ray_vec = normalize_vector(subst_vector(world.light.coordinates_vec, intersection_vec));
+	shadow_ray_vec = subst_vector(world.light.coordinates_vec, intersection_vec);
+	shadow_ray.orientation_vec = normalize_vector(shadow_ray_vec);
+	shadow_ray.coordinates_vec = add_vector(intersection_vec, multi_vector(shadow_ray.orientation_vec, EPSILON));
 	shadow_ray_len = len_vector(shadow_ray_vec);
-	shadow_ray.coordinates_vec = add_vector(intersection_vec, multi_vector(shadow_ray_vec, EPSILON));
-	shadow_ray.orientation_vec = shadow_ray_vec;
 	distance = find_intersection_minimum_distance(world, shadow_ray).t;
 	if (distance >= 0 && distance < shadow_ray_len)
 		return (true);
@@ -20,23 +32,12 @@ static bool	is_under_shadow(t_world world, t_vector intersection_vec)
 // xxx_coefficient: 反射係数 物体の表面の色によって変わる
 // xxx_light:		光の強度xあたる向きの内積 光源の色によって変わる
 
-//static t_dcolor	calculate_ambient_color(t_ambient_lightning ambient_lightning, t_object object)
-//{
-//	t_dcolor	ambient_coefficient;
-//	t_dcolor	ambient_light;
-
-//	set_color(&ambient_coefficient, object.rgb, AMBIENT_COEFFICIENT);
-//	set_color(&ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
-//	ambient_light = ambient_lightning.intensity;
-//	return (dcolor_multi(ambient_light, ambient_coefficient));
-//}
-
 static t_dcolor	calculate_diffuse_color(t_light light, t_object object, double normal_dot_incidence)
 {
 	t_dcolor	diffuse_light;
 
 	diffuse_light = dcolor_coef_multi(light.intensity, normal_dot_incidence);
-	return (dcolor_multi(diffuse_light, object.material.diffuse_coef));
+	return (dcolor_multi(diffuse_light, object.material.diffuse));
 }
 
 static t_dcolor calculate_specular_color(t_light light, t_object object, t_vector dir_vec, t_vector reflection_vec)
@@ -50,9 +51,8 @@ static t_dcolor calculate_specular_color(t_light light, t_object object, t_vecto
 	inverse_dir_vec = normalize_vector(multi_vector(dir_vec, -1));
 	inverse_dot_reflection = calculate_inner_product(inverse_dir_vec, reflection_vec);
 	double_compressor(&inverse_dot_reflection, 0.0, 1.0);
-	//set_color(&specular_light, light.rgb, light.ratio * pow(inverse_dot_reflection, SHININESS));
 	specular_light = dcolor_coef_multi(light.intensity, pow(inverse_dot_reflection, object.material.shinness));
-	return (dcolor_multi(specular_light, object.material.specular_coef));
+	return (dcolor_multi(specular_light, object.material.specular));
 }
 
 // 交点があったピクセルの色を計算する

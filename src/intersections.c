@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   intersections.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/24 22:59:04 by ttakino           #+#    #+#             */
+/*   Updated: 2025/04/03 21:04:30 by ttakino          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "renderer.h"
 
 // 交点情報を小さい順に並び替えるための関数
@@ -22,11 +34,11 @@ t_intersection	find_intersection_minimum_distance(t_world world, t_ray ray)
 	{
 		object = *(t_object *)world.objects->content;
 		if (object.identifier == SPHERE)
-			set_sphere_intersection(&now_intersec, object, ray);// get_sphere_intersection
+			set_sphere_intersection(&now_intersec, object, ray);
 		else if (object.identifier == PLANE)
-			set_plane_intersection(&now_intersec, object, ray);// get_plane_intersection
+			set_plane_intersection(&now_intersec, object, ray);
 		else if (object.identifier == CYLINDER)
-			set_cylinder_intersection(&now_intersec, object, ray);// set_cylinder_intersection
+			set_cylinder_intersection(&now_intersec, object, ray);
 		if (min_intersec.t < 0 && now_intersec.t >= 0)
 			min_intersec = now_intersec;
 		else if ((min_intersec.t < 0 && now_intersec.t >= 0)
@@ -41,9 +53,9 @@ t_intersection	find_intersection_minimum_distance(t_world world, t_ray ray)
 void	calculate_intersections_normal_vector(t_intersection *i, t_ray ray)
 {
 	if (i->object.identifier == SPHERE)
-		i->normal_vec = get_sphere_normal_vector(i->coordinates_vec, i->object, ray);// calculate_sphere_normal_vector
+		set_sphere_normal_vector(i, i->object, ray);
 	else if (i->object.identifier == PLANE)
-		i->normal_vec = get_plane_normal_vector(i->coordinates_vec, i->object, ray);// calculate_plane_normal_vector
+		set_plane_normal_vector(i, i->object, ray);
 	else if (i->object.identifier == CYLINDER)
-		i->normal_vec = get_cylinder_normal_vector(i->coordinates_vec, i->object, ray);
+		set_cylinder_normal_vector(i, i->object, ray);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:36 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 18:53:27 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/03 23:41:31 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,17 +102,17 @@ int	parse_line(t_world *world, char *line)
 	if (per_word_pointer == NULL || per_word_pointer[0] == NULL)
 		return (1);
 	if (ft_strncmp(per_word_pointer[0], "A", 3) == 0)
-		status = parse_ambient_lightning(world, per_word_pointer);// parse_ambient_lightning
+		status = parse_ambient_lightning(world, per_word_pointer);
 	else if (ft_strncmp(per_word_pointer[0], "C", 3) == 0)
-		status = parse_camera(world, per_word_pointer);// parse_camera
+		status = parse_camera(world, per_word_pointer);
 	else if (ft_strncmp(per_word_pointer[0], "L", 3) == 0)
-		status = parse_light(world, per_word_pointer);// parse_light
+		status = parse_light(world, per_word_pointer);
 	else if (ft_strncmp(per_word_pointer[0], "sp", 3) == 0)
-		status = parse_sphere(world, per_word_pointer);// parse_sphere
+		status = parse_sphere(world, per_word_pointer);
 	else if (ft_strncmp(per_word_pointer[0], "pl", 3) == 0)
-		status = parse_plane(world, per_word_pointer);// parse_plane
+		status = parse_plane(world, per_word_pointer);
 	else if (ft_strncmp(per_word_pointer[0], "cy", 3) == 0)
-		status = parse_cylinder(world, per_word_pointer);// parse_cylinder
+		status = parse_cylinder(world, per_word_pointer);
 	else
 		return (print_err_msg(INV_IDENTIFIER, per_word_pointer[0]), 1);
 	free_double_pointer(per_word_pointer);
@@ -130,7 +130,6 @@ int	parse_rt_file(t_world *world, char *buf)
 	i = 0;
 	while (per_row_pointer[i] != NULL)
 	{
-		// TODO t_sceneに当てはめる
 		if (parse_line(world, per_row_pointer[i]) != 0)
 		{
 			free_double_pointer(per_row_pointer);
@@ -187,18 +186,12 @@ int	parse_arguments(t_world *world, int argc, char **argv)
 
 	if (check_num_of_args(argc) != 0)
 		return (1);
-	// filename check
 	if (check_file_name(argv[1]) != 0)
 		return (1);
-	// read file
 	if (read_rt_file(argv[1], buf) != 0)
 		return (1);
-	// for parse file  init_world
 	init_world(world);
-	// parse file
 	if (parse_rt_file(world, buf) != 0)
 		return (1);
-	// setup world data from .rt file
-	//print_world_objects(*world);
 	return (0);
 }

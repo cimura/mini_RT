@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 17:16:45 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/03 23:39:43 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
 // オブジェクトの識別子
 enum	e_obj_identifier
 {
-	AMBIENT_LIGHTNING = 3,
+	ATOMOSPHERE = 3,
+	AMBIENT_LIGHTNING,
 	CAMERA,
 	LIGHT,
 	SPHERE,
@@ -83,18 +84,34 @@ typedef struct	s_light
 	t_dcolor		intensity;
 }	t_light;
 
+// 完全鏡面反射する鏡は銀で出来ていることにする
+enum	e_material
+{
+	GLASS,
+	IRON,
+	SILVER,
+	WOOD,
+	WATER,
+};
+
 typedef struct	s_material
 {
 	// 拡散反射係数
-	t_dcolor	diffuse_coef;
+	t_dcolor	diffuse;
 	// 鏡面反射係数
-	t_dcolor	specular_coef;
+	t_dcolor	specular;
 	// 光沢度
 	double		shinness;
 	// 完全鏡面反射を使うかどうか
 	bool		use_perfect_reflectance;
-	// 完全鏡面反射係数
-	t_dcolor	perfect_reflectance;
+	// 完全鏡面反射・屈折係数
+	t_dcolor	catadioptric_factor;
+	// 屈折を使うかどうか
+	bool		use_refraction;
+	// 絶対屈折率
+	double		refractive_index;
+	// 面が表と裏を共有するかどうか（円柱や平面などはtrue 球体はfalse）
+	bool		use_thin_surfase;
 }	t_material;
 
 // オブジェクト汎用
@@ -116,6 +133,9 @@ typedef struct s_object
 typedef struct	s_world
 {
 	t_mlx				mlx;
+	// シーン全体のオブジェクトの情報 （大気など）
+	t_object			scene_wide_object;
+	double				global_refractive_index;
 	t_ambient_lightning	ambient_lightning;
 	t_camera			camera;
 	t_light				light;

@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/24 23:00:37 by ttakino           #+#    #+#             */
+/*   Updated: 2025/03/24 23:00:39 by ttakino          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef UTILS_H
 
 # define UTILS_H
 
+# include <stdbool.h>
 # include "libft.h"
 
 // *** libft2.c *** utils.hなどに移してもいいかも
@@ -17,5 +30,7 @@ void	swap_double(double *a, double *b);
 // double型の変数を範囲内に落とし込む関数 (min <= max)
 void	double_compressor(double *d, double min, double max);
 void	free_double_pointer(char **pointer);
+bool	ft_is_valid_double(char *str);
+bool	ft_is_valid_int(char *str);
 
 #endif

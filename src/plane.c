@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   plane.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/24 22:57:50 by ttakino           #+#    #+#             */
+/*   Updated: 2025/04/04 00:01:57 by ttakino          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "renderer.h"
 
 void	set_plane_intersection(t_intersection *i, t_object plane, t_ray ray)
@@ -16,15 +28,17 @@ void	set_plane_intersection(t_intersection *i, t_object plane, t_ray ray)
 	i->object = plane;
 }
 
-t_vector	get_plane_normal_vector(t_vector intersection, t_object plane, t_ray ray)
+void	set_plane_normal_vector(t_intersection *intersection,
+	t_object plane, t_ray ray)
 {
 	t_vector	normal_vector;
 	double		ray_dot_normal;
 
-	(void)intersection;
 	normal_vector = plane.orientation_vec;
+	intersection->hit_on_back = false;
 	ray_dot_normal = calculate_inner_product(ray.orientation_vec, normal_vector);
 	if (ray_dot_normal >= 0)
 		normal_vector = multi_vector(normal_vector, -1);
-	return (normalize_vector(normal_vector));
+	normal_vector = normalize_vector(normal_vector);
+	intersection->normal_vec = normal_vector;
 }
