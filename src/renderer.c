@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/05 23:15:43 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/07 00:06:49 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_dcolor	ray_trace_recursive(const t_world *world, const t_ray *ray,
 	// 法線ベクトルを計算
 	calculate_intersections_normal_vector(&closest_intersection, ray);
 	// Phong反射モデルに則ってピクセルの色を計算
-	color = calculate_phong_radiance(world, &closest_intersection, ray);
+	color = calculate_phong_radiance(world, &closest_intersection, ray, recursion_level);
 	// もし完全鏡面反射か屈折をするならばそれらの色を足す
 	color = dcolor_add(color,
 		calculate_catadioptric_radiance(world, &closest_intersection, ray, recursion_level));

@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/05 23:32:17 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/06 22:50:06 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ typedef struct	s_ray
 {
 	t_vector	coordinates_vec;
 	t_vector	orientation_vec;
-	double		prev_refractive_index;
 }	t_ray;
 
 // P = S + td tの二次方程式の係数a,b,c 判別式d  (S: レイの始点 t: 実数(0<t) d: レイの正規化方向ベクトル)
@@ -94,7 +93,7 @@ typedef struct	s_catadioptric_vars
 
 // *** calculate_phong_radiance.c ***
 t_dcolor		calculate_phong_radiance(const t_world *world, const t_intersection *i,
-	const t_ray *ray);
+	const t_ray *ray, int recursion_level);
 
 // *** catadioptric.c ***
 t_dcolor		calculate_catadioptric_radiance(const t_world *world,
