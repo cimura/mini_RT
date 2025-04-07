@@ -6,39 +6,38 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/06 23:57:40 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:42:48 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
 
-static bool	is_under_shadow(t_dcolor *color, const t_world *world, t_light *light,
-	const t_vector *intersection_vec, int recursion_level)
+static bool	is_under_shadow(const t_world *world, t_light *light,
+	const t_intersection *intersection, int recursion_level)
 {
 	t_vector	shadow_ray_vec;
 	t_ray		shadow_ray;
 	double		shadow_ray_len;
 	t_intersection	closest_intersection;
 
-	shadow_ray_vec = subst_vector(light->coordinates_vec, *intersection_vec);
+	shadow_ray_vec = subst_vector(light->coordinates_vec,
+		intersection->coordinates_vec);
 	shadow_ray.orientation_vec = normalize_vector(shadow_ray_vec);
-	shadow_ray.coordinates_vec = add_vector(*intersection_vec, multi_vector(shadow_ray.orientation_vec, EPSILON));
+	shadow_ray.coordinates_vec = add_vector(intersection->coordinates_vec,
+		multi_vector(shadow_ray.orientation_vec, EPSILON));
 	shadow_ray_len = len_vector(shadow_ray_vec);
-	closest_intersection = find_intersection_minimum_distance(*world, &shadow_ray);
+	closest_intersection
+		= find_intersection_minimum_distance(*world, &shadow_ray);
 	if (closest_intersection.t >= 0 && closest_intersection.t < shadow_ray_len)
 	{
-		if (closest_intersection.object->material.use_refraction == true)
+		if (closest_intersection.object->material.use_refraction == true
+			&& recursion_level <= 0)
 		{
-			(void)color;
-			(void)recursion_level;
-			//if (recursion_level <= 0)
-			//	light->intensity = ray_trace_recursive(world, &shadow_ray, recursion_level + 1);
-			//else
-			//	light->intensity = dcolor_coef_multi(light->intensity, 0.0);
+			light->intensity
+				= ray_trace_recursive(world, &shadow_ray, recursion_level + 1);
 			return (false);
 		}
-		else
-			return (true);
+		return (true);
 	}
 	return (false);
 }
@@ -89,7 +88,7 @@ static t_dcolor	calculate_onelight_radiance(const t_world *world, const t_light 
 	result_color = world->ambient_lightning.intensity;
 	// 影の中にいたら環境光のみ
 	tmp = *light;
-	if (is_under_shadow(&result_color, world, &tmp, &i->coordinates_vec, recursion_level) == true)
+	if (is_under_shadow(world, &tmp, i, recursion_level) == true)
 		return (result_color);
 	// 法線ベクトルと入射ベクトルの内積 これを0-1の範囲にする(負の値の時は光は当たらないため)
 	normal_dot_incidence = calculate_inner_product(i->normal_vec, incidence_vec);
