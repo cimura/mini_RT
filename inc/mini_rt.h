@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/05 23:16:18 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 00:11:29 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct	s_color
 // 環境光 Ambient lightning
 typedef struct	s_ambient_lightning
 {
-	int		identifier;
+	int			identifier;
 	// 環境光の比率 ambient_lightning_ratio 範囲は[0.0-1.0]
 	// 光の強度
 	// RGB 範囲は0.0-1.0 ( red,green,blue )
@@ -83,7 +83,7 @@ typedef struct	s_light
 	// 光の明るさ比率 範囲は[0.0,1.0]
 	// 光の強さ
 	// ※mandatoryでは不使用 RGB 範囲は0.0-1.0
-	t_dcolor		intensity;
+	t_dcolor	intensity;
 }	t_light;
 
 // 完全鏡面反射する鏡は銀で出来ていることにする

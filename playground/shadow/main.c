@@ -42,16 +42,16 @@ double	calculate_t_intersection(t_camera camera, t_vector dir_vec, t_object obj)
 	double	result = -1;
 	if (ft_strncmp(obj.identifier, "pl", 3) == 0)
 	{
-		result = -(calculate_inner_product(subst_vector(camera.coordinates_vec, obj.coordinates_vec), obj.orientation_vec)
-			/ calculate_inner_product(dir_vec, obj.orientation_vec));
+		result = -(inner_product(subst_vector(camera.coordinates_vec, obj.coordinates_vec), obj.orientation_vec)
+			/ inner_product(dir_vec, obj.orientation_vec));
 	}
 	else if (ft_strncmp(obj.identifier, "sp", 3) == 0)
 	{
 		// 球の交差判定 (解の公式を使う)
         t_vector oc = subst_vector(camera.coordinates_vec, obj.coordinates_vec);
-        double a = calculate_inner_product(dir_vec, dir_vec);
-        double b = 2.0 * calculate_inner_product(oc, dir_vec);
-        double c = calculate_inner_product(oc, oc) - (obj.diameter / 2.0) * (obj.diameter / 2.0);
+        double a = inner_product(dir_vec, dir_vec);
+        double b = 2.0 * inner_product(oc, dir_vec);
+        double c = inner_product(oc, oc) - (obj.diameter / 2.0) * (obj.diameter / 2.0);
         double discriminant = b * b - 4 * a * c;
 
         if (discriminant < 0)

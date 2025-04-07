@@ -62,7 +62,7 @@ int	calculate_color(t_world world, t_object *objects, t_vector dir_vec, t_vector
 	light = world.light;
 	ambient_lightning = world.ambient_lightning;
 	incidence_vec = normalize_vector(subst_vector(light.coordinates_vec, intersection_point));
-	normal_dot_incidence = calculate_inner_product(objects->orientation_vec, incidence_vec);
+	normal_dot_incidence = inner_product(objects->orientation_vec, incidence_vec);
 	//printf("%f\n", normal_dot_incidence);
 	if (normal_dot_incidence < 0.0)
 		normal_dot_incidence = 0.0;
@@ -71,7 +71,7 @@ int	calculate_color(t_world world, t_object *objects, t_vector dir_vec, t_vector
 
 	reflection_vec = subst_vector(multi_vector(objects->orientation_vec, 2 * normal_dot_incidence), incidence_vec);
 	inverse_camera_orientation_vec = normalize_vector(multi_vector(dir_vec, -1));
-	inverse_dot_reflection = calculate_inner_product(inverse_camera_orientation_vec, reflection_vec);
+	inverse_dot_reflection = inner_product(inverse_camera_orientation_vec, reflection_vec);
 
 	if (inverse_dot_reflection < 0.0)
 		inverse_dot_reflection = 0.0;

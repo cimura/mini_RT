@@ -6,14 +6,15 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:26 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/24 22:58:29 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/07 20:08:22 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
 
 // 今回はカメラの回転は指定されないので、x軸に水平でy軸に平行な角度
-static void	set_screen_normalized_basis_vectors(t_camera camera, t_vector *basisx, t_vector *basisy)
+static void	set_screen_normalized_basis_vectors(t_camera camera,
+	t_vector *basisx, t_vector *basisy)
 {
 	basisx->y = 0;
 	basisx->x = camera.orientation_vec.z
@@ -27,8 +28,9 @@ static void	set_screen_normalized_basis_vectors(t_camera camera, t_vector *basis
 
 void	init_camera(t_camera *camera)
 {
-	set_screen_normalized_basis_vectors(*camera, &camera->x_basis, &camera->y_basis);
-	camera->center_of_screen = multi_vector(camera->orientation_vec, (SCREEN_WIDTH / 2)
-	* (1 / tan(camera->horizontal_fov / 2 * (M_PI / 180))));
-	printf("center_of_screen(%lf,%lf,%lf)\n", camera->center_of_screen.x, camera->center_of_screen.y, camera->center_of_screen.z);
+	set_screen_normalized_basis_vectors(*camera, &camera->x_basis,
+		&camera->y_basis);
+	camera->center_of_screen = multi_vector(camera->orientation_vec,
+		(SCREEN_WIDTH / 2) * (1 / tan(camera->horizontal_fov / 2
+		* (M_PI / 180))));
 }

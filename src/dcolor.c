@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:47 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/24 22:58:50 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/07 23:19:25 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ t_dcolor	dcolor_multi(t_dcolor l1, t_dcolor l2)
 	return (result);
 }
 
+// 赤は上位16ビット 緑は中間8ビット 青は下位8ビット
 int	rgb_to_colorcode(t_dcolor light)
 {
 	int	result;
 
-	// result = red.value*red.R_r * pow(16, 4) + green.value*green.R_r * pow(16, 2) + blue.value*blue.R_r;
-		result = (int)(light.red * 255) << 16  // 赤は上位16ビット
-		   | (int)(light.green * 255) << 8  // 緑は中間8ビット
-		   | (int)(light.blue * 255);  // 青は下位8ビット
+	result = (int)(light.red * 255) << 16
+		| (int)(light.green * 255) << 8
+		| (int)(light.blue * 255);
 	return (result);
 }

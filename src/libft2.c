@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:11:44 by ttakino           #+#    #+#             */
-/*   Updated: 2025/02/26 16:54:36 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/07 23:27:09 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,13 @@ double	ft_atod(char *nptr)
 	return ((double)result * sign / factor);
 }
 
-int     ft_strrncmp(const char *s1, const char *s2, size_t size)
+int	ft_strrncmp(const char *s1, const char *s2, size_t size)
 {
-	int     i;
-	int     j;
+	int	i;
+	int	j;
 
 	if (!s1 || !s2)
-			return (0);
+		return (0);
 	i = ft_strlen(s1) - 1;
 	j = ft_strlen(s2) - 1;
 	while (--size && i && j && s1[i] == s2[j])

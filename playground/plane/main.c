@@ -202,14 +202,14 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light ligh
 	t_light_ratio		specular_light;
 	t_light_ratio		result_color;
 
-	if (calculate_inner_product(dir_vec, plane.orientation_vec) == 0)
+	if (inner_product(dir_vec, plane.orientation_vec) == 0)
 	{
 		my_pixel_put(xs, ys, mlx.img, BACKGROUND_COLOR);
 		return ;
 	}
 
-	t = -(calculate_inner_product(subst_vector(camera.coordinates_vec, plane.coordinates_vec), plane.orientation_vec)
-			/ calculate_inner_product(dir_vec, plane.orientation_vec));
+	t = -(inner_product(subst_vector(camera.coordinates_vec, plane.coordinates_vec), plane.orientation_vec)
+			/ inner_product(dir_vec, plane.orientation_vec));
 
 	// printf("%f ", t);
 	// 交点があるなら
@@ -221,7 +221,7 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light ligh
         intersection_point.z = camera.coordinates_vec.z + t * dir_vec.z;
 
 		incidence_vec = normalize_vector(subst_vector(light.coordinates_vec, intersection_point));
-		normal_dot_incindence = calculate_inner_product(plane.orientation_vec, incidence_vec);
+		normal_dot_incindence = inner_product(plane.orientation_vec, incidence_vec);
 		if (normal_dot_incindence < 0.0)
 			normal_dot_incindence = 0.0;
 		if (normal_dot_incindence > 1.0)
@@ -229,7 +229,7 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light ligh
 
 		reflection_vec = subst_vector(multi_vector(plane.orientation_vec, 2 * normal_dot_incindence), incidence_vec);
 		inverse_camera_orientation_vec = normalize_vector(multi_vector(dir_vec, -1));
-		inverse_dot_reflection = calculate_inner_product(inverse_camera_orientation_vec, reflection_vec);
+		inverse_dot_reflection = inner_product(inverse_camera_orientation_vec, reflection_vec);
 
 		if (inverse_dot_reflection < 0.0)
 			inverse_dot_reflection = 0.0;

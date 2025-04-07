@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/05 23:32:17 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 00:14:05 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,12 @@
 # include "mini_rt.h"
 # include "vector.h"
 
-
-// 諸々の定数を定義しておく
 // 環境光反射係数
 //# define AMBIENT_COEFFICIENT 0.2
-// 拡散反射光反射係数
-//# define DIFFUSE_COEFFICIENT 0.69
-// 鏡面反射係数
-# define SPECULAR_COEFFICIENT 0.0//0.8
-// 光沢度
-# define SHININESS 8
 // 完全鏡面反射をするときの再帰関数の深さ限度
 # define MAX_RECURSIVE_LEVEL 6
 // shadow rayを計算するための微小値
-# define EPSILON 1.0 / 512
+# define EPSILON 0.005
 
 // 仮想スクリーンの大きさ
 # define SCREEN_WIDTH 2.0
@@ -92,13 +84,19 @@ typedef struct	s_catadioptric_vars
 	double		reflectance_index;
 }	t_catadioptric_vars;
 
-// *** calculate_phong_radiance.c ***
-t_dcolor		calculate_phong_radiance(const t_world *world, const t_intersection *i,
+// *** shader.c ***
+t_dcolor		shader(const t_world *world, const t_intersection *i,
 	const t_ray *ray);
 
 // *** catadioptric.c ***
 t_dcolor		calculate_catadioptric_radiance(const t_world *world,
 	t_intersection *intersection, const t_ray *ray, int recursion_level);
+
+// *** catadioptric_utils.c ***
+t_ray	get_reflection_ray(const t_catadioptric_vars *catadioptric_vars,
+	const t_intersection *intersection);
+t_ray	get_refraction_ray(const t_catadioptric_vars *catadioptric_vars,
+	const t_intersection *intersection, const t_ray *ray);
 
 // *** canera.c ***
 void			init_camera(t_camera *camera);
@@ -142,6 +140,7 @@ int				rgb_to_colorcode(t_dcolor light);
 // *** renderer.c ***
 t_dcolor		ray_trace_recursive(const t_world *world, const t_ray *ray,
 	int recursion_level);
-int 			render_scene(t_world *world);
+
+int 			renderer(t_world *world);
 
 #endif

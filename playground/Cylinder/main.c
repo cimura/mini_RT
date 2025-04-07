@@ -203,7 +203,7 @@ t_vector	calculate_cylinder_normal_vector(t_cylinder cylinder, t_vector intersec
 	double		cti_dot_orientation;
 
 	cc_to_intersection = subst_vector(intersection, cylinder.coordinates_vec);
-	cti_dot_orientation = calculate_inner_product(cc_to_intersection, cylinder.orientation_vec);
+	cti_dot_orientation = inner_product(cc_to_intersection, cylinder.orientation_vec);
 	if (dir_flag == I1)
 		normal_vector = subst_vector(cc_to_intersection, multi_vector(cylinder.orientation_vec,
 			cti_dot_orientation));
@@ -357,7 +357,7 @@ t_light_ratio calculate_specular_light_ratio(t_light light, t_cylinder cylinder,
 	double			inverse_dot_reflection;
 
 	inverse_camera_orientation_vec = normalize_vector(multi_vector(dir_vec, -1));
-	inverse_dot_reflection = calculate_inner_product(inverse_camera_orientation_vec, reflection_vec);
+	inverse_dot_reflection = inner_product(inverse_camera_orientation_vec, reflection_vec);
 	double_compressor(&inverse_dot_reflection, 0.0, 1.0);
 	set_light_ratio(&specular_coefficient, cylinder.rgb, SPECULAR_COEFFICIENT);
 	set_light_ratio(&specular_light, light.rgb, light.ratio * pow(inverse_dot_reflection, SHININESS));
@@ -382,7 +382,7 @@ int	calculate_intersections_color(t_cylinder cylinder, t_light light, t_vector d
 	if (is_under_shadow(light, cylinder, intersection_vec) == true)
 		return (rgb_to_colorcode(result_light));
 	// 法線ベクトルと入射ベクトルの内積 これを0-1の範囲にする(負の値の時は光は当たらないため)
-	normal_dot_incidence = calculate_inner_product(normal_vec, incidence_vec);
+	normal_dot_incidence = inner_product(normal_vec, incidence_vec);
 	if (normal_dot_incidence < 0)
 		return (rgb_to_colorcode(result_light));
 	double_compressor(&normal_dot_incidence, 0.0, 1.0);
@@ -396,7 +396,7 @@ double	a_coef(t_vector dir_vec, double co_dot_dir, double co_dot_co)
 {
 	double	dir_dot_dir;
 
-	dir_dot_dir = calculate_inner_product(dir_vec, dir_vec);
+	dir_dot_dir = inner_product(dir_vec, dir_vec);
 	return (dir_dot_dir - pow(co_dot_dir, 2) / co_dot_co);
 }
 
@@ -409,7 +409,7 @@ double	c_coef(t_vector camera_to_cylinder, t_cylinder cylinder, double co_dot_st
 {
 	double	ctc_dot_ctc;
 
-	ctc_dot_ctc = calculate_inner_product(camera_to_cylinder, camera_to_cylinder);
+	ctc_dot_ctc = inner_product(camera_to_cylinder, camera_to_cylinder);
 	return (ctc_dot_ctc - pow(co_dot_stc, 2) / co_dot_co - pow(cylinder.diameter / 2, 2));
 }
 
@@ -422,10 +422,10 @@ void	calculate_cylinder_intersections_num(t_coef *coef, t_cylinder cylinder, t_v
 	double		co_dot_stc;
 
 	start_to_cylinder = subst_vector(start_vec, cylinder.coordinates_vec);
-	co_dot_dir = calculate_inner_product(cylinder.orientation_vec, dir_vec);
-	co_dot_co = calculate_inner_product(cylinder.orientation_vec, cylinder.orientation_vec);
-	dir_dot_stc = calculate_inner_product(dir_vec, start_to_cylinder);
-	co_dot_stc = calculate_inner_product(cylinder.orientation_vec, start_to_cylinder);
+	co_dot_dir = inner_product(cylinder.orientation_vec, dir_vec);
+	co_dot_co = inner_product(cylinder.orientation_vec, cylinder.orientation_vec);
+	dir_dot_stc = inner_product(dir_vec, start_to_cylinder);
+	co_dot_stc = inner_product(cylinder.orientation_vec, start_to_cylinder);
 	coef->a = a_coef(dir_vec, co_dot_dir, co_dot_co);
 	coef->b = b_coef(co_dot_dir, dir_dot_stc, co_dot_stc, co_dot_co);
 	coef->c = c_coef(start_to_cylinder, cylinder, co_dot_stc, co_dot_co);
@@ -436,7 +436,7 @@ bool	is_intersection_in_cylinder_height_range(t_cylinder cylinder, t_vector inte
 {
 	double		i_dot_co;
 
-	i_dot_co = calculate_inner_product(subst_vector(intersection, cylinder.coordinates_vec),
+	i_dot_co = inner_product(subst_vector(intersection, cylinder.coordinates_vec),
 		cylinder.orientation_vec);
 	if (i_dot_co < 0)
 		i_dot_co *= -1;

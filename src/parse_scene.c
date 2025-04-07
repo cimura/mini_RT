@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:56:46 by takat             #+#    #+#             */
-/*   Updated: 2025/04/05 22:54:34 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/07 23:39:12 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	parse_ambient_lightning(t_world *world, char **per_word_pointer)
 		return (print_err_msg(TOO_MANY_PARAM, per_word_pointer[0]), 1);
 	ambient_lightning.identifier = AMBIENT_LIGHTNING;
 	if (!ft_is_valid_double(per_word_pointer[1]))
-		return (print_err_msg(INV_NUMBER, per_word_pointer[1]), 1);
+		return (print_err_msg(INV_PARAM, per_word_pointer[1]), 1);
 	ratio = ft_atod(per_word_pointer[1]);
 	if (ratio < 0.0 || ratio > 1.0)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[1]), 1);
@@ -55,7 +55,7 @@ int	parse_camera(t_world *world, char **per_word_pointer)
 	if (normalize_checker(&camera.orientation_vec, per_word_pointer[2]) != 0)
 		return (1);
 	if (!ft_is_valid_int(per_word_pointer[3]))
-		return (print_err_msg(INV_NUMBER, per_word_pointer[3]), 1);
+		return (print_err_msg(INV_PARAM, per_word_pointer[3]), 1);
 	camera.horizontal_fov = ft_atoi(per_word_pointer[3]);
 	if (camera.horizontal_fov < 0 || camera.horizontal_fov > 180)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[3]), 1);

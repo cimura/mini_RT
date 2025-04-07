@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:58 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/24 23:00:00 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/07 23:30:59 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	**split_values(char *str)
 	char	**result;
 
 	if (str == NULL)
-	return (NULL);
+		return (NULL);
 	if (ft_char_count(str, ',') != 2)
 		return (print_err_msg(INV_PARAM, str), NULL);
 	no_brackets = remove_brackets(str);
@@ -71,7 +71,7 @@ int	set_rgb(t_dcolor *rgb, char *str)
 	{
 		rgb_double[i] = ft_atoi(rgb_str[i]);
 		if (rgb_double[i] < 0 || rgb_double[i] > 255)
-		return (print_err_msg(OUT_OF_RANGE, rgb_str[i]), 1);
+			return (print_err_msg(OUT_OF_RANGE, rgb_str[i]), 1);
 		i++;
 	}
 	rgb->red = rgb_double[0] / 255;

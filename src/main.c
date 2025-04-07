@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/05 22:11:40 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/07 23:50:26 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@ void	on_destroy(t_world world)
 	exit(0);
 }
 
+static void	init_world(t_world *world)
+{
+	world->ambient_lightning.identifier = 0;
+	world->camera.identifier = 0;
+	world->lights = NULL;
+	world->objects = NULL;
+}
+
 #ifdef DEBUG
 #include <sys/time.h>
 long	get_current_time(void)
@@ -44,20 +52,21 @@ int	main(int argc, char **argv)
 {
 	t_world	world;
 
+	init_world(&world);
 	if (parse_arguments(&world, argc, argv) != 0)
 		return (1);
 	world.global_refractive_index = 1.000293;
 	if (init_mlx_struct(&world.mlx) != 0)
 		return (1);
 	#ifdef DEBUG
-		long	start = get_current_time();
+	long	start = get_current_time();
 	#endif
 	printf("rendering...\n");
-	render_scene(&world);
+	renderer(&world);
 	printf("100%%\n");
 	#ifdef DEBUG
-		long	end = get_current_time();
-		printf("rendering: %ldms\n", end - start);
+	long	end = get_current_time();
+	printf("rendering: %ldms\n", end - start);
 	#endif
 	display_in_mlx(world);
 }

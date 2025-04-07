@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:04 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/05 23:31:08 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/07 23:26:03 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ t_intersection	find_intersection_minimum_distance(t_world world,
 		if (min_intersec.t < 0 && now_intersec.t >= 0)
 			min_intersec = now_intersec;
 		else if ((min_intersec.t < 0 && now_intersec.t >= 0)
-			|| (min_intersec.t >= 0 && now_intersec.t >= 0 
-			&& min_intersec.t > now_intersec.t))
+			|| (min_intersec.t >= 0 && now_intersec.t >= 0
+				&& min_intersec.t > now_intersec.t))
 			min_intersec = now_intersec;
 		world.objects = world.objects->next;
 	}
