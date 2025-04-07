@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 21:23:24 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/05 23:21:00 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:45:31 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ t_dcolor	calculate_catadioptric_radiance(const t_world *world,
 	if (intersection->object->material.use_thin_surfase == true)
 	{
 		intersection->hit_on_back = true;
+		catadioptric_vars_init(&catadioptric_vars, intersection, &rfr_ray);
 		set_catadioptric_vars(&catadioptric_vars, world, intersection);
 		rfr_ray = get_refraction_ray(&catadioptric_vars, intersection, &rfr_ray);
-		color = dcolor_init(255,0,0);
 	}
 	color = dcolor_coef_multi(color, catadioptric_vars.reflectance_index);
 	color = dcolor_add(color, dcolor_coef_multi(
