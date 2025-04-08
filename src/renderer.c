@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 23:39:42 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 23:40:54 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int	renderer(t_world *world)
 		}
 		in_screen.y++;
 	}
-	//if (anti_aliasing(world) != 0)
-	//	return (1);
+	if (anti_aliasing(world) != 0)
+		return (1);
 	print_on_window(world, WIDTH, HEIGHT);
 	return (0);
 }
