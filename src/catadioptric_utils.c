@@ -6,11 +6,11 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 23:06:37 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/07 23:07:34 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 17:17:56 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "renderer.h"
+#include "shader.h"
 
 t_ray	get_reflection_ray(const t_catadioptric_vars *catadioptric_vars,
 	const t_intersection *intersection)

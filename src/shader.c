@@ -6,11 +6,11 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 00:03:02 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 17:18:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "renderer.h"
+#include "shader.h"
 
 static bool	is_under_shadow(const t_world *world, const t_light *light,
 	t_vector intersection_vec)

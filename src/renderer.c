@@ -6,11 +6,12 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/07 23:50:26 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 17:18:17 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
+#include "shader.h"
 
 // This function returns pixel's color
 t_dcolor	ray_trace_recursive(const t_world *world, const t_ray *ray,

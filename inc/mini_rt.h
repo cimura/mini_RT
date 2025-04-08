@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 00:11:29 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 17:08:07 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ enum	e_obj_identifier
 };
 
 // RGB 計算しやすく0.0~1.0の範囲で表す
-typedef struct	s_color
+typedef struct s_color
 {
 	double	red;
 	double	green;
@@ -48,7 +48,7 @@ typedef struct	s_color
 }	t_dcolor;
 
 // 環境光 Ambient lightning
-typedef struct	s_ambient_lightning
+typedef struct s_ambient_lightning
 {
 	int			identifier;
 	// 環境光の比率 ambient_lightning_ratio 範囲は[0.0-1.0]
@@ -58,7 +58,7 @@ typedef struct	s_ambient_lightning
 }	t_ambient_lightning;
 
 // カメラ Camera
-typedef struct	s_camera
+typedef struct s_camera
 {
 	int			identifier;
 	// 座標 ( x,y,z )
@@ -75,7 +75,7 @@ typedef struct	s_camera
 }	t_camera;
 
 // 光源 Light
-typedef struct	s_light
+typedef struct s_light
 {
 	int			identifier;
 	// 座標 ( x,y,z )
@@ -96,7 +96,7 @@ enum	e_material
 	WATER,
 };
 
-typedef struct	s_material
+typedef struct s_material
 {
 	// 拡散反射係数
 	t_dcolor	diffuse;
@@ -132,7 +132,7 @@ typedef struct s_object
 }	t_object;
 
 // 描画対象の図形（円、平面、円柱）は複数個扱えるように配列にする
-typedef struct	s_world
+typedef struct s_world
 {
 	t_mlx				mlx;
 	// シーン全体のオブジェクトの情報 （大気など）
@@ -149,7 +149,7 @@ typedef struct	s_world
 void	display_in_mlx(t_world world);
 
 // *** parser.c ***
-int		parse_arguments(t_world *scene, int argc, char **argv);;
+int		parse_arguments(t_world *scene, int argc, char **argv);
 
 // *** main.c ***
 void	on_destroy(t_world world);

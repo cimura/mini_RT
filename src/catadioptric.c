@@ -6,11 +6,11 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 21:23:24 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 00:03:02 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 17:17:48 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "renderer.h"
+#include "shader.h"
 
 static void	catadioptric_vars_init(t_catadioptric_vars *catadioptric_vars,
 	const t_intersection *intersection, const t_ray *ray)
