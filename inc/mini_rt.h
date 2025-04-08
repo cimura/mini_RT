@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 19:08:51 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 21:34:10 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ typedef struct s_object
 typedef struct s_world
 {
 	t_mlx				mlx;
+	t_dcolor			**frame_buffer;
 	// シーン全体のオブジェクトの情報 （大気など）
 	double				global_refractive_index;
 	t_ambient_lightning	ambient_lightning;
@@ -139,16 +140,18 @@ typedef struct s_world
 //# include "renderer.h"
 
 // *** diaplay.c ***
-void	display_in_mlx(t_world *world);
+void		display_in_mlx(t_world *world);
 
 // *** parser.c ***
-int		parse_arguments(t_world *scene, int argc, char **argv);
+int			parse_arguments(t_world *scene, int argc, char **argv);
 
 // *** renderer.c ***
-int		renderer(t_world *world);
+int			renderer(t_world *world);
+
+t_dcolor	**frame_buffer_init(int width, int height);
 
 // *** main.c ***
-void	free_objects(t_world *world);
-void	on_destroy(t_world *world);
+void		free_objects(t_world *world);
+void		on_destroy(t_world *world);
 
 #endif

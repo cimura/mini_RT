@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 17:18:17 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 23:39:42 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,25 @@ static t_vector	get_rays_orientation_vector(t_xy in_screen, t_camera camera)
 	return (normalize_vector(orientation_vec));
 }
 
+void	print_on_window(t_world *world, int width, int height)
+{
+	int	y;
+	int	x;
+
+	y = 0;
+	while (y < height)
+	{
+		x = 0;
+		while (x < width)
+		{
+			my_pixel_put(x, y, world->mlx.img,
+				rgb_to_colorcode(world->frame_buffer[y][x]));
+			x++;
+		}
+		y++;
+	}
+}
+
 int	renderer(t_world *world)
 {
 	t_dcolor		color;
@@ -65,11 +84,13 @@ int	renderer(t_world *world)
 			gaze_ray.orientation_vec
 				= get_rays_orientation_vector(in_screen, world->camera);
 			color = ray_trace_recursive(world, &gaze_ray, 0);
-			my_pixel_put(in_screen.x, in_screen.y, world->mlx.img,
-				rgb_to_colorcode(color));
+			world->frame_buffer[(int)in_screen.y][(int)in_screen.x] = color;
 			in_screen.x++;
 		}
 		in_screen.y++;
 	}
+	//if (anti_aliasing(world) != 0)
+	//	return (1);
+	print_on_window(world, WIDTH, HEIGHT);
 	return (0);
 }

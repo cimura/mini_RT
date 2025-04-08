@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 18:33:04 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 21:27:07 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ typedef struct s_intersection
 	t_vector	normal_vec;
 	t_object	*object;
 }	t_intersection;
+
+// *** anti_aliasing.c ***
+int				anti_aliasing(t_world *world);
 
 // *** camera.c ***
 void			init_camera(t_camera *camera);

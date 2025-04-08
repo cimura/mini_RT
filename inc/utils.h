@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:37 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 17:13:19 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 21:05:47 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		ft_char_count(char *src, char target);
 // *** utils.c ***
 void	swap_double(double *a, double *b);
 void	double_compressor(double *d, double min, double max);
-void	free_double_pointer(char **pointer);
+void	free_double_pointer(void **pointer);
 bool	ft_is_valid_double(char *str);
 bool	ft_is_valid_int(char *str);
 

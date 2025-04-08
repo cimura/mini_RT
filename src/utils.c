@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:22 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/24 23:00:24 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 21:05:40 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	double_compressor(double *d, double min, double max)
 		*d = max;
 }
 
-void	free_double_pointer(char **pointer)
+void	free_double_pointer(void **pointer)
 {
 	int	i;
 

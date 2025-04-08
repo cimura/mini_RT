@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 23:40:35 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 19:18:34 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 21:59:53 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	parse_line(t_world *world, char *line)
 		status = parse_cylinder(world, per_word_pointer);
 	else
 		return (print_err_msg(INV_IDENTIFIER, per_word_pointer[0]), 1);
-	free_double_pointer(per_word_pointer);
+	free_double_pointer((void **)per_word_pointer);
 	return (status);
 }
 
@@ -81,13 +81,13 @@ int	parse_rt_file(t_world *world, char *buf)
 	{
 		if (parse_line(world, per_row_pointer[i]) != 0)
 		{
-			free_double_pointer(per_row_pointer);
+			free_double_pointer((void **)per_row_pointer);
 			free_objects(world);
 			return (1);
 		}
 		i++;
 	}
 	printf ("%s\n", buf);
-	free_double_pointer(per_row_pointer);
+	free_double_pointer((void **)per_row_pointer);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:58 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 19:16:29 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 21:58:53 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	set_rgb(t_dcolor *rgb, char *str)
 	rgb->red = rgb_double[0] / 255;
 	rgb->green = rgb_double[1] / 255;
 	rgb->blue = rgb_double[2] / 255;
-	free_double_pointer(rgb_str);
+	free_double_pointer((void **)rgb_str);
 	return (0);
 }
 
@@ -105,7 +105,7 @@ int	set_vector(t_vector *xyz, char *str, double min, double max)
 	xyz->x = xyz_double[0];
 	xyz->y = xyz_double[1];
 	xyz->z = xyz_double[2];
-	free_double_pointer(xyz_str);
+	free_double_pointer((void **)xyz_str);
 	return (0);
 }
 

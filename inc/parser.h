@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:38 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 19:16:58 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 21:56:49 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ t_material	material_init(int material_id, t_dcolor color);
 
 // *** parser.c ***
 void		print_err_msg(int errnum, char *arg);
-void		free_double_pointer(char **pointer);
 
 // *** parser_utils.c ***
 void		print_err_msg(int errnum, char *arg);

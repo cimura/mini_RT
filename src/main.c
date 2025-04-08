@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 19:22:51 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 21:56:28 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	free_objects(t_world *world)
 {
+	free_double_pointer((void **)world->frame_buffer);
 	ft_lstclear(&world->lights, free);
 	ft_lstclear(&world->objects, free);
 }
@@ -33,12 +34,16 @@ void	on_destroy(t_world *world)
 	exit(0);
 }
 
-static void	init_world(t_world *world)
+int	init_world(t_world *world)
 {
+	world->frame_buffer = frame_buffer_init(WIDTH, HEIGHT);
+	if (world->frame_buffer == NULL)
+		return (1);
 	world->ambient_lightning.identifier = 0;
 	world->camera.identifier = 0;
 	world->lights = NULL;
 	world->objects = NULL;
+	return (0);
 }
 
 #ifdef DEBUG
@@ -56,17 +61,19 @@ int	main(int argc, char **argv)
 {
 	t_world	world;
 
-	init_world(&world);
+	if (init_world(&world) != 0)
+		return (1);
 	if (parse_arguments(&world, argc, argv) != 0)
 		return (1);
 	world.global_refractive_index = 1.000293;
 	if (init_mlx_struct(&world.mlx) != 0)
-		return (1);
+		return (on_destroy(&world), 1);
 	#ifdef DEBUG
 	long	start = get_current_time();
 	#endif
 	printf("rendering...\n");
-	renderer(&world);
+	if (renderer(&world) != 0)
+		return (on_destroy(&world), 1);
 	printf("100%%\n");
 	#ifdef DEBUG
 	long	end = get_current_time();
