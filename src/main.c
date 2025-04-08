@@ -6,26 +6,30 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/07 23:50:26 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 19:22:51 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-// プログラムを終了するときに呼ぶ mlx関係のポインタをfreeする mlx以外をfreeするようにしてもいいかも
-void	on_destroy(t_world world)
+void	free_objects(t_world *world)
 {
-	if (world.mlx.img && world.mlx.img->ptr)
-		mlx_destroy_image(world.mlx.ptr, world.mlx.img->ptr);
-	if (world.mlx.win_ptr)
-		mlx_destroy_window(world.mlx.ptr, world.mlx.win_ptr);
-	if (world.mlx.ptr)
+	ft_lstclear(&world->lights, free);
+	ft_lstclear(&world->objects, free);
+}
+
+void	on_destroy(t_world *world)
+{
+	if (world->mlx.img && world->mlx.img->ptr)
+		mlx_destroy_image(world->mlx.ptr, world->mlx.img->ptr);
+	if (world->mlx.win_ptr)
+		mlx_destroy_window(world->mlx.ptr, world->mlx.win_ptr);
+	if (world->mlx.ptr)
 	{
-		mlx_destroy_display(world.mlx.ptr);
-		free(world.mlx.ptr);
+		mlx_destroy_display(world->mlx.ptr);
+		free(world->mlx.ptr);
 	}
-	ft_lstclear(&world.lights, NULL);
-	ft_lstclear(&world.objects, NULL);
+	free_objects(world);
 	exit(0);
 }
 
@@ -68,5 +72,5 @@ int	main(int argc, char **argv)
 	long	end = get_current_time();
 	printf("rendering: %ldms\n", end - start);
 	#endif
-	display_in_mlx(world);
+	display_in_mlx(&world);
 }

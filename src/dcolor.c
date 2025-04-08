@@ -6,11 +6,11 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:47 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/07 23:19:25 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 18:32:00 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "renderer.h"
+#include "dcolor.h"
 
 t_dcolor	dcolor_coef_multi(t_dcolor rgb, double coefficient)
 {

@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:13:53 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 17:17:32 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 18:36:19 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # define SHADER_H
 
 # include "mini_rt.h"
-# include "shader.h"
+# include "renderer.h"
 
 // shadow rayを計算するための微小値
 # define EPSILON 0.005
@@ -27,7 +27,6 @@ typedef struct s_catadioptric_vars
 	double		inverse_ray_dot_normal;
 	double		refraction_index1;
 	double		refraction_index2;
-	double		rfl_2_1;
 	double		cos1;
 	double		cos2;
 	double		omega;

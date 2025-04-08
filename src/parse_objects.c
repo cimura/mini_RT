@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/05 22:14:02 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 19:23:13 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ static int	add_object_to_lst(t_world *world, t_object *object)
 
 	node = ft_lstnew(object);
 	if (node == NULL)
-		return (ft_lstclear(&world->lights, NULL),
-			ft_lstclear(&world->objects, NULL), 1);
+		return (1);
 	ft_lstadd_back(&world->objects, node);
 	return (0);
 }
@@ -29,8 +28,6 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 	t_object	*sphere;
 	t_dcolor	color;
 
-	if (per_word_pointer == NULL)
-		return (1);
 	if (ft_double_pointer_size(per_word_pointer) != 4)
 		return (print_err_msg(NOT_MATCH_PARAM_NUM, per_word_pointer[0]), 1);
 	sphere = malloc(sizeof(t_object));
@@ -71,8 +68,6 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 	t_object	*plane;
 	t_dcolor	color;
 
-	if (per_word_pointer == NULL)
-		return (1);
 	if (ft_double_pointer_size(per_word_pointer) != 4)
 		return (print_err_msg(NOT_MATCH_PARAM_NUM, per_word_pointer[0]), 1);
 	plane = malloc(sizeof(t_object));
@@ -103,8 +98,6 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 	t_object	*cylinder;
 	t_dcolor	color;
 
-	if (per_word_pointer == NULL)
-		return (1);
 	if (ft_double_pointer_size(per_word_pointer) != 6)
 		return (print_err_msg(NOT_MATCH_PARAM_NUM, per_word_pointer[0]), 1);
 	cylinder = malloc(sizeof(t_object));

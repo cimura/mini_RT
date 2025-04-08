@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 17:08:07 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 19:08:51 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdbool.h>
 # include <math.h>
 # include "vector.h"
+# include "dcolor.h"
 # include "ft_mlx.h"
 # include "utils.h"
 # include "libft.h"
@@ -38,14 +39,6 @@ enum	e_obj_identifier
 	PLANE,
 	CYLINDER,
 };
-
-// RGB 計算しやすく0.0~1.0の範囲で表す
-typedef struct s_color
-{
-	double	red;
-	double	green;
-	double	blue;
-}	t_dcolor;
 
 // 環境光 Ambient lightning
 typedef struct s_ambient_lightning
@@ -143,15 +136,19 @@ typedef struct s_world
 	t_list				*objects;
 }	t_world;
 
-# include "renderer.h"
+//# include "renderer.h"
 
 // *** diaplay.c ***
-void	display_in_mlx(t_world world);
+void	display_in_mlx(t_world *world);
 
 // *** parser.c ***
 int		parse_arguments(t_world *scene, int argc, char **argv);
 
+// *** renderer.c ***
+int		renderer(t_world *world);
+
 // *** main.c ***
-void	on_destroy(t_world world);
+void	free_objects(t_world *world);
+void	on_destroy(t_world *world);
 
 #endif

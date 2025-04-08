@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:58 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/07 23:30:59 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 19:16:29 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,38 +21,40 @@ static char	*remove_brackets(char *str)
 	len = ft_strlen(str);
 	if (str[0] != '(' || str[len - 1] != ')' || len < 3)
 		return (print_err_msg(INV_PARAM, str), NULL);
-	result = malloc(len - 2);
+	result = malloc(len - 1);
 	if (result == NULL)
 		return (NULL);
 	str++;
 	i = 0;
-	while (*str != ')' && *str != '\0')
+	while (*str != ')' && i < len)
 	{
 		result[i] = *str;
 		str++;
 		i++;
 	}
+	result[i] = '\0';
 	return (result);
 }
 
-static char	**split_values(char *str)
+// str=(a,b,c...,n) -> extract_...(str, n);
+static char	**extract_values_in_brackets(char *src, int num)
 {
 	char	*no_brackets;
 	char	**result;
 
-	if (str == NULL)
+	if (src == NULL)
 		return (NULL);
-	if (ft_char_count(str, ',') != 2)
-		return (print_err_msg(INV_PARAM, str), NULL);
-	no_brackets = remove_brackets(str);
+	if (ft_char_count(src, ',') != num - 1)
+		return (print_err_msg(INV_PARAM, src), NULL);
+	no_brackets = remove_brackets(src);
 	if (no_brackets == NULL)
 		return (NULL);
 	result = ft_split(no_brackets, ',');
 	free(no_brackets);
 	if (result == NULL)
 		return (NULL);
-	if (ft_double_pointer_size(result) != 3)
-		return (print_err_msg(INV_PARAM, str), NULL);
+	if (ft_double_pointer_size(result) != num)
+		return (print_err_msg(INV_PARAM, src), NULL);
 	return (result);
 }
 
@@ -63,7 +65,7 @@ int	set_rgb(t_dcolor *rgb, char *str)
 	double		rgb_double[3];
 	int			i;
 
-	rgb_str = split_values(str);
+	rgb_str = extract_values_in_brackets(str, 3);
 	if (rgb_str == NULL)
 		return (1);
 	i = 0;
@@ -89,7 +91,7 @@ int	set_vector(t_vector *xyz, char *str, double min, double max)
 	double	xyz_double[3];
 	int		i;
 
-	xyz_str = split_values(str);
+	xyz_str = extract_values_in_brackets(str, 3);
 	if (xyz_str == NULL)
 		return (1);
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 17:16:10 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 18:33:04 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,17 +96,8 @@ t_intersection	find_intersection_minimum_distance(t_world world,
 void			calculate_intersections_normal_vector(t_intersection *i,
 					const t_ray *ray);
 
-// *** dcolor.c ***
-t_dcolor		dcolor_coef_multi(t_dcolor rgb, double coefficient);
-t_dcolor		dcolor_init(double red, double green, double blue);
-t_dcolor		dcolor_add(t_dcolor l1, t_dcolor l2);
-t_dcolor		dcolor_multi(t_dcolor l1, t_dcolor l2);
-int				rgb_to_colorcode(t_dcolor light);
-
 // *** renderer.c ***
 t_dcolor		ray_trace_recursive(const t_world *world, const t_ray *ray,
 					int recursion_level);
-
-int				renderer(t_world *world);
 
 #endif

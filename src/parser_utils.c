@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 23:40:35 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/07 23:46:00 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/08 19:18:34 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	parse_rt_file(t_world *world, char *buf)
 		if (parse_line(world, per_row_pointer[i]) != 0)
 		{
 			free_double_pointer(per_row_pointer);
+			free_objects(world);
 			return (1);
 		}
 		i++;
