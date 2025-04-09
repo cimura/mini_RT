@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 20:18:14 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 23:38:17 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/09 19:13:02 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ static void	add_pixel_color(t_dcolor pixel_color, t_dcolor *result, int *count)
 
 static bool	pixel_cmp(t_dcolor p1, t_dcolor p2)
 {
-	if (pow((p1.red * 10) - (p2.red * 10), 2)
-		+ pow((p1.green * 10) - (p2.green * 10), 2)
-		+ pow((p1.blue * 10) - (p2.blue * 10), 2) > 100)
+	if ((p1.red - p2.red) + (p1.green - p2.green) + (p1.blue - p2.blue) > 0.2)
 		return (true);
 	return (false);
 }
@@ -56,8 +54,6 @@ static t_dcolor	get_pixel_average_color(t_dcolor **frame_buffer,
 
 	result = frame_buffer[y][x];
 	count = 1;
-	(void)count;
-	//count = 5;
 	if (x - 1 >= 0 && pixel_cmp(frame_buffer[y][x], frame_buffer[y][x - 1]))
 		add_pixel_color(frame_buffer[y][x - 1], &result, &count);
 	if (x + 1 < WIDTH && pixel_cmp(frame_buffer[y][x], frame_buffer[y][x + 1]))
@@ -66,10 +62,14 @@ static t_dcolor	get_pixel_average_color(t_dcolor **frame_buffer,
 		add_pixel_color(frame_buffer[y - 1][x], &result, &count);
 	if (y + 1 < HEIGHT && pixel_cmp(frame_buffer[y][x], frame_buffer[y + 1][x]))
 		add_pixel_color(frame_buffer[y + 1][x], &result, &count);
-	result.red = result.red / count;
-	result.green = result.green / count;
-	result.blue = result.blue / count;
-	return (result);
+	if (count > 2)
+	{
+		result.red = result.red / count;
+		result.green = result.green / count;
+		result.blue = result.blue / count;
+		return (result);
+	}
+	return (frame_buffer[y][x]);
 }
 
 int	anti_aliasing(t_world *world)
