@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:18 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 00:03:02 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/10 00:07:54 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,16 @@ void	set_sphere_normal_vector(t_intersection *intersection,
 	}
 	normal_vector = normalize_vector(normal_vector);
 	intersection->normal_vec = normal_vector;
+}
+
+t_xy	get_uv_on_sphere(const t_vector *intersection_vec,
+	const t_object *sphere)
+{
+	t_xy		tex;
+	t_vector	on_sphere;
+
+	on_sphere = subst_vector(*intersection_vec, sphere->coordinates_vec);
+	tex.x = 0.5 + atan2(on_sphere.z, on_sphere.x) / (2 * M_PI);
+	tex.y = 0.5 - asin(on_sphere.y) / M_PI;
+	return (tex);
 }

@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 21:34:10 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/09 22:41:25 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <math.h>
 # include "vector.h"
 # include "dcolor.h"
+# include "texture.h"
 # include "ft_mlx.h"
 # include "utils.h"
 # include "libft.h"
@@ -112,16 +113,17 @@ typedef struct s_material
 // オブジェクト汎用
 typedef struct s_object
 {
-	int			identifier;
+	int				identifier;
 	// オブジェクトの位置ベクトル
-	t_vector	coordinates_vec;
+	t_vector		coordinates_vec;
 	// オブジェクトの正規化されている方向ベクトル 範囲は[-1,1]  平面、円柱
-	t_vector	orientation_vec;
+	t_vector		orientation_vec;
 	// 球体、円柱
-	double		diameter;
+	double			diameter;
 	// 円柱
-	double		height;
-	t_material	material;
+	double			height;
+	t_texture		normal_tex;
+	t_material		material;
 }	t_object;
 
 // 描画対象の図形（円、平面、円柱）は複数個扱えるように配列にする

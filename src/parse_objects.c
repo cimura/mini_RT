@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 19:23:13 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/09 23:02:51 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 	t_object	*sphere;
 	t_dcolor	color;
 
-	if (ft_double_pointer_size(per_word_pointer) != 4)
-		return (print_err_msg(NOT_MATCH_PARAM_NUM, per_word_pointer[0]), 1);
+	//if (ft_double_pointer_size(per_word_pointer) != 4)
+	//	return (print_err_msg(NOT_MATCH_PARAM_NUM, per_word_pointer[0]), 1);
 	sphere = malloc(sizeof(t_object));
 	if (sphere == NULL)
 		return (1);
@@ -42,6 +42,8 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (1);
 	sphere->material = material_init(WOOD, color);
+	if (load_texture(&sphere->normal_tex, per_word_pointer[4]) != 0)
+		return (print_err_msg(INV_FILENAME, per_word_pointer[4]), 1);
 	// 屈折の実装のため
 	if (ft_lstsize(world->objects) == 0)
 	{

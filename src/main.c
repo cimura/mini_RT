@@ -6,17 +6,26 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 21:56:28 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/10 00:12:27 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
+void	object_free(void *pointer)
+{
+	t_object	*object;
+
+	object = (t_object *)pointer;
+	texture_free(&object->normal_tex);
+	free(pointer);
+}
+
 void	free_objects(t_world *world)
 {
 	free_double_pointer((void **)world->frame_buffer);
-	ft_lstclear(&world->lights, free);
-	ft_lstclear(&world->objects, free);
+	ft_lstclear(&world->lights, object_free);
+	ft_lstclear(&world->objects, object_free);
 }
 
 void	on_destroy(t_world *world)

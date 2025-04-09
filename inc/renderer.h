@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 21:27:07 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/09 23:32:31 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void			set_sphere_intersection(t_intersection *i, t_object *sphere,
 					const t_ray *ray);
 void			set_sphere_normal_vector(t_intersection *intersection,
 					const t_object *sphere, const t_ray *ray);
+t_xy			get_uv_on_sphere(const t_vector *intersection_vec,
+					const t_object *sphere);
 
 // *** plane.c ***
 void			set_plane_intersection(t_intersection *i, t_object *plane,
@@ -98,6 +100,10 @@ t_intersection	find_intersection_minimum_distance(t_world world,
 					const t_ray *ray);
 void			calculate_intersections_normal_vector(t_intersection *i,
 					const t_ray *ray);
+
+// *** texture_mapping.c ***
+void			set_bumpmap_normal_vector(t_intersection *i, t_texture *normal_tex,
+					const t_object *object);
 
 // *** renderer.c ***
 t_dcolor		ray_trace_recursive(const t_world *world, const t_ray *ray,
