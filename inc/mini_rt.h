@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/09 22:41:25 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/10 19:51:03 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ typedef struct s_object
 	double			diameter;
 	// 円柱
 	double			height;
-	t_texture		normal_tex;
+	t_list			*textures;
 	t_material		material;
 }	t_object;
 
@@ -153,7 +153,7 @@ int			renderer(t_world *world);
 t_dcolor	**frame_buffer_init(int width, int height);
 
 // *** main.c ***
-void		free_objects(t_world *world);
+void		world_destroy(t_world *world);
 void		on_destroy(t_world *world);
 
 #endif

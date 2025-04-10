@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 20:18:14 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/09 19:13:02 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/10 19:44:15 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@ t_dcolor	**frame_buffer_init(int width, int height)
 	t_dcolor	**frame_buffer;
 	int			i;
 
-	frame_buffer = malloc(height * sizeof(t_dcolor *));
+	frame_buffer = malloc((height + 1) * sizeof(t_dcolor *));
 	if (frame_buffer == NULL)
 		return (NULL);
 	i = 0;
 	while (i < height)
 	{
-		frame_buffer[i] = malloc(width * sizeof(t_dcolor));
+		frame_buffer[i] = malloc((width) * sizeof(t_dcolor));
 		if (frame_buffer[i] == NULL)
 			return (free_double_pointer((void **)frame_buffer), NULL);
 		i++;
 	}
+	frame_buffer[i] = NULL;
 	return (frame_buffer);
 }
 
@@ -41,6 +42,8 @@ static void	add_pixel_color(t_dcolor pixel_color, t_dcolor *result, int *count)
 
 static bool	pixel_cmp(t_dcolor p1, t_dcolor p2)
 {
+	//if (p2.red != 0 || p2.green != 0 || p2.blue != 0)
+	//	printf("(%lf,%lf,%lf) ", p2.red, p2.green, p2.blue);
 	if ((p1.red - p2.red) + (p1.green - p2.green) + (p1.blue - p2.blue) > 0.2)
 		return (true);
 	return (false);

@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/09 23:02:51 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/10 23:26:40 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,31 +35,32 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 		return (1);
 	sphere->identifier = SPHERE;
 	if (set_vector(&sphere->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
-		return (1);
+		return (free(sphere), 1);
 	sphere->diameter = ft_atod(per_word_pointer[2]);
 	if (sphere->diameter < 0)
-		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[2]), 1);
+		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[2]), free(sphere), 1);
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
-		return (1);
+		return (free(sphere), 1);
 	sphere->material = material_init(WOOD, color);
-	if (load_texture(&sphere->normal_tex, per_word_pointer[4]) != 0)
-		return (print_err_msg(INV_FILENAME, per_word_pointer[4]), 1);
+	sphere->textures = NULL;
+	if (per_word_pointer[4] && texture_register(per_word_pointer[4], &sphere->textures) != 0)
+		return (print_err_msg(INV_FILENAME, per_word_pointer[4]), free(sphere), 1);
 	// 屈折の実装のため
-	if (ft_lstsize(world->objects) == 0)
-	{
-		sphere->material = material_init(SILVER, color);
-		printf("silver\n");
-	}
-	else if (ft_lstsize(world->objects) == 1)
-	{
-		sphere->material = material_init(GLASS, color);
-		printf("glass\n");
-	}
-	else if (ft_lstsize(world->objects) == 2)
-	{
-		sphere->material = material_init(WATER, color);
-		printf("water\n");
-	}
+	//if (ft_lstsize(world->objects) == 0)
+	//{
+	//	sphere->material = material_init(SILVER, color);
+	//	printf("silver\n");
+	//}
+	//else if (ft_lstsize(world->objects) == 1)
+	//{
+	//	sphere->material = material_init(GLASS, color);
+	//	printf("glass\n");
+	//}
+	//else if (ft_lstsize(world->objects) == 2)
+	//{
+	//	sphere->material = material_init(WATER, color);
+	//	printf("water\n");
+	//}
 	// ここまで
 	sphere->material.use_thin_surfase = false;
 	return (add_object_to_lst(world, sphere));
@@ -77,19 +78,20 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 		return (1);
 	plane->identifier = PLANE;
 	if (set_vector(&plane->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
-		return (1);
+		return (free(plane), 1);
 	if (set_vector(&plane->orientation_vec, per_word_pointer[2], -1, 1) != 0)
-		return (1);
+		return (free(plane), 1);
 	if (normalize_checker(&plane->orientation_vec, per_word_pointer[2]) != 0)
-		return (1);
+		return (free(plane), 1);
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
-		return (1);
+		return (free(plane), 1);
 	plane->material = material_init(WOOD, color);
+	plane->textures = NULL;
 	// デバッグ用
-	if (ft_lstsize(world->objects) == 1)
-	{
-		plane->material = material_init(WATER, color);
-	}
+	//if (ft_lstsize(world->objects) == 1)
+	//{
+	//	plane->material = material_init(WATER, color);
+	//}
 	// ここまで
 	plane->material.use_thin_surfase = true;
 	return (add_object_to_lst(world, plane));
@@ -107,20 +109,21 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 		return (1);
 	cylinder->identifier = CYLINDER;
 	if (set_vector(&cylinder->coordinates_vec, per_word_pointer[1], 0, 0) != 0)
-		return (1);
+		return (free(cylinder), 1);
 	if (set_vector(&cylinder->orientation_vec, per_word_pointer[2], -1, 1) != 0)
-		return (1);
+		return (free(cylinder), 1);
 	if (normalize_checker(&cylinder->orientation_vec, per_word_pointer[2]) != 0)
-		return (1);
+		return (free(cylinder), 1);
 	cylinder->diameter = ft_atod(per_word_pointer[3]);
 	if (cylinder->diameter < 0)
-		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[3]), 1);
+		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[3]), free(cylinder), 1);
 	cylinder->height = ft_atod(per_word_pointer[4]);
 	if (cylinder->height < 0)
-		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[4]), 1);
+		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[4]), free(cylinder), 1);
 	if (set_rgb(&color, per_word_pointer[5]) != 0)
-		return (1);
+		return (free(cylinder), 1);
 	cylinder->material = material_init(GLASS, color);
 	cylinder->material.use_thin_surfase = true;
+	cylinder->textures = NULL;
 	return (add_object_to_lst(world, cylinder));
 }
