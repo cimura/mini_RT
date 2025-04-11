@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/10 23:31:07 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/11 15:53:53 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ t_dcolor	ray_trace_recursive(const t_world *world, const t_ray *ray,
 	if (closest_intersection.t < 0)
 		return (color);
 	calculate_intersections_normal_vector(&closest_intersection, ray);
-	set_bumpmap_normal_vector(&closest_intersection,
-		(t_texture *)closest_intersection.object->textures, closest_intersection.object);
+	texture_mapping(closest_intersection.object->textures, &closest_intersection);
 	color = shader(world, &closest_intersection, ray);
 	color = dcolor_add(color, calculate_catadioptric_radiance(
 				world, &closest_intersection, ray, recursion_level));

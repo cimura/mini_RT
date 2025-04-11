@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/10 17:48:43 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/11 15:53:02 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,7 @@ void			calculate_intersections_normal_vector(t_intersection *i,
 					const t_ray *ray);
 
 // *** texture_mapping.c ***
-void			set_bumpmap_normal_vector(t_intersection *i, t_texture *normal_tex,
-					const t_object *object);
+void			texture_mapping(t_list *tex_lst, t_intersection *i);
 
 // *** renderer.c ***
 t_dcolor		ray_trace_recursive(const t_world *world, const t_ray *ray,

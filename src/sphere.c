@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:18 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/10 00:07:54 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/11 23:02:49 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,13 @@ t_xy	get_uv_on_sphere(const t_vector *intersection_vec,
 {
 	t_xy		tex;
 	t_vector	on_sphere;
+	double		theta;
+	double		phi;
 
 	on_sphere = subst_vector(*intersection_vec, sphere->coordinates_vec);
-	tex.x = 0.5 + atan2(on_sphere.z, on_sphere.x) / (2 * M_PI);
-	tex.y = 0.5 - asin(on_sphere.y) / M_PI;
+	theta = atan2(on_sphere.z, on_sphere.x);
+	phi = asin(on_sphere.y / (sphere->diameter / 2));
+	tex.x = 0.5 + (theta / (2 * M_PI));
+	tex.y = 0.5 - (phi / M_PI);
 	return (tex);
 }

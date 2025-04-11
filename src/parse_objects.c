@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/10 23:26:40 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/11 23:08:42 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 		return (free(sphere), 1);
 	sphere->material = material_init(WOOD, color);
 	sphere->textures = NULL;
-	if (per_word_pointer[4] && texture_register(per_word_pointer[4], &sphere->textures) != 0)
+	if (per_word_pointer[4] && texture_register(&per_word_pointer[4], &sphere->textures) != 0)
 		return (print_err_msg(INV_FILENAME, per_word_pointer[4]), free(sphere), 1);
 	// 屈折の実装のため
 	//if (ft_lstsize(world->objects) == 0)
