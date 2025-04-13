@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/11 15:53:02 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/13 13:30:32 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 # include "mini_rt.h"
 # include "vector.h"
+# include "texture.h"
 
 // 完全鏡面反射をするときの再帰関数の深さ限度
 # define MAX_RECURSIVE_LEVEL 6
@@ -29,12 +30,32 @@
 # define BACKGROUND_COLOR_GREEN 0.7
 # define BACKGROUND_COLOR_BLUE 0.7
 
+# define RECTANGLE 1
+# define CUBE 2
+
 // 2次元の座標を表す構造体
 typedef struct s_xy
 {
 	double	x;
 	double	y;
 }	t_xy;
+
+enum	s_cube_fase
+{
+	ONE_SIDE,
+	PLUS_X,
+	MINUS_X,
+	PLUS_Y,
+	MINUS_Y,
+	PLUS_Z,
+	MINUS_Z,
+};
+
+typedef struct s_cube_map
+{
+	t_xy	uv;
+	int		fase;
+}	t_cube_map;
 
 // レイ（視線）用の構造体
 typedef struct s_ray
@@ -75,8 +96,8 @@ void			set_sphere_intersection(t_intersection *i, t_object *sphere,
 					const t_ray *ray);
 void			set_sphere_normal_vector(t_intersection *intersection,
 					const t_object *sphere, const t_ray *ray);
-t_xy			get_uv_on_sphere(const t_vector *intersection_vec,
-					const t_object *sphere);
+t_cube_map		get_uv_on_sphere(const t_vector *intersection_vec,
+					const t_object *sphere, int map_type);
 
 // *** plane.c ***
 void			set_plane_intersection(t_intersection *i, t_object *plane,

@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:40:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/11 23:20:24 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/13 15:44:39 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,22 @@ enum	e_tex_identifier
 	COLOR,
 };
 
+typedef struct s_uv
+{
+	int	u;
+	int	v;
+}	t_uv;
+
 typedef struct s_texture
 {
 	int				identifier;
 	unsigned char	*data;
+	//int				size;
 	int				width;
 	int				height;
 	int				channels;
+	// cube map
+	int				fase_side_len;
 }	t_texture;
 
 // *** texture.c ***

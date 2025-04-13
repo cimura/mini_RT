@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:12:17 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/11 23:30:09 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/13 15:45:07 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ int	load_texture(t_texture *tex, char *filename, int identifier)
 	tex->data
 		= stbi_load(filename, &tex->width, &tex->height, &tex->channels, 0);
 	printf("width: %d height:%d channels:%d\n", tex->width, tex->height, tex->channels);
+	//tex->size = sizeof(tex->data);
+	tex->fase_side_len = tex->height / 4;
+	printf("fase_side_len: %d\n", tex->fase_side_len);
 	if (tex->data == NULL)
 		return (1);
 	return (0);
@@ -49,9 +52,13 @@ int	texture_register(char **filename, t_list **lst)
 		if (tex == NULL)
 			return (1);
 		// TODO identifierを決める処理
-		if (ft_strncmp(filename[i], "tex/Rock051_1K-PNG_NormalGL.png", 28) == 0)
+		//if (ft_strncmp(filename[i], "tex/Rock051_1K-PNG_NormalGL.png", 28) == 0)
+		if (ft_strncmp(filename[i], "tex/Earth_NORM.png", 28) == 0)
+		//if (ft_strncmp(filename[i], "tex/Bricks054_1K-PNG_NormalGL.png", 28) == 0)
 			identifier = NORMAL;
-		else if (ft_strncmp(filename[i], "tex/Rock051_1K-PNG_Color.png", 25) == 0)
+		//if (ft_strncmp(filename[i], "tex/Rock051_1K-PNG_Color.png", 28) == 0)
+		else if (ft_strncmp(filename[i], "tex/Earth_ALB.png", 25) == 0)
+		//if (ft_strncmp(filename[i], "tex/Bricks054_1K-PNG_Color.png", 28) == 0)
 			identifier = COLOR;
 	
 		if (load_texture(tex, filename[i], identifier) != 0)
@@ -74,11 +81,11 @@ t_vector	texture_get_normal(t_texture *tex, int x, int y)
 	unsigned char	b;
 
 	index = (y * tex->width + x) * tex->channels;
-	if (tex->data[index])
+	//if (index < tex->size)
 		r = tex->data[index];
-	if (tex->data[index + 1])
+	//if (index + 1 < tex->size)
 		g = tex->data[index + 1];
-	if (tex->data[index + 2])
+	//if (index + 2 < tex->size)
 		b = tex->data[index + 2];
 	normal_vec.x = (r / 255.0) * 2.0 - 1.0;
 	normal_vec.y = (g / 255.0) * 2.0 - 1.0;
@@ -95,11 +102,11 @@ t_dcolor	texture_get_color(t_texture *tex, int x, int y)
 	unsigned char	b;
 
 	index = (y * tex->width + x) * tex->channels;
-	if (tex->data[index])
+	//if (index < tex->size)
 		r = tex->data[index];
-	if (tex->data[index + 1])
+	//if (index + 1 < tex->size)
 		g = tex->data[index + 1];
-	if (tex->data[index + 2])
+	//if (index + 2 < tex->size)
 		b = tex->data[index + 2];
 	color.red = (r / 255.0);
 	color.green = (g / 255.0);
