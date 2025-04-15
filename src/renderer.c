@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/11 15:53:53 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/15 13:54:49 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	renderer(t_world *world)
 				= get_rays_orientation_vector(in_screen, world->camera);
 			color = ray_trace_recursive(world, &gaze_ray, 0);
 			world->frame_buffer[(int)in_screen.y][(int)in_screen.x] = color;
+			//printf("%lf ", in_screen.x + in_screen.y * WIDTH);
 			in_screen.x++;
 		}
 		in_screen.y++;

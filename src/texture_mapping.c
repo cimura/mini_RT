@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 23:04:15 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/13 15:56:35 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/15 14:28:41 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,33 +46,34 @@ t_uv	get_uv_on_cube_map(const t_cube_map *map, t_texture *tex)
 		top_left_pixel.u = tex->width / 2 - tex->fase_side_len / 2;
 		top_left_pixel.v = tex->fase_side_len * 2;
 	}
-	//else if (map->fase == MINUS_X)
-	//{
-	//	top_left_pixel.u = tex->width / 2 - tex->fase_side_len / 2;
-	//	top_left_pixel.v = 0;
-	//}
-	//if (map->fase == PLUS_Y)
-	//{
-	//	top_left_pixel.u = tex->width / 2 + tex->fase_side_len / 2;
-	//	top_left_pixel.v = tex->fase_side_len;
-	//}
-	//else if (map->fase == MINUS_X)
-	//{
-	//	top_left_pixel.u = tex->width / 2 - tex->fase_side_len / 2 - tex->fase_side_len;
-	//	top_left_pixel.v = tex->fase_side_len;
-	//}
-	//else if (map->fase == PLUS_Z)
-	//{
-	//	top_left_pixel.u = tex->width / 2 - tex->fase_side_len / 2;
-	//	top_left_pixel.v = tex->height - tex->fase_side_len;
-	//}
-	//else if (map->fase == MINUS_Z)
-	//{
-	//	top_left_pixel.u = tex->width / 2 - tex->fase_side_len / 2;
-	//	top_left_pixel.v = tex->fase_side_len;
-	//}
+	else if (map->fase == MINUS_X)
+	{
+		top_left_pixel.u = tex->width / 2 - tex->fase_side_len / 2;
+		top_left_pixel.v = 0;
+	}
+	if (map->fase == PLUS_Y)
+	{
+		top_left_pixel.u = tex->width / 2 + tex->fase_side_len / 2;
+		top_left_pixel.v = tex->fase_side_len;
+	}
+	else if (map->fase == MINUS_X)
+	{
+		top_left_pixel.u = tex->width / 2 - tex->fase_side_len / 2 - tex->fase_side_len;
+		top_left_pixel.v = tex->fase_side_len;
+	}
+	else if (map->fase == PLUS_Z)
+	{
+		top_left_pixel.u = tex->width / 2 - tex->fase_side_len / 2;
+		top_left_pixel.v = tex->height - tex->fase_side_len;
+	}
+	else if (map->fase == MINUS_Z)
+	{
+		top_left_pixel.u = tex->width / 2 - tex->fase_side_len / 2;
+		top_left_pixel.v = tex->fase_side_len;
+	}
 	//if (map->uv.x < 0 || map->uv.y > 1.0)
-	//printf("(%lf,%lf)", map->uv.x, map->uv.y);
+	//if (top_left_pixel.u == 1)
+	//	printf("topleft(%d,%d)map(%lf,%lf) ", top_left_pixel.u, top_left_pixel.v, map->uv.x, map->uv.y);
 	top_left_pixel.u += (int)(map->uv.x * tex->fase_side_len) % tex->fase_side_len;
 	top_left_pixel.v += (int)(map->uv.y * tex->fase_side_len) % tex->fase_side_len;
 	//printf("(%d,%d)", top_left_pixel.u, top_left_pixel.v);
@@ -92,6 +93,7 @@ void	texture_set_normal(t_intersection *i, t_texture *normal_tex)
 	//else if (object->identifier == CYLINDER)
 	//	;
 	uv = get_uv_on_cube_map(&map, normal_tex);
+		//printf("get_uv_on_cube_map\n");
 	// if ( != CUBE)
 		//uv.u = (int)(map.uv.x * normal_tex->width) % normal_tex->width;
 		//uv.v = (int)(map.uv.y * normal_tex->height) % normal_tex->height;
