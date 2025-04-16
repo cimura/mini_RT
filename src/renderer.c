@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/15 13:54:49 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/16 21:24:46 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ int	renderer(t_world *world)
 		}
 		in_screen.y++;
 	}
-	if (anti_aliasing(world) != 0)
-		return (1);
+	// if (anti_aliasing(world) != 0)
+	// 	return (1);
 	print_on_window(world, WIDTH, HEIGHT);
 	return (0);
 }

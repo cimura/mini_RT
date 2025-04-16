@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/11 23:08:42 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/16 20:40:56 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[2]), free(sphere), 1);
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (free(sphere), 1);
-	sphere->material = material_init(WOOD, color);
+	sphere->material = material_init(SILVER, color);
 	sphere->textures = NULL;
 	if (per_word_pointer[4] && texture_register(&per_word_pointer[4], &sphere->textures) != 0)
 		return (print_err_msg(INV_FILENAME, per_word_pointer[4]), free(sphere), 1);
@@ -85,7 +85,7 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 		return (free(plane), 1);
 	if (set_rgb(&color, per_word_pointer[3]) != 0)
 		return (free(plane), 1);
-	plane->material = material_init(WOOD, color);
+	plane->material = material_init(IRON, color);
 	plane->textures = NULL;
 	// デバッグ用
 	//if (ft_lstsize(world->objects) == 1)

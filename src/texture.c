@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:12:17 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/15 14:30:23 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/16 21:24:55 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,13 +129,11 @@ int	texture_register(char **filename, t_list **lst)
 		if (tex == NULL)
 			return (1);
 		// TODO identifierを決める処理
-		//if (ft_strncmp(filename[i], "tex/Rock051_1K-PNG_NormalGL.png", 28) == 0)
-		if (ft_strncmp(filename[i], "tex/Earth_NORM.png", 28) == 0)
-		//if (ft_strncmp(filename[i], "tex/Bricks054_1K-PNG_NormalGL.png", 28) == 0)
+		// if (ft_strncmp(filename[i], "tex/Rock051_1K-PNG_NormalGL.png", 28) == 0)
+		else if (ft_strncmp(filename[i], "earth_normal.png", 25) == 0)
 			identifier = NORMAL;
-		//if (ft_strncmp(filename[i], "tex/Rock051_1K-PNG_Color.png", 28) == 0)
-		else if (ft_strncmp(filename[i], "tex/Earth_ALB.png", 25) == 0)
-		//if (ft_strncmp(filename[i], "tex/Bricks054_1K-PNG_Color.png", 28) == 0)
+		// else if (ft_strncmp(filename[i], "tex/Rock051_1K-PNG_Color.png", 25) == 0)
+		else if (ft_strncmp(filename[i], "earth_color_map.png", 25) == 0)
 			identifier = COLOR;
 	
 		if (load_texture(tex, filename[i], identifier) != 0)

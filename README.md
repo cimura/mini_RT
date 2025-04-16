@@ -31,5 +31,11 @@ Sphereについてはplaygroundのコードを参照
 
 <img width="831" alt="image" src="https://github.com/user-attachments/assets/4b733f28-8856-45fc-b147-a59a54414b9c" />
 
+レビューで見せる地図
+①太陽系の惑星（bump-mapping）
+②モンスターボール、鏡面反射と複数光源
+③チェックボード
+④円柱系
+⑤鏡面反射の球
 
 =====>　案1の方が確かにいい気もしてきた
