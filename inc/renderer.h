@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/16 21:25:12 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:30:51 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void			set_sphere_intersection(t_intersection *i, t_object *sphere,
 void			set_sphere_normal_vector(t_intersection *intersection,
 					const t_object *sphere, const t_ray *ray);
 t_cube_map		get_uv_on_sphere(const t_vector *intersection_vec,
-					const t_object *sphere, int map_type);
+					const t_object *sphere);
 
 // *** plane.c ***
 void			set_plane_intersection(t_intersection *i, t_object *plane,
