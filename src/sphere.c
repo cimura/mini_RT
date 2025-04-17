@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:18 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 17:32:22 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/17 19:34:30 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	calculate_sphere_intersections_num(t_coef *coef,
 	const t_object *sphere, const t_ray *ray)
 {
-	t_vector	start_to_sphere;
+	t_vector3	start_to_sphere;
 
 	start_to_sphere
 		= subst_vector(ray->coordinates_vec, sphere->coordinates_vec);
@@ -60,7 +60,7 @@ void	set_sphere_intersection(t_intersection *i, t_object *sphere,
 void	set_sphere_normal_vector(t_intersection *intersection,
 	const t_object *sphere, const t_ray *ray)
 {
-	t_vector	normal_vector;
+	t_vector3	normal_vector;
 	double		ray_dot_noraml;
 
 	normal_vector
@@ -77,63 +77,18 @@ void	set_sphere_normal_vector(t_intersection *intersection,
 	intersection->normal_vec = normal_vector;
 }
 
-//void	set_uv_on_cube_map(t_cube_map *on_map, const t_vector *on_sphere)
-//{
-//	double	abs_x;
-//	double	abs_y;
-//	double	abs_z;
-
-//	abs_x = fabs(on_sphere->x);
-//	abs_y = fabs(on_sphere->y);
-//	abs_z = fabs(on_sphere->z);
-//	if (abs_x >= abs_y && abs_x >= abs_z)
-//	{
-//		on_map->fase = PLUS_X;
-//		if (on_sphere->x < 0)
-//			on_map->fase = MINUS_X;
-//		on_map->uv.x = (on_sphere->y / abs_x + 1.0) * 0.5;
-//		on_map->uv.y = (on_sphere->z / abs_x + 1.0) * 0.5;
-//	}
-//	else if (abs_y >= abs_x && abs_y >= abs_z)
-//	{
-//		on_map->fase = PLUS_Y;
-//		if (on_sphere->y < 0)
-//			on_map->fase = MINUS_Y;
-//		on_map->uv.x = (on_sphere->x / abs_y + 1.0) * 0.5;
-//		on_map->uv.y = (on_sphere->z / abs_y + 1.0) * 0.5;
-//	}
-//	else
-//	{
-//		on_map->fase = PLUS_Z;
-//		if (on_sphere->z < 0)
-//			on_map->fase = MINUS_Z;
-//		on_map->uv.x = (on_sphere->y / abs_z + 1.0) * 0.5;
-//		on_map->uv.y = (on_sphere->x / abs_z + 1.0) * 0.5;
-//	}
-//}
-
-t_cube_map	get_uv_on_sphere(const t_vector *intersection_vec,
+t_vector2	get_vec2_on_sphere(const t_vector3 *intersection_vec,
 	const t_object *sphere)
 {
-	t_cube_map		on_map;
-	t_vector		on_sphere;
+	t_vector2		on_map;
+	t_vector3		on_sphere;
 	double			theta;
 	double			phi;
 
 	on_sphere = subst_vector(*intersection_vec, sphere->coordinates_vec);
-	//if (map_type == RECTANGLE)
-	//{
-		//on_sphere = *intersection_vec;
-		theta = atan2(on_sphere.z, on_sphere.x);
-		phi = asin(on_sphere.y / (sphere->diameter / 2));
-		on_map.fase = ONE_SIDE;
-		on_map.uv.x = 0.5 + (theta / (2 * M_PI));
-		on_map.uv.y = 0.5 - (phi / M_PI);
-	//}
-	//else if (map_type == CUBE)
-	//{
-	//	on_sphere = normalize_vector(on_sphere);
-	//	set_uv_on_cube_map(&on_map, &on_sphere);
-	//}
+	theta = atan2(on_sphere.z, on_sphere.x);
+	phi = asin(on_sphere.y / (sphere->diameter / 2));
+	on_map.x = 0.5 + (theta / (2 * M_PI));
+	on_map.y = 0.5 - (phi / M_PI);
 	return (on_map);
 }

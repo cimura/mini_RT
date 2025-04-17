@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:26 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 17:21:15 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // 今回はカメラの回転は指定されないので、x軸に水平でy軸に平行な角度
 static void	set_screen_normalized_basis_vectors(t_camera camera,
-	t_vector *basisx, t_vector *basisy)
+	t_vector3 *basisx, t_vector3 *basisy)
 {
 	basisx->y = 0;
 	basisx->x = camera.orientation_vec.z

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/16 21:24:46 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:34:16 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_dcolor	ray_trace_recursive(const t_world *world, const t_ray *ray,
 	t_intersection	closest_intersection;
 
 	color = dcolor_init(BACKGROUND_COLOR_RED,
-			BACKGROUND_COLOR_GREEN, BACKGROUND_COLOR_BLUE);
+		BACKGROUND_COLOR_GREEN, BACKGROUND_COLOR_BLUE);
 	if (recursion_level > MAX_RECURSIVE_LEVEL)
 		return (color);
 	closest_intersection = find_intersection_minimum_distance(*world, ray);
@@ -35,10 +35,10 @@ t_dcolor	ray_trace_recursive(const t_world *world, const t_ray *ray,
 	return (color);
 }
 
-static t_vector	get_rays_orientation_vector(t_xy in_screen, t_camera camera)
+static t_vector3	get_rays_orientation_vector(t_vector2 in_screen, t_camera camera)
 {
-	t_vector	orientation_vec;
-	t_vector	coordinates_in_screen;
+	t_vector3	orientation_vec;
+	t_vector3	coordinates_in_screen;
 
 	coordinates_in_screen
 		= add_vector(multi_vector(camera.x_basis,
@@ -72,7 +72,7 @@ int	renderer(t_world *world)
 {
 	t_dcolor		color;
 	t_ray			gaze_ray;
-	t_xy			in_screen;
+	t_vector2			in_screen;
 
 	init_camera(&world->camera);
 	gaze_ray.coordinates_vec = world->camera.coordinates_vec;

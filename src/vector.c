@@ -6,15 +6,15 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:26 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 00:07:56 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 
-t_vector	subst_vector(t_vector a, t_vector b)
+t_vector3	subst_vector(t_vector3 a, t_vector3 b)
 {
-	t_vector	result;
+	t_vector3	result;
 
 	result.x = a.x - b.x;
 	result.y = a.y - b.y;
@@ -22,9 +22,9 @@ t_vector	subst_vector(t_vector a, t_vector b)
 	return (result);
 }
 
-t_vector	add_vector(t_vector a, t_vector b)
+t_vector3	add_vector(t_vector3 a, t_vector3 b)
 {
-	t_vector	result;
+	t_vector3	result;
 
 	result.x = a.x + b.x;
 	result.y = a.y + b.y;
@@ -32,9 +32,9 @@ t_vector	add_vector(t_vector a, t_vector b)
 	return (result);
 }
 
-t_vector	multi_vector(t_vector v, double c)
+t_vector3	multi_vector(t_vector3 v, double c)
 {
-	t_vector	result;
+	t_vector3	result;
 
 	result.x = v.x * c;
 	result.y = v.y * c;
@@ -42,16 +42,16 @@ t_vector	multi_vector(t_vector v, double c)
 	return (result);
 }
 
-double	len_vector(t_vector v)
+double	len_vector(t_vector3 v)
 {
 	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
 }
 
 // ベクトルを正規化する関数
-t_vector	normalize_vector(t_vector v)
+t_vector3	normalize_vector(t_vector3 v)
 {
 	double		magnitude;
-	t_vector	nv;
+	t_vector3	nv;
 
 	magnitude = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 	nv.x = v.x / magnitude;

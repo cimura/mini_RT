@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 17:30:51 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/17 23:15:55 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@
 # define SCREEN_HEIGHT 2.0
 
 // 背景色
-# define BACKGROUND_COLOR_RED 0.02
-# define BACKGROUND_COLOR_GREEN 0.02
-# define BACKGROUND_COLOR_BLUE 0.02
+# define BACKGROUND_COLOR_RED 0.01
+# define BACKGROUND_COLOR_GREEN 0.01
+# define BACKGROUND_COLOR_BLUE 0.01
 
 # define RECTANGLE 1
 # define CUBE 2
 
 // 2次元の座標を表す構造体
-typedef struct s_xy
+typedef struct s_vector2
 {
 	double	x;
 	double	y;
-}	t_xy;
+}	t_vector2;
 
 enum	s_cube_fase
 {
@@ -53,15 +53,15 @@ enum	s_cube_fase
 
 typedef struct s_cube_map
 {
-	t_xy	uv;
+	t_vector2	uv;
 	int		fase;
 }	t_cube_map;
 
 // レイ（視線）用の構造体
 typedef struct s_ray
 {
-	t_vector	coordinates_vec;
-	t_vector	orientation_vec;
+	t_vector3	coordinates_vec;
+	t_vector3	orientation_vec;
 	double		prev_refractive_index;
 }	t_ray;
 
@@ -80,8 +80,8 @@ typedef struct s_intersection
 	// 係数t
 	double		t;
 	bool		hit_on_back;
-	t_vector	coordinates_vec;
-	t_vector	normal_vec;
+	t_vector3	coordinates_vec;
+	t_vector3	normal_vec;
 	t_object	*object;
 }	t_intersection;
 
@@ -96,7 +96,7 @@ void			set_sphere_intersection(t_intersection *i, t_object *sphere,
 					const t_ray *ray);
 void			set_sphere_normal_vector(t_intersection *intersection,
 					const t_object *sphere, const t_ray *ray);
-t_cube_map		get_uv_on_sphere(const t_vector *intersection_vec,
+t_vector2		get_vec2_on_sphere(const t_vector3 *intersection_vec,
 					const t_object *sphere);
 
 // *** plane.c ***
@@ -104,6 +104,8 @@ void			set_plane_intersection(t_intersection *i, t_object *plane,
 					const t_ray *ray);
 void			set_plane_normal_vector(t_intersection *intersection,
 					const t_object *plane, const t_ray *ray);
+t_vector2		get_vec2_on_plane(const t_vector3 *intersection_vec,
+					const t_object *plane);
 
 // *** cylinder.c ***
 void			set_cylinder_intersection(t_intersection *i, t_object *cylinder,

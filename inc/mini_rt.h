@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/10 19:51:03 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,16 @@ typedef struct s_camera
 {
 	int			identifier;
 	// 座標 ( x,y,z )
-	t_vector	coordinates_vec;
+	t_vector3	coordinates_vec;
 	// 3D正規化方向ベクトル 範囲は[-1,1] ( x,y,z )
-	t_vector	orientation_vec;// 3d normalized_orientation vector
+	t_vector3	orientation_vec;// 3d normalized_orientation vector
 	// FOV 水平方向の視野角 範囲は[0,180]
 	int			horizontal_fov;
 	// スクリーン正規化直交基底ベクトル
-	t_vector	x_basis;
-	t_vector	y_basis;
+	t_vector3	x_basis;
+	t_vector3	y_basis;
 	// スクリーンの中心点のベクトル
-	t_vector	center_of_screen;
+	t_vector3	center_of_screen;
 }	t_camera;
 
 // 光源 Light
@@ -73,7 +73,7 @@ typedef struct s_light
 {
 	int			identifier;
 	// 座標 ( x,y,z )
-	t_vector	coordinates_vec;
+	t_vector3	coordinates_vec;
 	// 光の明るさ比率 範囲は[0.0,1.0]
 	// 光の強さ
 	// ※mandatoryでは不使用 RGB 範囲は0.0-1.0
@@ -115,9 +115,9 @@ typedef struct s_object
 {
 	int				identifier;
 	// オブジェクトの位置ベクトル
-	t_vector		coordinates_vec;
+	t_vector3		coordinates_vec;
 	// オブジェクトの正規化されている方向ベクトル 範囲は[-1,1]  平面、円柱
-	t_vector		orientation_vec;
+	t_vector3		orientation_vec;
 	// 球体、円柱
 	double			diameter;
 	// 円柱

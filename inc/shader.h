@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:13:53 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 18:36:19 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 // 完全鏡面反射と屈折を計算するための構造体
 typedef struct s_catadioptric_vars
 {
-	t_vector	inverse_ray_vec;
+	t_vector3	inverse_ray_vec;
 	double		inverse_ray_dot_normal;
 	double		refraction_index1;
 	double		refraction_index2;

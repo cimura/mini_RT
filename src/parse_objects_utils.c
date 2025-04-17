@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:58 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 21:58:53 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	set_rgb(t_dcolor *rgb, char *str)
 
 // この関数は座標やベクトル(x,y,zからなるもの)を構造体に登録する
 // 範囲はminとmaxに。範囲がないときはminとmaxを同じ値に
-int	set_vector(t_vector *xyz, char *str, double min, double max)
+int	set_vector(t_vector3 *xyz, char *str, double min, double max)
 {
 	char	**xyz_str;
 	double	xyz_double[3];
@@ -110,7 +110,7 @@ int	set_vector(t_vector *xyz, char *str, double min, double max)
 }
 
 // いろんな角度を試したいので引数は正規化することにする
-int	normalize_checker(t_vector *vector, char *str)
+int	normalize_checker(t_vector3 *vector, char *str)
 {
 	*vector = normalize_vector(*vector);
 	(void)str;

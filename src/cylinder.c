@@ -6,14 +6,14 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 00:03:02 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
 
 static bool	is_intersection_in_cylinder_height_range(const t_object *cylinder,
-	const t_vector *intersection)
+	const t_vector3 *intersection)
 {
 	double		i_dot_co;
 
@@ -63,9 +63,9 @@ void	set_cylinder_intersection(t_intersection *i, t_object *cylinder,
 void	set_cylinder_normal_vector(t_intersection *intersection,
 	const t_object *cylinder, const t_ray *ray)
 {
-	t_vector	normal_vector;
-	t_vector	cc_to_intersection;
-	t_vector	normal_and_co_intersec;
+	t_vector3	normal_vector;
+	t_vector3	cc_to_intersection;
+	t_vector3	normal_and_co_intersec;
 	double		cti_dot_orientation;
 	double		ray_dot_noramal;
 

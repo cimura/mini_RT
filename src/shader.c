@@ -6,16 +6,16 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 17:18:50 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shader.h"
 
 static bool	is_under_shadow(const t_world *world, const t_light *light,
-	t_vector intersection_vec)
+	t_vector3 intersection_vec)
 {
-	t_vector	shadow_ray_vec;
+	t_vector3	shadow_ray_vec;
 	t_ray		shadow_ray;
 	double		shadow_ray_len;
 	double		distance;
@@ -42,10 +42,10 @@ static t_dcolor	calculate_diffuse_color(const t_light *light,
 }
 
 static t_dcolor	calculate_specular_color(const t_light *light,
-	const t_object *object, t_vector dir_vec, t_vector reflection_vec)
+	const t_object *object, t_vector3 dir_vec, t_vector3 reflection_vec)
 {
 	t_dcolor		specular_light;
-	t_vector		inverse_dir_vec;
+	t_vector3		inverse_dir_vec;
 	double			inverse_dot_reflection;
 
 	inverse_dir_vec = normalize_vector(multi_vector(dir_vec, -1));
@@ -64,9 +64,9 @@ static t_dcolor	calculate_specular_color(const t_light *light,
 static t_dcolor	calculate_onelight_radiance(const t_world *world,
 	const t_light *light, const t_intersection *i, const t_ray *ray)
 {
-	t_vector	incidence_vec;
+	t_vector3	incidence_vec;
 	double		normal_dot_incidence;
-	t_vector	reflection_vec;
+	t_vector3	reflection_vec;
 	t_dcolor	result_color;
 
 	incidence_vec = normalize_vector(subst_vector(

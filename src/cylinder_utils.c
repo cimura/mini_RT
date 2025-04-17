@@ -6,13 +6,13 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:33 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 00:03:02 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
 
-static double	a_coef(const t_vector *dir_vec, double co_dot_dir,
+static double	a_coef(const t_vector3 *dir_vec, double co_dot_dir,
 	double co_dot_co)
 {
 	double	dir_dot_dir;
@@ -27,7 +27,7 @@ static double	b_coef(double co_dot_dir, double dir_dot_stc,
 	return (2.0 * (dir_dot_stc - co_dot_dir * co_dot_stc / co_dot_co));
 }
 
-static double	c_coef(const t_vector *camera_to_object, const t_object *object,
+static double	c_coef(const t_vector3 *camera_to_object, const t_object *object,
 	double co_dot_stc, double co_dot_co)
 {
 	double	ctc_dot_ctc;
@@ -40,7 +40,7 @@ static double	c_coef(const t_vector *camera_to_object, const t_object *object,
 void	calculate_cylinder_intersections_num(t_coef *coef,
 	const t_object *cylinder, const t_ray *ray)
 {
-	t_vector	start_to_cylinder;
+	t_vector3	start_to_cylinder;
 	double		co_dot_dir;
 	double		co_dot_co;
 	double		dir_dot_stc;

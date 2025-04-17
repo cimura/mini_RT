@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/16 20:40:56 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/17 22:14:22 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 	t_object	*plane;
 	t_dcolor	color;
 
-	if (ft_double_pointer_size(per_word_pointer) != 4)
-		return (print_err_msg(NOT_MATCH_PARAM_NUM, per_word_pointer[0]), 1);
+	//if (ft_double_pointer_size(per_word_pointer) != 4)
+	//	return (print_err_msg(NOT_MATCH_PARAM_NUM, per_word_pointer[0]), 1);
 	plane = malloc(sizeof(t_object));
 	if (plane == NULL)
 		return (1);
@@ -87,6 +87,8 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 		return (free(plane), 1);
 	plane->material = material_init(IRON, color);
 	plane->textures = NULL;
+	if (per_word_pointer[4] && texture_register(&per_word_pointer[4], &plane->textures) != 0)
+		return (print_err_msg(INV_FILENAME, per_word_pointer[4]), free(plane), 1);
 	// デバッグ用
 	//if (ft_lstsize(world->objects) == 1)
 	//{
