@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:53 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/07 23:30:08 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/18 14:49:41 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void	catadioptric_set(t_material *material, int material_id)
 	}
 }
 
-t_material	material_init(int material_id, t_dcolor color)
+t_material	material_init(int material_id, t_dcolor color, int obj_id)
 {
 	t_material	material;
 
@@ -81,5 +81,9 @@ t_material	material_init(int material_id, t_dcolor color)
 	material.specular = specular_init(material_id);
 	material.shinness = shinness_init(material_id);
 	catadioptric_set(&material, material_id);
+	if (obj_id == PLANE || obj_id == CYLINDER)
+		material.use_thin_surfase = true;
+	else
+		material.use_thin_surfase = false;
 	return (material);
 }

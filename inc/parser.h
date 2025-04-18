@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:38 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/18 14:49:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ enum	e_errnum
 };
 
 // *** material.c ***
-t_material	material_init(int material_id, t_dcolor color);
+t_material	material_init(int material_id, t_dcolor color, int obj_id);
 
 // *** parser.c ***
 void		print_err_msg(int errnum, char *arg);

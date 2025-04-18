@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/18 14:24:04 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ typedef struct s_light
 }	t_light;
 
 // 完全鏡面反射する鏡は銀で出来ていることにする
+//# define GLASS "GLASS"
+//# define IRON "IRON"
+//# define SILVER "SILVER"
+//# define WOOD "WOOD"
+//# define WATER "WATER"
 enum	e_material
 {
 	GLASS,
