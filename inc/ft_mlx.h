@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_mlx.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:58 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 17:24:46 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 16:36:45 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <stdio.h>
 # include "mlx.h"
 
-# define WIDTH	512
-# define HEIGHT	512
+# define WIDTH	1048
+# define HEIGHT	1048
 
 # define ESC_KEY 65307
 

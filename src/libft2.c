@@ -6,7 +6,7 @@
 /*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:11:44 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 15:54:25 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/19 16:16:20 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ double	ft_atod(char *nptr)
 	double	result;
 
 	sign = 1;
-	printf("%s\n", nptr);
+	// printf("%s\n", nptr);
 	if (nptr == NULL)
 		return (-1);
 	while (check_isspace(*nptr) == 1)

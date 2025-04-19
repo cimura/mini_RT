@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 17:47:21 by ttakino           #+#    #+#             */
-/*   Updated: 2024/04/29 17:28:09 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 17:07:57 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t num)
 	size_t	i;
 
 	i = 0;
+	printf("s1->%s,  s2->%s\n", s1, s2);
 	while (i < num && (s1[i] != '\0' || s2[i] != '\0'))
 	{
 		if (s1[i] != s2[i])
