@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/18 15:25:52 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 22:49:08 by cimy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,12 @@ typedef struct s_intersection
 	t_object	*object;
 }	t_intersection;
 
-typedef struct s_thread_data {
-	t_world *world;
-	int start_y;
-	int end_y;
-} t_thread_data;
+typedef struct s_thread_data
+{
+	t_world	*world;
+	double	start_y;
+	double	end_y;
+}	t_thread_data;
 
 // *** anti_aliasing.c ***
 int				anti_aliasing(t_world *world);

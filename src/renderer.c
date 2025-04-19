@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 22:34:16 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 22:50:43 by cimy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_dcolor	ray_trace_recursive(const t_world *world, const t_ray *ray,
 	t_intersection	closest_intersection;
 
 	color = dcolor_init(BACKGROUND_COLOR_RED,
-		BACKGROUND_COLOR_GREEN, BACKGROUND_COLOR_BLUE);
+			BACKGROUND_COLOR_GREEN, BACKGROUND_COLOR_BLUE);
 	if (recursion_level > MAX_RECURSIVE_LEVEL)
 		return (color);
 	closest_intersection = find_intersection_minimum_distance(*world, ray);
@@ -49,13 +49,14 @@ static t_vector3	get_rays_orientation_vector(t_vector2 in_screen, t_camera camer
 	return (normalize_vector(orientation_vec));
 }
 
-void *render_thread(void *arg)
+void	*render_thread(void *arg)
 {
-	t_thread_data *data = (t_thread_data *)arg;
-	t_dcolor color;
-	t_ray gaze_ray;
-	t_vector2 in_screen;
+	t_thread_data	*data;
+	t_dcolor 		color;
+	t_ray			gaze_ray;
+	t_vector2		in_screen;
 
+	data = (t_thread_data *)arg;
 	gaze_ray.coordinates_vec = data->world->camera.coordinates_vec;
 	in_screen.y = data->start_y;
 	while (in_screen.y < data->end_y)
@@ -75,16 +76,15 @@ void *render_thread(void *arg)
 
 int	renderer(t_world *world)
 {
-	pthread_t threads[NUM_THREADS];
-	t_thread_data thread_data[NUM_THREADS];
-	int i;
-	int rows_per_thread;
+	pthread_t		threads[NUM_THREADS];
+	t_thread_data	thread_data[NUM_THREADS];
+	int				i;
+	double			rows_per_thread;
 
 	init_camera(&world->camera);
 	rows_per_thread = HEIGHT / NUM_THREADS;
 	i = 0;
 
-	// Create threads
 	while (i < NUM_THREADS)
 	{
 		thread_data[i].world = world;
@@ -93,7 +93,7 @@ int	renderer(t_world *world)
 			thread_data[i].end_y = HEIGHT;
 		else
 			thread_data[i].end_y = (i + 1) * rows_per_thread;
-		if (pthread_create(&threads[i], NULL, render_thread, &thread_data[i]) != 0)		
+		if (pthread_create(&threads[i], NULL, render_thread, &thread_data[i]) != 0)
 			return (1);
 		i++;
 	}
