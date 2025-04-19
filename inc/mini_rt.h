@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/18 14:24:04 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 16:34:34 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ typedef struct s_world
 	t_mlx				mlx;
 	t_dcolor			**frame_buffer;
 	// シーン全体のオブジェクトの情報 （大気など）
+	t_texture			*skybox;
 	double				global_refractive_index;
 	t_ambient_lightning	ambient_lightning;
 	t_camera			camera;

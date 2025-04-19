@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 23:40:35 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/10 17:19:20 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 17:10:23 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ static int	parse_line(t_world *world, char *line)
 	per_word_pointer = ft_split(line, ' ');
 	if (per_word_pointer == NULL || per_word_pointer[0] == NULL)
 		return (1);
-	if (ft_strncmp(per_word_pointer[0], "A", 3) == 0)
+	if (ft_strncmp(per_word_pointer[0], "sk", 3) == 0)
+		status = parse_skybox(world, per_word_pointer);
+	else if (ft_strncmp(per_word_pointer[0], "A", 3) == 0)
 		status = parse_ambient_lightning(world, per_word_pointer);
 	else if (ft_strncmp(per_word_pointer[0], "C", 3) == 0)
 		status = parse_camera(world, per_word_pointer);

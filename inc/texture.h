@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:40:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 13:40:45 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 18:08:32 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@
 
 enum	e_tex_identifier
 {
+	SKYBOX,
 	NORMAL,
 	COLOR,
+	NONE,
 };
 
 typedef struct s_uv

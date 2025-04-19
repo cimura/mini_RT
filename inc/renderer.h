@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 14:22:43 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 16:44:04 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,9 @@ t_intersection	find_intersection_minimum_distance(t_world world,
 					const t_ray *ray);
 void			calculate_intersections_normal_vector(t_intersection *i,
 					const t_ray *ray);
+
+// *** skybox.c ***
+t_dcolor		apply_skybox(const t_world *world, const t_ray *ray);
 
 // *** texture_mapping.c ***
 void			texture_mapping(t_list *tex_lst, t_intersection *i);

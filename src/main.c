@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/10 23:30:40 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 17:18:29 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	object_free(void *pointer)
 
 void	world_destroy(t_world *world)
 {
+	texture_free((void *)world->skybox);
 	free_double_pointer((void **)(world->frame_buffer));
 	ft_lstclear(&world->lights, free);
 	ft_lstclear(&world->objects, object_free);
@@ -45,6 +46,7 @@ void	on_destroy(t_world *world)
 
 int	init_world(t_world *world)
 {
+	world->skybox = NULL;
 	world->frame_buffer = frame_buffer_init(WIDTH, HEIGHT);
 	if (world->frame_buffer == NULL)
 		return (1);

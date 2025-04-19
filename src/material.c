@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   material.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:53 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/18 14:49:41 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 18:30:45 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+#include "parser.h"
 
 static t_dcolor	specular_init(int material_id)
 {
@@ -73,7 +74,7 @@ static void	catadioptric_set(t_material *material, int material_id)
 	}
 }
 
-t_material	material_init(int material_id, t_dcolor color, int obj_id)
+static t_material	material_init(int material_id, t_dcolor color, int obj_id)
 {
 	t_material	material;
 
@@ -86,4 +87,32 @@ t_material	material_init(int material_id, t_dcolor color, int obj_id)
 	else
 		material.use_thin_surfase = false;
 	return (material);
+}
+
+int	material_register(char **per_word_pointer, t_material *material,
+	int obj_identifier)
+{
+	int			material_id;
+	t_dcolor	color;
+
+	if (per_word_pointer[0] == NULL)
+		return (print_err_msg(NOT_MATCH_PARAM_NUM, NULL), 1);
+	if (set_rgb(&color, per_word_pointer[0]) != 0)
+		return (1);
+	material_id = WOOD;
+	if (per_word_pointer[1])
+	{
+		if (ft_strncmp(per_word_pointer[1], "GLASS", ft_strlen("GLASS") + 1) == 0)
+			material_id = GLASS;
+		else if (ft_strncmp(per_word_pointer[1], "IRON", ft_strlen("IRON") + 1) == 0)
+			material_id = IRON;
+		else if (ft_strncmp(per_word_pointer[1], "SILVER", ft_strlen("SILVER") + 1) == 0)
+			material_id = SILVER;
+		else if (ft_strncmp(per_word_pointer[1], "WOOD", ft_strlen("WOOD") + 1) == 0)
+			material_id = WOOD;
+		else if (ft_strncmp(per_word_pointer[1], "WATER", ft_strlen("WATER") + 1) == 0)
+			material_id = WATER;
+	}
+	*material = material_init(material_id, color, obj_identifier);
+	return (0);
 }

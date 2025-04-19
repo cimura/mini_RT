@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 22:34:16 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 16:44:42 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ t_dcolor	ray_trace_recursive(const t_world *world, const t_ray *ray,
 	t_dcolor		color;
 	t_intersection	closest_intersection;
 
-	color = dcolor_init(BACKGROUND_COLOR_RED,
-		BACKGROUND_COLOR_GREEN, BACKGROUND_COLOR_BLUE);
+	color = apply_skybox(world, ray);
 	if (recursion_level > MAX_RECURSIVE_LEVEL)
 		return (color);
 	closest_intersection = find_intersection_minimum_distance(*world, ray);

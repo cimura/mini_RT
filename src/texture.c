@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:12:17 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 15:56:37 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 17:54:34 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 int	load_texture(t_texture *tex, char *filename, int identifier)
 {
 	tex->identifier = identifier;
+	tex->data = NULL;
 	tex->data
 		= stbi_load(filename, &tex->width, &tex->height, &tex->channels, 0);
 	if (tex->data == NULL)
@@ -66,7 +67,10 @@ void	texture_free(void *pointer)
 {
 	t_texture	*tex;
 
+	if (pointer == NULL)
+		return ;
 	tex = (t_texture *)pointer;
-	stbi_image_free(tex->data);
+	if (tex->data)
+		stbi_image_free(tex->data);
 	free(pointer);
 }

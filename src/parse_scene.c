@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:56:46 by takat             #+#    #+#             */
-/*   Updated: 2025/04/08 19:19:09 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 17:11:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+int	parse_skybox(t_world *world, char **per_word_pointer)
+{
+	if (ft_double_pointer_size(per_word_pointer) != 2)
+		return (print_err_msg(NOT_MATCH_PARAM_NUM, per_word_pointer[0]), 1);
+	world->skybox = init_new_texture(per_word_pointer[1]);
+	if (world->skybox == NULL)
+		return (1);
+	return (0);
+}
 
 int	parse_ambient_lightning(t_world *world, char **per_word_pointer)
 {
