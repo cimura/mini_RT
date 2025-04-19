@@ -17,6 +17,9 @@
 # include "mini_rt.h"
 # include "vector.h"
 # include "texture.h"
+# include <pthread.h>
+
+#define NUM_THREADS 8
 
 // 完全鏡面反射をするときの再帰関数の深さ限度
 # define MAX_RECURSIVE_LEVEL 6
@@ -84,6 +87,12 @@ typedef struct s_intersection
 	t_vector3	normal_vec;
 	t_object	*object;
 }	t_intersection;
+
+typedef struct s_thread_data {
+	t_world *world;
+	int start_y;
+	int end_y;
+} t_thread_data;
 
 // *** anti_aliasing.c ***
 int				anti_aliasing(t_world *world);

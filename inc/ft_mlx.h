@@ -17,8 +17,8 @@
 # include <stdio.h>
 # include "mlx.h"
 
-# define WIDTH	512
-# define HEIGHT	512
+# define WIDTH	1024
+# define HEIGHT	1024
 
 # define ESC_KEY 65307
 
