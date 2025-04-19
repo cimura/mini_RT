@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 17:05:01 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/19 19:00:02 by cimy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,6 @@ int	material_register(char **per_word_pointer, t_material *material,
 	
 	if (set_rgb(&color, per_word_pointer[0]) != 0)
 		return (1);
-	// if (per_word_pointer[1] == NULL)
-	printf("[1] -> %s\n", per_word_pointer[1]);
 	if (ft_strncmp(per_word_pointer[1], "GLASS", ft_strlen("GLASS") + 1) == 0)
 		material_id = GLASS;
 	else if (ft_strncmp(per_word_pointer[1], "IRON", ft_strlen("IRON") + 1) == 0)
@@ -122,7 +120,6 @@ int	material_register(char **per_word_pointer, t_material *material,
 		material_id = WATER;
 	else
 		material_id = WOOD;
-	printf("out\n");
 		// else
 	// 	return (print_err_msg(INV_IDENTIFIER, per_word_pointer[1]), 1);
 	*material = material_init(material_id, color, obj_identifier);

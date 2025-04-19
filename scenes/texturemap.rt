@@ -6,7 +6,6 @@ L 0.5,0.3,-1.0  1.0 255,255,255
 
 sp 0,0.0,0.0 0.5 255,23,255 WOOD C:"tex/rock_color.png" N:"tex/rock_normal.png"
 
-
 sp -0.4,0.4,0.0 0.3 150,150,150 IRON C:"tex/bricks_color.png" N:"tex/bricks_normal.png"
 
 sp -0.4,-0.6,0.2 0.29 255,180,80 IRON C:"tex/wall.png" N:"tex/rock_normal.png"
