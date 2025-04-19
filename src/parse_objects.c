@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/18 15:28:26 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 15:55:36 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	material_register(char **per_word_pointer, t_material *material,
 	int			material_id;
 	t_dcolor	color;
 
-	printf("per_word_pointer[0]: %s\n", per_word_pointer[0]);
+	// printf("per_word_pointer[0]: %s\n", per_word_pointer[0]);
 	if (per_word_pointer[0] == NULL || ft_double_pointer_size(per_word_pointer) < 2)
 		return (print_err_msg(NOT_MATCH_PARAM_NUM, NULL), 1);
 	if (set_rgb(&color, per_word_pointer[0]) != 0)
@@ -149,9 +149,9 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 	t_object	*plane;
 	t_dcolor	color;
 
-	int	i = 0;
-	while (per_word_pointer[i] != NULL)
-		printf("-%s\n", per_word_pointer[i++]);
+	// int	i = 0;
+	// while (per_word_pointer[i] != NULL)
+	// 	printf("-%s\n", per_word_pointer[i++]);
 	plane = malloc(sizeof(t_object));
 	if (plane == NULL)
 		return (1);

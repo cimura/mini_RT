@@ -3,63 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   texture_mapping.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 23:04:15 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 22:24:32 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 15:50:21 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
 
-t_vector3	calculate_tangent(const t_vector3 *normal)
-{
-	t_vector3	arbitrary;
-	t_vector3	tangent;
-
-	arbitrary.x = 0;
-	arbitrary.y = 1;
-	arbitrary.z = 0;
-	if (fabs(normal->x) > 0.9)
-	{
-		arbitrary.x = 1;
-		arbitrary.y = 0;
-		arbitrary.z = 0;
-    }
-	tangent = cross_product(arbitrary, *normal);
-	return (normalize_vector(tangent));
-}
-
-t_vector3	calculate_bitangent(const t_vector3 *tangent, const t_vector3 *normal)
-{
-	return (normalize_vector(cross_product(*normal, *tangent)));
-}
-
 void	texture_set_normal(t_intersection *i, t_texture *normal_tex)
 {
-	t_vector3	normalvec_in_tex;
-	t_vector2	on_map;
-	t_uv		uv;
+	t_vector3		result_normal_vec;
+	t_basis_vector	basis_vec;
+	t_vector3		normalvec_in_tex;
+	t_vector2		on_map;
+	t_uv			uv;
 
 	if (i->object->identifier == SPHERE)
 		on_map = get_vec2_on_sphere(&i->coordinates_vec, i->object);
 	else if (i->object->identifier == PLANE)
-		on_map = get_vec2_on_plane(&i->coordinates_vec, i->object);
+		on_map = get_vec2_on_plane(i, i->object, normal_tex);
 	//else if (i->object->identifier == CYLINDER)
 	//	;
+	if (on_map.x < 0 || on_map.y < 0 || on_map.x > 1 || on_map.y > 1)
+		return ;
 	uv.u = (int)(on_map.x * normal_tex->width) % normal_tex->width;
 	uv.v = (int)(on_map.y * normal_tex->height) % normal_tex->height;
-
-	t_vector3	tangent = calculate_tangent(&i->normal_vec);
-	t_vector3	bitangent = calculate_bitangent(&tangent, &i->normal_vec);
-	t_vector3	result;
-
 	normalvec_in_tex = texture_get_normal(normal_tex, uv.u, uv.v);
-	result
-		= add_vector(multi_vector(tangent, normalvec_in_tex.x), multi_vector(bitangent, normalvec_in_tex.y));
-	result
-		= add_vector(result, multi_vector(i->normal_vec, normalvec_in_tex.z));
-	i->normal_vec = normalize_vector(result);
+	basis_vec = get_basis_vector_from_normal_vec(&i->normal_vec);
+	result_normal_vec
+		= add_vector(multi_vector(basis_vec.u, normalvec_in_tex.x),
+			multi_vector(basis_vec.v, normalvec_in_tex.y));
+	result_normal_vec
+		= add_vector(result_normal_vec, multi_vector(i->normal_vec, normalvec_in_tex.z));
+	i->normal_vec = normalize_vector(result_normal_vec);
 }
 
 void	texture_set_color(t_intersection *i, t_texture *color_tex)
@@ -70,9 +48,11 @@ void	texture_set_color(t_intersection *i, t_texture *color_tex)
 	if (i->object->identifier == SPHERE)
 		on_map = get_vec2_on_sphere(&i->coordinates_vec, i->object);
 	else if (i->object->identifier == PLANE)
-		on_map = get_vec2_on_plane(&i->coordinates_vec, i->object);
+		on_map = get_vec2_on_plane(i, i->object, color_tex);
 	//else if (object->identifier == CYLINDER)
 	//	;
+	if (on_map.x < 0 || on_map.y < 0 || on_map.x > 1 || on_map.y > 1)
+		return ;
 	uv.u = (int)(on_map.x * color_tex->width) % color_tex->width;
 	uv.v = (int)(on_map.y * color_tex->height) % color_tex->height;
 	i->object->material.diffuse = texture_get_color(color_tex, uv.u, uv.v);

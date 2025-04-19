@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:57:50 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 23:13:31 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 15:47:14 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,38 +49,24 @@ void	set_plane_normal_vector(t_intersection *intersection,
 	intersection->normal_vec = normal_vector;
 }
 
-t_vector2	get_vec2_on_plane(const t_vector3 *intersection_vec,
-	const t_object *plane)
+t_vector2	get_vec2_on_plane(const t_intersection *intersection,
+	const t_object *plane, const t_texture *tex)
 {
-	t_vector2	on_map;
-	t_vector3	on_plane;
-	double		u_scale;
-	double		v_scale;
+	t_vector2		on_map;
+	t_vector3		on_plane;
+	t_basis_vector	basis_vec;
 
-	on_plane = subst_vector(*intersection_vec, plane->coordinates_vec);
-	u_scale = PLANE_TEX_WIDTH;
-	v_scale = PLANE_TEX_HEIGHT;
-	//on_map.x = on_plane.x / u_scale;
-	//on_map.y = on_plane.y / v_scale;
-	//on_map.x = fabs((on_plane.x - u_scale * (int)(on_plane.x / u_scale)) / u_scale);
-	//on_map.y = fabs((on_plane.y - v_scale * (int)(on_plane.y / v_scale)) / v_scale);
-	//on_map.x = fmod(on_plane.x / u_scale, 1.0);
-	//if (on_map.x < 0)
-	//	on_map.x += 1.0;
-	//on_map.y = fmod(on_plane.z / v_scale, 1.0);
-	//if (on_map.y < 0)
-	//	on_map.y += 1.0;
-	on_map.x = on_plane.x;
-	on_map.y = on_plane.z;
-	if (on_map.x < 0 || on_map.x > 1)
-		on_map.x = 0;
-	if (on_map.y < 0 || on_map.y > 1)
-		on_map.y = 0;
-	//on_map.x = (int)(on_plane.x / u_scale);
-	//on_map.y = (int)(on_plane.y / v_scale);
-	//if (on_map.x < 0 || on_map.x > 1 || on_map.y < 0 || on_map.y > 1)
-	//	printf("(%lf,%lf)", on_map.x, on_map.y);
-	//on_map.x = 1;
-	//on_map.y = 1;
+	on_map.x = -1;
+	on_map.y = -1;
+	basis_vec = get_basis_vector_from_normal_vec(&intersection->normal_vec);
+	on_plane = subst_vector(intersection->coordinates_vec, plane->coordinates_vec);
+	on_map.x = inner_product(on_plane, basis_vec.u);
+	on_map.y = inner_product(on_plane, basis_vec.v);
+	on_map.x = fmod(on_map.x, 1.0);
+	on_map.y = fmod(on_map.y, 1.0);
+	if (on_map.x < 0)
+		on_map.x += 1.0;
+	if (on_map.y < 0)
+		on_map.y += 1.0;
 	return (on_map);
 }
