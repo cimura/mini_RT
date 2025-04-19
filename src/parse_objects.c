@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/18 15:28:26 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 15:55:17 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,10 +186,10 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 		return (free(cylinder), 1);
 	cylinder->diameter = ft_atod(per_word_pointer[3]);
 	if (cylinder->diameter < 0)
-		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[3]), free(cylinder), 1);
+		return (print_err_msg(INV_PARAM, per_word_pointer[3]), free(cylinder), 1);
 	cylinder->height = ft_atod(per_word_pointer[4]);
 	if (cylinder->height < 0)
-		return (print_err_msg(OUT_OF_RANGE, per_word_pointer[4]), free(cylinder), 1);
+		return (print_err_msg(INV_PARAM, per_word_pointer[4]), free(cylinder), 1);
 	if (material_register(&per_word_pointer[5], &cylinder->material, CYLINDER) != 0)
 		return (free(cylinder), 1);
 	if (texture_register(&per_word_pointer[7], &cylinder->textures) != 0)

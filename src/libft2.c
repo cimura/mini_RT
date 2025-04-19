@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:11:44 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/07 23:27:09 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 15:54:25 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ double	ft_atod(char *nptr)
 	double	result;
 
 	sign = 1;
+	printf("%s\n", nptr);
+	if (nptr == NULL)
+		return (-1);
 	while (check_isspace(*nptr) == 1)
 		nptr++;
 	if (*nptr == '-' || *nptr == '+')
