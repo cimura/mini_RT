@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 13:54:11 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 14:20:09 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+static t_object	*object_init(void)
+{
+	t_object	*new;
+
+	new = malloc(sizeof(t_object));
+	if (new == NULL)
+		return (NULL);
+	new->identifier = 0;
+	new->coordinates_vec = init_vector(0, 0, 0);
+	new->orientation_vec = init_vector(0, 0, 0);
+	new->diameter = 0;
+	new->height = 0;
+	new->textures = NULL;
+	return (new);
+}
 
 static int	add_object_to_lst(t_world *world, t_object *object)
 {
@@ -29,7 +45,7 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 	int			size;
 
 	size = ft_double_pointer_size(per_word_pointer);
-	sphere = malloc(sizeof(t_object));
+	sphere = object_init();
 	if (sphere == NULL)
 		return (1);
 	sphere->identifier = SPHERE;
@@ -50,7 +66,7 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 	int			size;
 
 	size = ft_double_pointer_size(per_word_pointer);
-	plane = malloc(sizeof(t_object));
+	plane = object_init();
 	if (plane == NULL)
 		return (1);
 	plane->identifier = PLANE;
@@ -73,7 +89,7 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 	int			size;
 
 	size = ft_double_pointer_size(per_word_pointer);
-	cylinder = malloc(sizeof(t_object));
+	cylinder = object_init();
 	if (cylinder == NULL)
 		return (1);
 	cylinder->identifier = CYLINDER;
@@ -86,7 +102,6 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 	if (set_dimension(&cylinder->diameter, per_word_pointer[3], 0, -1) != 0
 		|| set_dimension(&cylinder->height, per_word_pointer[4], 0, -1) != 0)
 		return (free(cylinder), 1);
-	printf("%lf %lf\n", cylinder->diameter, cylinder->height);
 	if (material_register(&per_word_pointer[5], &cylinder->material, CYLINDER) != 0)
 		return (free(cylinder), 1);
 	if (size > 7 - 1 && texture_register(&per_word_pointer[7], &cylinder->textures) != 0)
