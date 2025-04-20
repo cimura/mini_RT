@@ -18,6 +18,12 @@ DFLAGS		:=	-g -O3 -MMD
 CFLAGS		:=	-Wall -Wextra -Werror $(DFLAGS)
 IFLAGS		:=	-I$(INC_DIR) -I$(LIBFT_DIR)$(INC_DIR) -I$(MLX_DIR)
 
+STB_DIR		:=	$(INC_DIR)
+STB_HEADER	:=	$(STB_DIR)stb_image.h
+STB_URL		:=	https://github.com/nothings/stb/blob/master/stb_image.h
+
+MLX_URL		:=	https://github.com/42Paris/minilibx-linux.git
+
 UNAME_S		:=	$(shell uname -s)
 
 ifeq ($(UNAME_S), Darwin)
@@ -28,7 +34,7 @@ endif
 
 LFLAGS		:=	-L$(LIBFT_DIR) -lft $(LD_FLAGS)
 
-all: $(OBJ_DIR) $(NAME)
+all: $(OBJ_DIR) $(NAME) $(STB_HEADER) $(MLX)
 
 -include $(OBJ_DIR)/*.d
 
@@ -37,6 +43,16 @@ $(OBJ_DIR):
 
 $(NAME): $(OBJ_DIR) $(LIBFT) $(OBJ)
 	$(CC) $(CFLAGS) $(IFLAGS) $(OBJ) -o $@ $(LFLAGS)
+
+$(STB_HEADER):
+	@echo "Downloading stb_image.h..."
+	@mkdir -p $(STB_DIR)
+	@curl -fsSL $(STB_URL) -o $(STB_HEADER)
+
+$(MLX):
+	@echo "Cloning MiniLibX..."
+	@git clone $(MLX_REPO) $(MLX_DIR)
+	@$(MAKE) -C $(MLX_DIR)
 
 $(LIBFT):
 	$(MAKE) bonus -C $(LIBFT_DIR)
