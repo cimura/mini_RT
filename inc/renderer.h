@@ -6,7 +6,7 @@
 /*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 13:52:34 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 13:57:45 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include "texture.h"
 # include <pthread.h>
 
-#define NUM_THREADS 8
+#define NUM_THREADS 4
 
 // 完全鏡面反射をするときの再帰関数の深さ限度
 # define MAX_RECURSIVE_LEVEL 6

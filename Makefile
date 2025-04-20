@@ -14,8 +14,8 @@ LIBFT		:=	$(LIBFT_DIR)libft.a
 MLX_DIR		:=	mlx/
 MLX			:=	$(MLX_DIR)libmlx.a
 
-DFLAGS		:=	-g -O3
-CFLAGS		:=	-Wall -Wextra -Werror $(DFLAGS)
+CFLAGS		:=	-g -O3
+# CFLAGS		:=	-Wall -Wextra -Werror $(DFLAGS)
 IFLAGS		:=	-I$(INC_DIR) -I$(LIBFT_DIR)$(INC_DIR) -I$(MLX_DIR)
 
 UNAME_S		:=	$(shell uname -s)

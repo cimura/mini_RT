@@ -6,7 +6,7 @@
 /*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 13:53:08 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 14:05:56 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_dcolor	ray_trace_recursive(const t_world *world, const t_ray *ray,
 	t_intersection	closest_intersection;
 
 	color = apply_skybox(world, ray);
+	// color = dcolor_init(0, 0, 0);
 	if (recursion_level > MAX_RECURSIVE_LEVEL)
 		return (color);
 	closest_intersection = find_intersection_minimum_distance(*world, ray);

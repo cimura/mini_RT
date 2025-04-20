@@ -6,7 +6,7 @@
 /*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 13:52:59 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 13:54:11 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int	add_object_to_lst(t_world *world, t_object *object)
 int	parse_sphere(t_world *world, char **per_word_pointer)
 {
 	t_object	*sphere;
-	t_dcolor	color;
 	int			size;
 
 	size = ft_double_pointer_size(per_word_pointer);
@@ -48,7 +47,6 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 int	parse_plane(t_world *world, char **per_word_pointer)
 {
 	t_object	*plane;
-	t_dcolor	color;
 	int			size;
 
 	size = ft_double_pointer_size(per_word_pointer);
@@ -72,7 +70,6 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 int	parse_cylinder(t_world *world, char **per_word_pointer)
 {
 	t_object	*cylinder;
-	t_dcolor	color;
 	int			size;
 
 	size = ft_double_pointer_size(per_word_pointer);
