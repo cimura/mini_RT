@@ -3,23 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:17:04 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 19:08:47 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:45:06 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-// ×ボタンで閉じる
 static int	handle_win_input(t_world *world)
 {
 	on_destroy(world);
 	return (0);
 }
 
-// escキーで閉じる
 static int	key_press(int keysym, t_world *world)
 {
 	if (keysym == ESC_KEY)

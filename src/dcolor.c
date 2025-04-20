@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dcolor.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:47 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 18:32:00 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:43:25 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ t_dcolor	dcolor_multi(t_dcolor l1, t_dcolor l2)
 	return (result);
 }
 
-// 赤は上位16ビット 緑は中間8ビット 青は下位8ビット
 int	rgb_to_colorcode(t_dcolor light)
 {
 	int	result;

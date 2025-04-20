@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:51:27 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,6 @@ static t_dcolor	calculate_specular_color(const t_light *light,
 	return (dcolor_multi(specular_light, object->material.specular));
 }
 
-// incidence_vec: 直接光の入射ベクトル
-// reflection_vec: 直接光の正反射ベクトル
-// 交点があったピクセルの色を計算する
 static t_dcolor	calculate_onelight_radiance(const t_world *world,
 	const t_light *light, const t_intersection *i, const t_ray *ray)
 {

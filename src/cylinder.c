@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 16:03:47 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,10 @@ static bool	is_intersection_in_cylinder_height_range(const t_object *cylinder,
 		return (false);
 }
 
-// 交点があれば一番近い交点の情報を登録する
 void	set_cylinder_intersection(t_intersection *i, t_object *cylinder,
 	const t_ray *ray)
 {
-	t_coef			coef;
+	t_coefficient	coef;
 	t_intersection	i1;
 	t_intersection	i2;
 
@@ -59,7 +58,6 @@ void	set_cylinder_intersection(t_intersection *i, t_object *cylinder,
 		*i = i2;
 }
 
-// 視線と円柱の表面の法線ベクトルを計算する (円柱データ、交点、円柱の底面の位置ベクトル)
 void	set_cylinder_normal_vector(t_intersection *intersection,
 	const t_object *cylinder, const t_ray *ray)
 {

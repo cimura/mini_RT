@@ -107,12 +107,12 @@ typedef struct s_coef
 	double	b;
 	double	c;
 	double	d;
-}	t_coef;
+}	t_coefficient;
 
 
 // 諸々の定数を定義しておく あとで全体の構造体に入れる
 // 環境光反射係数
-#define	AMBIENT_COEFFICIENT 0.01
+#define	AMBIENt_coefficientFICIENT 0.01
 // 拡散反射光反射係数
 #define	DIFFUSE_COEFFICIENT 0.69
 // 鏡面反射係数
@@ -230,7 +230,7 @@ t_vector	*calculate_cylinder_intersection(t_cylinder cylinder, t_camera camera, 
 }
 
 #define	EPSILON	1.0 / 512.0
-bool	is_inshadow(t_coef coef, t_cylinder cylinder, t_camera camera, t_vector dir_vec, t_vector pi, t_vector l)
+bool	is_inshadow(t_coefficient coef, t_cylinder cylinder, t_camera camera, t_vector dir_vec, t_vector pi, t_vector l)
 {
 	// 交点と光源の距離
 	double	D;
@@ -255,7 +255,7 @@ bool	is_inshadow(t_coef coef, t_cylinder cylinder, t_camera camera, t_vector dir
 }
 
 // 交点があったピクセルの色を計算する
-int	calculate_intersections_color(t_camera camera, t_coef coef, t_vector intersection, t_cylinder cylinder, t_light light, t_vector dir_vec, t_ambient_lightning ambient_lightning, t_vector normal_vec, t_vector intersection_vec)
+int	calculate_intersections_color(t_camera camera, t_coefficient coef, t_vector intersection, t_cylinder cylinder, t_light light, t_vector dir_vec, t_ambient_lightning ambient_lightning, t_vector normal_vec, t_vector intersection_vec)
 {
 	t_vector			incidence_vec;
 	double				normal_dot_incindence;
@@ -266,7 +266,7 @@ int	calculate_intersections_color(t_camera camera, t_coef coef, t_vector interse
 	// 視線逆ベクトルと正反射ベクトルの内積
 	double				inverse_dot_reflection;
 	// 物体の表面の色によって変える
-	t_light_ratio		ambient_coefficient;
+	t_light_ratio		ambient_coefficientficient;
 	t_light_ratio		diffuse_coefficient;
 	t_light_ratio		specular_coefficient;
 	// 光の色によって変える
@@ -290,9 +290,9 @@ int	calculate_intersections_color(t_camera camera, t_coef coef, t_vector interse
 		inverse_dot_reflection = 0.0;
 	if (inverse_dot_reflection > 1.0)
 		inverse_dot_reflection = 1.0;
-	set_light_ratio(&ambient_coefficient, cylinder.rgb, AMBIENT_COEFFICIENT);
+	set_light_ratio(&ambient_coefficientficient, cylinder.rgb, AMBIENt_coefficientFICIENT);
 	set_light_ratio(&ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
-	ambient_light = multi_light_ratio(ambient_light, ambient_coefficient);
+	ambient_light = multi_light_ratio(ambient_light, ambient_coefficientficient);
 	set_light_ratio(&diffuse_coefficient, cylinder.rgb, DIFFUSE_COEFFICIENT);
 	set_light_ratio(&diffuse_light, light.rgb, light.ratio * normal_dot_incindence);
 	diffuse_light = multi_light_ratio(diffuse_light, diffuse_coefficient);
@@ -334,7 +334,7 @@ double	c_coef(t_vector camera_to_cylinder, t_cylinder cylinder, double co_dot_ct
 // -> 1/√3(x - 0) + 1/√3(y - 0) + 1/√3(z + 10) = 0
 // -> 1/√3x + 1/√3y + 1/√3z + 10/√3 = 0
 
-void	calculate_intersections_num(t_coef *coef, t_cylinder cylinder, t_camera camera, t_vector dir_vec)
+void	calculate_intersections_num(t_coefficient *coef, t_cylinder cylinder, t_camera camera, t_vector dir_vec)
 {
 	t_vector	camera_to_cylinder;
 	double		co_dot_dir;
@@ -353,7 +353,7 @@ void	calculate_intersections_num(t_coef *coef, t_cylinder cylinder, t_camera cam
 	coef->d = pow(coef->b, 2) - 4 * coef->a * coef->c;
 }
 
-void	put_color_on_intersection_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera, t_ambient_lightning ambient_lightning, t_coef coef)
+void	put_color_on_intersection_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera, t_ambient_lightning ambient_lightning, t_coefficient coef)
 {
 	t_vector	intersec1;
 	t_vector	intersec2;
@@ -385,7 +385,7 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_cylinder cylinder, t_ligh
 
 void render_pixel(int xs, int ys, t_plane plane, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera, t_ambient_lightning ambient_lightning)
 {
-	t_coef	coef;
+	t_coefficient	coef;
 	calculate_intersections_num(&coef, plane, camera, dir_vec);
 	put_color_on_intersection_pixel(xs, ys, plane, light, dir_vec, mlx, camera, ambient_lightning, coef);
 }

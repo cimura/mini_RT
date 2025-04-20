@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   catadioptric_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 23:06:37 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 17:17:56 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:40:08 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 t_ray	get_reflection_ray(const t_catadioptric_vars *catadioptric_vars,
 	const t_intersection *intersection)
 {
-	t_ray	rfl_ray;
+	t_ray	reflective_ray;
 
-	rfl_ray.orientation_vec
+	reflective_ray.orientation_vec
 		= normalize_vector(subst_vector(multi_vector(intersection->normal_vec,
 					catadioptric_vars->inverse_ray_dot_normal * 2),
 				catadioptric_vars->inverse_ray_vec));
-	rfl_ray.coordinates_vec = add_vector(intersection->coordinates_vec,
-			multi_vector(rfl_ray.orientation_vec, EPSILON));
-	return (rfl_ray);
+	reflective_ray.coordinates_vec = add_vector(intersection->coordinates_vec,
+			multi_vector(reflective_ray.orientation_vec, EPSILON));
+	return (reflective_ray);
 }
 
 t_ray	get_refraction_ray(const t_catadioptric_vars *catadioptric_vars,

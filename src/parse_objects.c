@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 14:20:09 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 16:07:25 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 		return (free(sphere), 1);
 	if (material_register(&per_word_pointer[3], &sphere->material, SPHERE) != 0)
 		return (free(sphere), 1);
-	if (size > 5 - 1 && texture_register(&per_word_pointer[5], &sphere->textures) != 0)
+	if (size > 4
+		&& texture_register(&per_word_pointer[5], &sphere->textures) != 0)
 		return (free(sphere), 1);
 	return (add_object_to_lst(world, sphere));
 }
@@ -78,7 +79,8 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 		return (free(plane), 1);
 	if (material_register(&per_word_pointer[3], &plane->material, PLANE) != 0)
 		return (free(plane), 1);
-	if (size > 5 - 1 && texture_register(&per_word_pointer[5], &plane->textures) != 0)
+	if (size > 4
+		&& texture_register(&per_word_pointer[5], &plane->textures) != 0)
 		return (free(plane), 1);
 	return (add_object_to_lst(world, plane));
 }
@@ -102,9 +104,11 @@ int	parse_cylinder(t_world *world, char **per_word_pointer)
 	if (set_dimension(&cylinder->diameter, per_word_pointer[3], 0, -1) != 0
 		|| set_dimension(&cylinder->height, per_word_pointer[4], 0, -1) != 0)
 		return (free(cylinder), 1);
-	if (material_register(&per_word_pointer[5], &cylinder->material, CYLINDER) != 0)
+	if (material_register(&per_word_pointer[5],
+			&cylinder->material, CYLINDER) != 0)
 		return (free(cylinder), 1);
-	if (size > 7 - 1 && texture_register(&per_word_pointer[7], &cylinder->textures) != 0)
+	if (size > 6 && texture_register(&per_word_pointer[7],
+			&cylinder->textures) != 0)
 		return (free(cylinder), 1);
 	return (add_object_to_lst(world, cylinder));
 }

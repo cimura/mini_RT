@@ -6,14 +6,13 @@
 /*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 14:05:56 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 16:06:20 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
 #include "shader.h"
 
-// This function returns pixel's color
 t_dcolor	ray_trace_recursive(const t_world *world, const t_ray *ray,
 	int recursion_level)
 {
@@ -21,21 +20,22 @@ t_dcolor	ray_trace_recursive(const t_world *world, const t_ray *ray,
 	t_intersection	closest_intersection;
 
 	color = apply_skybox(world, ray);
-	// color = dcolor_init(0, 0, 0);
 	if (recursion_level > MAX_RECURSIVE_LEVEL)
 		return (color);
 	closest_intersection = find_intersection_minimum_distance(*world, ray);
 	if (closest_intersection.t < 0)
 		return (color);
 	calculate_intersections_normal_vector(&closest_intersection, ray);
-	texture_mapping(closest_intersection.object->textures, &closest_intersection);
+	texture_mapping(closest_intersection.object->textures,
+		&closest_intersection);
 	color = shader(world, &closest_intersection, ray);
 	color = dcolor_add(color, calculate_catadioptric_radiance(
 				world, &closest_intersection, ray, recursion_level));
 	return (color);
 }
 
-static t_vector3	get_rays_orientation_vector(t_vector2 in_screen, t_camera camera)
+static t_vector3	get_rays_orientation_vector(t_vector2 in_screen,
+		t_camera camera)
 {
 	t_vector3	orientation_vec;
 	t_vector3	coordinates_in_screen;
@@ -52,7 +52,7 @@ static t_vector3	get_rays_orientation_vector(t_vector2 in_screen, t_camera camer
 void	*render_thread(void *arg)
 {
 	t_thread_data	*data;
-	t_dcolor 		color;
+	t_dcolor		color;
 	t_ray			gaze_ray;
 	t_vector2		in_screen;
 
@@ -64,9 +64,11 @@ void	*render_thread(void *arg)
 		in_screen.x = 0;
 		while (in_screen.x < WIDTH)
 		{
-			gaze_ray.orientation_vec = get_rays_orientation_vector(in_screen, data->world->camera);
+			gaze_ray.orientation_vec
+				= get_rays_orientation_vector(in_screen, data->world->camera);
 			color = ray_trace_recursive(data->world, &gaze_ray, 0);
-			my_pixel_put(in_screen.x, in_screen.y, data->world->mlx.img, rgb_to_colorcode(color));
+			my_pixel_put(in_screen.x, in_screen.y, data->world->mlx.img,
+				rgb_to_colorcode(color));
 			in_screen.x++;
 		}
 		in_screen.y++;

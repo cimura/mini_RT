@@ -10,7 +10,7 @@ typedef struct	s_light_ratio
 typedef struct	s_light_info
 {
 		// 物体の表面の色によって変える
-	t_light_ratio		ambient_coefficient;
+	t_light_ratio		ambient_coefficientficient;
 	t_light_ratio		diffuse_coefficient;
 	t_light_ratio		specular_coefficient;
 
@@ -23,7 +23,7 @@ typedef struct	s_light_info
 
 // 諸々の定数を定義しておく あとで全体の構造体に入れる
 // 環境光反射係数
-#define	AMBIENT_COEFFICIENT 0.01
+#define	AMBIENt_coefficientFICIENT 0.01
 // 拡散反射光反射係数
 #define	DIFFUSE_COEFFICIENT 0.69
 // 鏡面反射係数

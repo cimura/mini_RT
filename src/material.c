@@ -6,7 +6,7 @@
 /*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:53 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 13:52:39 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 15:47:48 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,15 +104,15 @@ int	material_register(char **per_word_pointer, t_material *material,
 	material_id = WOOD;
 	if (per_word_pointer[1])
 	{
-		if (ft_strncmp(per_word_pointer[1], "GLASS", ft_strlen("GLASS") + 1) == 0)
+		if (ft_strncmp(per_word_pointer[1], "GLASS", 6) == 0)
 			material_id = GLASS;
-		else if (ft_strncmp(per_word_pointer[1], "IRON", ft_strlen("IRON") + 1) == 0)
+		else if (ft_strncmp(per_word_pointer[1], "IRON", 5) == 0)
 			material_id = IRON;
-		else if (ft_strncmp(per_word_pointer[1], "SILVER", ft_strlen("SILVER") + 1) == 0)
+		else if (ft_strncmp(per_word_pointer[1], "SILVER", 7) == 0)
 			material_id = SILVER;
-		else if (ft_strncmp(per_word_pointer[1], "WOOD", ft_strlen("WOOD") + 1) == 0)
+		else if (ft_strncmp(per_word_pointer[1], "WOOD", 5) == 0)
 			material_id = WOOD;
-		else if (ft_strncmp(per_word_pointer[1], "WATER", ft_strlen("WATER") + 1) == 0)
+		else if (ft_strncmp(per_word_pointer[1], "WATER", 6) == 0)
 			material_id = WATER;
 	}
 	*material = material_init(material_id, color, obj_identifier);

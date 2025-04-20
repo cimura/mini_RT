@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:26 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:52:57 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ double	len_vector(t_vector3 v)
 	return (sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2)));
 }
 
-// ベクトルを正規化する関数
 t_vector3	normalize_vector(t_vector3 v)
 {
 	double		magnitude;

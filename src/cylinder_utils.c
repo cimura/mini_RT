@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:33 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 16:06:40 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static double	b_coef(double co_dot_dir, double dir_dot_stc,
 	return (2.0 * (dir_dot_stc - co_dot_dir * co_dot_stc / co_dot_co));
 }
 
-static double	c_coef(const t_vector3 *camera_to_object, const t_object *object,
+static double	c_coef(const t_vector3 *camera_to_object,
+		const t_object *object,
 	double co_dot_stc, double co_dot_co)
 {
 	double	ctc_dot_ctc;
@@ -37,7 +38,7 @@ static double	c_coef(const t_vector3 *camera_to_object, const t_object *object,
 		/ co_dot_co - pow(object->diameter / 2, 2));
 }
 
-void	calculate_cylinder_intersections_num(t_coef *coef,
+void	calculate_cylinder_intersections_num(t_coefficient *coef,
 	const t_object *cylinder, const t_ray *ray)
 {
 	t_vector3	start_to_cylinder;

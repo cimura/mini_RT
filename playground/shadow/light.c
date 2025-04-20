@@ -78,10 +78,10 @@ int	calculate_color(t_world world, t_object *objects, t_vector dir_vec, t_vector
 	if (inverse_dot_reflection > 1.0)
 		inverse_dot_reflection = 1.0;
 
-	set_light_ratio(&light_info.ambient_coefficient, objects->rgb, AMBIENT_COEFFICIENT);
+	set_light_ratio(&light_info.ambient_coefficientficient, objects->rgb, AMBIENt_coefficientFICIENT);
 	//printf("%f\n", objects->rgb.blue);
 	set_light_ratio(&light_info.ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
-	light_info.ambient_light = multi_light_ratio(light_info.ambient_light, light_info.ambient_coefficient);
+	light_info.ambient_light = multi_light_ratio(light_info.ambient_light, light_info.ambient_coefficientficient);
 	set_light_ratio(&light_info.diffuse_coefficient, objects->rgb, DIFFUSE_COEFFICIENT);
 	set_light_ratio(&light_info.diffuse_light, light.rgb, light.ratio * normal_dot_incidence);
 	light_info.diffuse_light = multi_light_ratio(light_info.diffuse_light, light_info.diffuse_coefficient);

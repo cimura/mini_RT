@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:12:17 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 17:54:34 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 16:01:27 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "texture.h"
-#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-#include <fcntl.h>
 
 int	load_texture(t_texture *tex, char *filename, int identifier)
 {
@@ -23,7 +21,6 @@ int	load_texture(t_texture *tex, char *filename, int identifier)
 		= stbi_load(filename, &tex->width, &tex->height, &tex->channels, 0);
 	if (tex->data == NULL)
 		return (1);
-	printf("width: %d height: %d cannels: %d\n", tex->width, tex->height, tex->channels);
 	return (0);
 }
 

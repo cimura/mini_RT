@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:38 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 18:19:12 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:50:38 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define PARSER_H
 
 # include "mini_rt.h"
+# define BUF_SIZE 10000
 
 enum	e_errnum
 {

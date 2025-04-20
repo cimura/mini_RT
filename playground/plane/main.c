@@ -98,7 +98,7 @@ typedef struct s_coef
 	double	b;
 	double	c;
 	double	d;
-}	t_coef;
+}	t_coefficient;
 
 // レイ（視線）用の構造体
 typedef struct	s_ray
@@ -111,7 +111,7 @@ typedef struct	s_ray
 
 // 諸々の定数を定義しておく あとで全体の構造体に入れる
 // 環境光反射係数
-#define	AMBIENT_COEFFICIENT 0.01
+#define	AMBIENt_coefficientFICIENT 0.01
 // 拡散反射光反射係数
 #define	DIFFUSE_COEFFICIENT 0.69
 // 鏡面反射係数
@@ -192,7 +192,7 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light ligh
 	double				normal_dot_incindence;
 
 		// 物体の表面の色によって変える
-	t_light_ratio		ambient_coefficient;
+	t_light_ratio		ambient_coefficientficient;
 	t_light_ratio		diffuse_coefficient;
 	t_light_ratio		specular_coefficient;
 
@@ -236,10 +236,10 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_plane plane, t_light ligh
 		if (inverse_dot_reflection > 1.0)
 			inverse_dot_reflection = 1.0;
 
-		set_light_ratio(&ambient_coefficient, plane.rgb, AMBIENT_COEFFICIENT);
+		set_light_ratio(&ambient_coefficientficient, plane.rgb, AMBIENt_coefficientFICIENT);
 		set_light_ratio(&ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
 
-		ambient_light = multi_light_ratio(ambient_light, ambient_coefficient);
+		ambient_light = multi_light_ratio(ambient_light, ambient_coefficientficient);
 		set_light_ratio(&diffuse_coefficient, plane.rgb, DIFFUSE_COEFFICIENT);
 		set_light_ratio(&diffuse_light, light.rgb, light.ratio * normal_dot_incindence);
 		diffuse_light = multi_light_ratio(diffuse_light, diffuse_coefficient);

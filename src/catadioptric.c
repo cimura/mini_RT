@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   catadioptric.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 21:23:24 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 15:14:27 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:40:12 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,15 @@ t_dcolor	calculate_catadioptric_radiance(const t_world *world,
 {
 	t_dcolor			color;
 	t_catadioptric_vars	catadioptric_vars;
-	t_ray				rfl_ray;
+	t_ray				reflective_ray;
 	t_ray				rfr_ray;
 
 	color = dcolor_init(0, 0, 0);
 	if (intersection->object->material.use_perfect_reflectance == false)
 		return (color);
 	catadioptric_vars_init(&catadioptric_vars, intersection, ray);
-	rfl_ray = get_reflection_ray(&catadioptric_vars, intersection);
-	color = dcolor_multi(ray_trace_recursive(world, &rfl_ray,
+	reflective_ray = get_reflection_ray(&catadioptric_vars, intersection);
+	color = dcolor_multi(ray_trace_recursive(world, &reflective_ray,
 				recursion_level + 1),
 			intersection->object->material.catadioptric_factor);
 	if (intersection->object->material.use_refraction == false)

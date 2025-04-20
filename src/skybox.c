@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   skybox.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 16:22:20 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 14:17:32 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:51:34 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_dcolor	apply_skybox(const t_world *world, const t_ray *ray)
 	double		phi;
 
 	result_color = dcolor_init(BACKGROUND_COLOR_RED,
-		BACKGROUND_COLOR_GREEN, BACKGROUND_COLOR_BLUE);
+			BACKGROUND_COLOR_GREEN, BACKGROUND_COLOR_BLUE);
 	if (world->skybox == NULL)
 		return (result_color);
 	theta = atan2(ray->orientation_vec.z, ray->orientation_vec.x);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:40:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 18:08:32 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 16:01:37 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include "vector.h"
 # include "dcolor.h"
 # include <stdbool.h>
+# include <fcntl.h>
+
+# define STB_IMAGE_IMPLEMENTATION
 
 # define PLANE_TEX_WIDTH 20
 # define PLANE_TEX_HEIGHT 20

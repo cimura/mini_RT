@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:57:50 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 15:47:14 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:54:04 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,17 @@ void	set_plane_normal_vector(t_intersection *intersection,
 }
 
 t_vector2	get_vec2_on_plane(const t_intersection *intersection,
-	const t_object *plane, const t_texture *tex)
+	const t_object *plane)
 {
 	t_vector2		on_map;
 	t_vector3		on_plane;
-	t_basis_vector	basis_vec;
+	t_basis_vectors	basis_vec;
 
 	on_map.x = -1;
 	on_map.y = -1;
-	basis_vec = get_basis_vector_from_normal_vec(&intersection->normal_vec);
-	on_plane = subst_vector(intersection->coordinates_vec, plane->coordinates_vec);
+	basis_vec = get_basis_vectors_from_normal_vec(&intersection->normal_vec);
+	on_plane
+		= subst_vector(intersection->coordinates_vec, plane->coordinates_vec);
 	on_map.x = inner_product(on_plane, basis_vec.u);
 	on_map.y = inner_product(on_plane, basis_vec.v);
 	on_map.x = fmod(on_map.x, 1.0);

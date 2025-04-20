@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shader.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:13:53 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/17 19:08:50 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:28:04 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@
 # include "mini_rt.h"
 # include "renderer.h"
 
-// shadow rayを計算するための微小値
 # define EPSILON 0.005
 
-// 完全鏡面反射と屈折を計算するための構造体
 typedef struct s_catadioptric_vars
 {
 	t_vector3	inverse_ray_vec;

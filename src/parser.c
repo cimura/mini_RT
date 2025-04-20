@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:36 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/10 22:09:58 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:50:30 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ static int	check_file_name(char *filename)
 	}
 	return (0);
 }
-
-#define BUF_SIZE 1025
 
 static int	read_rt_file(char *filename, char *buf)
 {

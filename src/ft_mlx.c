@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_mlx.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:59 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/07 23:23:57 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:46:14 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,12 @@ static int	init_img(t_mlx *mlx)
 int	init_mlx_struct(t_mlx *mlx)
 {
 	mlx->ptr = mlx_init();
+	if (mlx->ptr == NULL)
+		return (1);
 	mlx->win_ptr
 		= mlx_new_window(mlx->ptr, WIDTH, HEIGHT, "miniRT");
+	if (mlx->win_ptr == NULL)
+		return (1);
 	if (init_img(mlx) != 0)
 		return (1);
 	return (0);

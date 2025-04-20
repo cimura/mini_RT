@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:18 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 17:52:05 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:51:43 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
 
-static void	calculate_sphere_intersections_num(t_coef *coef,
+static void	calculate_sphere_intersections_num(t_coefficient *coef,
 	const t_object *sphere, const t_ray *ray)
 {
 	t_vector3	start_to_sphere;
@@ -32,7 +32,7 @@ static void	calculate_sphere_intersections_num(t_coef *coef,
 void	set_sphere_intersection(t_intersection *i, t_object *sphere,
 	const t_ray *ray)
 {
-	t_coef			coef;
+	t_coefficient	coef;
 	t_intersection	i1;
 	t_intersection	i2;
 

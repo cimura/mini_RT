@@ -6,7 +6,7 @@
 /*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:11:44 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 16:16:20 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 15:46:36 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,6 @@ static int	check_isspace(char check)
 		return (1);
 	return (0);
 }
-
-// static int	check_overflow(int sign, double l, char c)
-// {
-// 	if (sign == 1)
-// 	{
-// 		if (LONG_MAX / 10 < l
-// 			|| (LONG_MAX / 10 == l && LONG_MAX % 10 < c - '0'))
-// 			return (1);
-// 	}
-// 	else if (sign == -1)
-// 	{
-// 		if (LONG_MIN / -10 < l
-// 			|| (LONG_MIN / -10 == l && LONG_MIN % -10 * -1 < c - '0'))
-// 			return (-1);
-// 	}
-// 	return (0);
-// }
 
 static double	update_result(char **nptr, double result, double *factor)
 {
@@ -57,7 +40,6 @@ double	ft_atod(char *nptr)
 	double	result;
 
 	sign = 1;
-	// printf("%s\n", nptr);
 	if (nptr == NULL)
 		return (-1);
 	while (check_isspace(*nptr) == 1)

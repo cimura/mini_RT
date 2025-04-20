@@ -104,12 +104,12 @@ typedef struct s_coef
 	double	b;
 	double	c;
 	double	d;
-}	t_coef;
+}	t_coefficient;
 
 
 // 諸々の定数を定義しておく あとで全体の構造体に入れる
 // 環境光反射係数
-#define	AMBIENT_COEFFICIENT 0.01
+#define	AMBIENt_coefficientFICIENT 0.01
 // 拡散反射光反射係数
 #define	DIFFUSE_COEFFICIENT 0.69
 // 鏡面反射係数
@@ -266,13 +266,13 @@ void	double_swap(double *a, double *b)
 	*a = tmp;
 }
 
-void	calculate_cylinder_intersections_num(t_coef *coef, t_cylinder cylinder, t_vector start_vec, t_vector dir_vec);
+void	calculate_cylinder_intersections_num(t_coefficient *coef, t_cylinder cylinder, t_vector start_vec, t_vector dir_vec);
 
 bool	is_intersection_in_cylinder_height_range(t_cylinder cylinder, t_vector intersection);
 
 bool	is_intersecting_cylinder(t_ray shadow_ray, t_cylinder cylinder)
 {
-	t_coef	coef;
+	t_coefficient	coef;
 	double		shadow_ray_distance1;
 	double		shadow_ray_distance2;
 	t_vector	intersec1;
@@ -329,12 +329,12 @@ static void	double_compressor(double *d, double min, double max)
 
 t_light_ratio	calculate_ambient_light_ratio(t_ambient_lightning ambient_lightning, t_cylinder cylinder)
 {
-	t_light_ratio	ambient_coefficient;
+	t_light_ratio	ambient_coefficientficient;
 	t_light_ratio	ambient_light;
 
-	set_light_ratio(&ambient_coefficient, cylinder.rgb, AMBIENT_COEFFICIENT);
+	set_light_ratio(&ambient_coefficientficient, cylinder.rgb, AMBIENt_coefficientFICIENT);
 	set_light_ratio(&ambient_light, ambient_lightning.rgb, ambient_lightning.ratio);
-	return (multi_light_ratio(ambient_light, ambient_coefficient));
+	return (multi_light_ratio(ambient_light, ambient_coefficientficient));
 }
 
 t_light_ratio	calculate_diffuse_light_ratio(t_light light, t_cylinder cylinder, double normal_dot_incidence)
@@ -413,7 +413,7 @@ double	c_coef(t_vector camera_to_cylinder, t_cylinder cylinder, double co_dot_st
 	return (ctc_dot_ctc - pow(co_dot_stc, 2) / co_dot_co - pow(cylinder.diameter / 2, 2));
 }
 
-void	calculate_cylinder_intersections_num(t_coef *coef, t_cylinder cylinder, t_vector start_vec, t_vector dir_vec)
+void	calculate_cylinder_intersections_num(t_coefficient *coef, t_cylinder cylinder, t_vector start_vec, t_vector dir_vec)
 {
 	t_vector	start_to_cylinder;
 	double		co_dot_dir;
@@ -446,7 +446,7 @@ bool	is_intersection_in_cylinder_height_range(t_cylinder cylinder, t_vector inte
 		return (false);
 }
 
-void	put_color_on_intersection_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera, t_ambient_lightning ambient_lightning, t_coef coef)
+void	put_color_on_intersection_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera, t_ambient_lightning ambient_lightning, t_coefficient coef)
 {
 	double		camera_intersec_distance1;
 	double		camera_intersec_distance2;
@@ -475,10 +475,10 @@ void	put_color_on_intersection_pixel(int xs, int ys, t_cylinder cylinder, t_ligh
 		my_pixel_put(xs, ys, mlx.img, BACKGROUND_COLOR);
 }
 
-void	debug_printer(int xs, int ys, t_coef cy_coef, t_cylinder cylinder, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera)
+void	debug_printer(int xs, int ys, t_coefficient cy_coef, t_cylinder cylinder, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera)
 {
 	t_cylinder	debug;
-	t_coef		coef;
+	t_coefficient		coef;
 	double		intersec_debug1;
 	double		intersec_debug2;
 	double		intersec1;
@@ -509,7 +509,7 @@ void	debug_printer(int xs, int ys, t_coef cy_coef, t_cylinder cylinder, t_light 
 
 void render_pixel(int xs, int ys, t_cylinder cylinder, t_light light, t_vector dir_vec, t_mlx mlx, t_camera camera, t_ambient_lightning ambient_lightning)
 {
-	t_coef	coef;
+	t_coefficient	coef;
 
 	calculate_cylinder_intersections_num(&coef, cylinder, camera.coordinates_vec, dir_vec);
 	// 交点がない場合は背景色を置いてreturn  余分な計算を省くことができる

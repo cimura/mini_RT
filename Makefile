@@ -2,7 +2,7 @@ NAME		:=	miniRT
 CC			:=	cc
 INC_DIR		:=	inc/
 SRC_DIR		:=	src/
-SRC			:=	anti_aliasing.c camera.c catadioptric_utils.c catadioptric.c cylinder_utils.c cylinder.c \
+SRC			:=	camera.c catadioptric_utils.c catadioptric.c cylinder_utils.c cylinder.c \
 				dcolor.c display.c ft_mlx.c intersections.c libft2.c libft3.c main.c material.c \
 				parse_objects_utils.c parse_objects.c parse_scene.c parser_utils.c parser.c plane.c \
 				renderer.c shader.c skybox.c sphere.c texture_mapping.c texture_register.c texture.c \
@@ -14,13 +14,13 @@ LIBFT		:=	$(LIBFT_DIR)libft.a
 MLX_DIR		:=	mlx/
 MLX			:=	$(MLX_DIR)libmlx.a
 
-CFLAGS		:=	-g -O3 -MMD
-# CFLAGS		:=	-Wall -Wextra -Werror $(DFLAGS)
+DFLAGS		:=	-g -O3 -MMD
+CFLAGS		:=	-Wall -Wextra -Werror $(CFLAGS)
 IFLAGS		:=	-I$(INC_DIR) -I$(LIBFT_DIR)$(INC_DIR) -I$(MLX_DIR)
 
 UNAME_S		:=	$(shell uname -s)
 
-ifeq ($(UNAME_S), Darwin)  # macOSの場合
+ifeq ($(UNAME_S), Darwin)
     LD_FLAGS := $(MLX_DIR)libmlx.a -L$(MLX_DIR) -lmlx -L/usr/X11R6/lib -lXext -lX11 -lm -lz -lpthread
 else ifeq ($(UNAME_S), Linux)
     LD_FLAGS := -L$(MLX_DIR) -lmlx -lX11 -lXext -lm -lpthread

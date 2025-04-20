@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:04 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/07 23:26:03 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:46:24 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
 
-// 交点情報を小さい順に並び替えるための関数
 void	swap_intersection(t_intersection *i1, t_intersection *i2)
 {
 	t_intersection	tmp;

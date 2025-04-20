@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:58 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 18:25:29 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:49:04 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static char	**get_values_double_pointer(char *src, int num)
 	return (result);
 }
 
-//この関数は255,255,255のようなフォーマットを展開してrgbに登録する
 int	set_rgb(t_dcolor *rgb, char *str)
 {
 	char		**rgb_str;
@@ -57,8 +56,6 @@ int	set_rgb(t_dcolor *rgb, char *str)
 	return (0);
 }
 
-// この関数は座標やベクトル(x,y,zからなるもの)を構造体に登録する
-// 範囲はminとmaxに。範囲がないときはminとmaxを同じ値に
 int	set_vector(t_vector3 *xyz, char *str, double min, double max)
 {
 	char	**xyz_str;
@@ -97,15 +94,12 @@ int	set_dimension(double *value, char *str, double min, double max)
 	return (0);
 }
 
-// いろんな角度を試したいので引数は正規化することにする
 int	normalize_checker(t_vector3 *vector, char *str)
 {
-	*vector = normalize_vector(*vector);
-	(void)str;
-	//if (pow(vector->x, 2) + pow(vector->y, 2) + pow(vector->z, 2) != 1)
-	//{
-	//	print_err_msg(NOT_NORMALIZED_VEC, str);
-	//	return (1);
-	//}
+	if (pow(vector->x, 2) + pow(vector->y, 2) + pow(vector->z, 2) != 1)
+	{
+		print_err_msg(NOT_NORMALIZED_VEC, str);
+		return (1);
+	}
 	return (0);
 }

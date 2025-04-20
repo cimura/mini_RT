@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:22 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 21:05:40 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:52:51 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	swap_double(double *a, double *b)
 	*a = tmp;
 }
 
-// double型の変数を範囲内に落とし込む関数 (min <= max)
 void	double_compressor(double *d, double min, double max)
 {
 	if (*d < min)

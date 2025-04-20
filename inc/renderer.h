@@ -6,7 +6,7 @@
 /*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 13:57:45 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 16:03:19 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,13 @@
 # include "texture.h"
 # include <pthread.h>
 
-#define NUM_THREADS 4
+# define NUM_THREADS 8
 
-// 完全鏡面反射をするときの再帰関数の深さ限度
 # define MAX_RECURSIVE_LEVEL 6
 
-// 仮想スクリーンの大きさ (ワールド座標内)
 # define SCREEN_WIDTH 2.0
 # define SCREEN_HEIGHT 2.0
 
-// 背景色
 # define BACKGROUND_COLOR_RED 0.2
 # define BACKGROUND_COLOR_GREEN 0.2
 # define BACKGROUND_COLOR_BLUE 0.2
@@ -36,7 +33,7 @@
 # define RECTANGLE 1
 # define CUBE 2
 
-enum	s_cube_fase
+enum	e_cube_fase
 {
 	ONE_SIDE,
 	PLUS_X,
@@ -50,10 +47,9 @@ enum	s_cube_fase
 typedef struct s_cube_map
 {
 	t_vector2	uv;
-	int		fase;
+	int			fase;
 }	t_cube_map;
 
-// レイ（視線）用の構造体
 typedef struct s_ray
 {
 	t_vector3	coordinates_vec;
@@ -61,19 +57,16 @@ typedef struct s_ray
 	double		prev_refractive_index;
 }	t_ray;
 
-// P = S + td tの二次方程式の係数a,b,c 判別式d  (S: レイの始点 t: 実数(0<t) d: レイの正規化方向ベクトル)
-typedef struct s_coef
+typedef struct s_coefficient
 {
 	double	a;
 	double	b;
 	double	c;
 	double	d;
-}	t_coef;
+}	t_coefficient;
 
-// レイと一番近い物体の交点の情報
 typedef struct s_intersection
 {
-	// 係数t
 	double		t;
 	bool		hit_on_back;
 	t_vector3	coordinates_vec;
@@ -87,9 +80,6 @@ typedef struct s_thread_data
 	double	start_y;
 	double	end_y;
 }	t_thread_data;
-
-// *** anti_aliasing.c ***
-int				anti_aliasing(t_world *world);
 
 // *** camera.c ***
 void			init_camera(t_camera *camera);
@@ -108,7 +98,7 @@ void			set_plane_intersection(t_intersection *i, t_object *plane,
 void			set_plane_normal_vector(t_intersection *intersection,
 					const t_object *plane, const t_ray *ray);
 t_vector2		get_vec2_on_plane(const t_intersection *intersection,
-					const t_object *plane, const t_texture *tex);
+					const t_object *plane);
 
 // *** cylinder.c ***
 void			set_cylinder_intersection(t_intersection *i, t_object *cylinder,
@@ -117,7 +107,7 @@ void			set_cylinder_normal_vector(t_intersection *intersection,
 					const t_object *cylinder, const t_ray *ray);
 
 // *** cylinder_utils.c ***
-void			calculate_cylinder_intersections_num(t_coef *coef,
+void			calculate_cylinder_intersections_num(t_coefficient *coef,
 					const t_object *cylinder, const t_ray *ray);
 
 /// *** intersections.c ***
