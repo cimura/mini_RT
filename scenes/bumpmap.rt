@@ -1,5 +1,5 @@
 sk C:"tex/starmap_g16k.jpg"
 A    0.01  255,110,97
 C 0,0,0 0,0,1 23
-L -1000,5,-1000 1.0 255,255,255
+L -1000,5,-1000 1.0 255,255,255 
 sp 0,0,5 1.0 255,255,255 IRON C:"tex/earth_color.png" N:"tex/earth_normal.png"

@@ -1,4 +1,4 @@
-NAME		:=	exc
+NAME		:=	miniRT
 CC			:=	cc
 INC_DIR		:=	inc/
 SRC_DIR		:=	src/
@@ -14,13 +14,12 @@ LIBFT		:=	$(LIBFT_DIR)libft.a
 MLX_DIR		:=	mlx/
 MLX			:=	$(MLX_DIR)libmlx.a
 
-CFLAGS		:=	-g -O3
+CFLAGS		:=	-g -O3 -MMD
 # CFLAGS		:=	-Wall -Wextra -Werror $(DFLAGS)
 IFLAGS		:=	-I$(INC_DIR) -I$(LIBFT_DIR)$(INC_DIR) -I$(MLX_DIR)
 
 UNAME_S		:=	$(shell uname -s)
 
-# OSに応じたフラグ設定
 ifeq ($(UNAME_S), Darwin)  # macOSの場合
     LD_FLAGS := $(MLX_DIR)libmlx.a -L$(MLX_DIR) -lmlx -L/usr/X11R6/lib -lXext -lX11 -lm -lz -lpthread
 else ifeq ($(UNAME_S), Linux)
@@ -30,6 +29,8 @@ endif
 LFLAGS		:=	-L$(LIBFT_DIR) -lft $(LD_FLAGS)
 
 all: $(OBJ_DIR) $(NAME)
+
+-include $(OBJ_DIR)/*.d
 
 $(OBJ_DIR):
 	mkdir -p $@
@@ -52,5 +53,8 @@ fclean:	clean
 	rm -f $(NAME)
 
 re:	fclean all
+
+memory: fclean
+	$(MAKE) CFLAGS="$(CFLAGS) -g -fsanitize=address"
 
 .PHONY:	all clean fclean re
