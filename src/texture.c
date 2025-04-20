@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:12:17 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/18 13:56:20 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 17:54:34 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,10 @@
 #include "stb_image.h"
 #include <fcntl.h>
 
-//t_texture	*texture_init(int identifier)
-//{
-//	t_texture	*tex;
-
-//	tex->data = NULL;
-//	tex->width = 0;
-//	tex->height = 0;
-//	tex->channels = 0;
-//}
-
 int	load_texture(t_texture *tex, char *filename, int identifier)
 {
 	tex->identifier = identifier;
+	tex->data = NULL;
 	tex->data
 		= stbi_load(filename, &tex->width, &tex->height, &tex->channels, 0);
 	if (tex->data == NULL)
@@ -76,7 +67,10 @@ void	texture_free(void *pointer)
 {
 	t_texture	*tex;
 
+	if (pointer == NULL)
+		return ;
 	tex = (t_texture *)pointer;
-	stbi_image_free(tex->data);
+	if (tex->data)
+		stbi_image_free(tex->data);
 	free(pointer);
 }

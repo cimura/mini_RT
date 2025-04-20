@@ -5,7 +5,8 @@ SRC_DIR		:=	src/
 SRC			:=	anti_aliasing.c camera.c catadioptric_utils.c catadioptric.c cylinder_utils.c cylinder.c \
 				dcolor.c display.c ft_mlx.c intersections.c libft2.c libft3.c main.c material.c \
 				parse_objects_utils.c parse_objects.c parse_scene.c parser_utils.c parser.c plane.c \
-				renderer.c shader.c sphere.c texture_mapping.c texture.c utils.c vector_utils.c vector.c
+				renderer.c shader.c skybox.c sphere.c texture_mapping.c texture_register.c texture.c \
+				utils.c vector_utils.c vector.c
 OBJ_DIR		:=	obj/
 OBJ			:=	$(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 LIBFT_DIR	:=	libft/

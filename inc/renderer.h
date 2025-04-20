@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 22:49:08 by cimy             ###   ########.fr       */
+/*   Updated: 2025/04/20 13:52:34 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,12 @@
 # define SCREEN_HEIGHT 2.0
 
 // 背景色
-# define BACKGROUND_COLOR_RED 0.01
-# define BACKGROUND_COLOR_GREEN 0.01
-# define BACKGROUND_COLOR_BLUE 0.01
+# define BACKGROUND_COLOR_RED 0.2
+# define BACKGROUND_COLOR_GREEN 0.2
+# define BACKGROUND_COLOR_BLUE 0.2
 
 # define RECTANGLE 1
 # define CUBE 2
-
-// 2次元の座標を表す構造体
-typedef struct s_vector2
-{
-	double	x;
-	double	y;
-}	t_vector2;
 
 enum	s_cube_fase
 {
@@ -114,8 +107,8 @@ void			set_plane_intersection(t_intersection *i, t_object *plane,
 					const t_ray *ray);
 void			set_plane_normal_vector(t_intersection *intersection,
 					const t_object *plane, const t_ray *ray);
-t_vector2		get_vec2_on_plane(const t_vector3 *intersection_vec,
-					const t_object *plane);
+t_vector2		get_vec2_on_plane(const t_intersection *intersection,
+					const t_object *plane, const t_texture *tex);
 
 // *** cylinder.c ***
 void			set_cylinder_intersection(t_intersection *i, t_object *cylinder,
@@ -133,6 +126,9 @@ t_intersection	find_intersection_minimum_distance(t_world world,
 					const t_ray *ray);
 void			calculate_intersections_normal_vector(t_intersection *i,
 					const t_ray *ray);
+
+// *** skybox.c ***
+t_dcolor		apply_skybox(const t_world *world, const t_ray *ray);
 
 // *** texture_mapping.c ***
 void			texture_mapping(t_list *tex_lst, t_intersection *i);

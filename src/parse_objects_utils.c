@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:58 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/18 14:56:03 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/19 18:25:29 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,18 @@ int	set_vector(t_vector3 *xyz, char *str, double min, double max)
 	xyz->y = xyz_double[1];
 	xyz->z = xyz_double[2];
 	free_double_pointer((void **)xyz_str);
+	return (0);
+}
+
+int	set_dimension(double *value, char *str, double min, double max)
+{
+	if (str == NULL)
+		return (print_err_msg(NOT_MATCH_PARAM_NUM, str), 1);
+	*value = ft_atod(str);
+	if (min >= max)
+		return (0);
+	if (*value < min || *value > max)
+		return (print_err_msg(OUT_OF_RANGE, str), 1);
 	return (0);
 }
 
