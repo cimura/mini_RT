@@ -50,10 +50,13 @@ $(STB_HEADER):
 	@curl -fsSL $(STB_URL) -o $(STB_HEADER)
 
 $(MLX):
-	@echo "Cloning MiniLibX..."
-	@git clone $(MLX_URL) $(MLX_DIR)
+	@if [ -d "$(MLX_DIR)" ]; then \
+		echo "Using existing MiniLibX directory."; \
+	else \
+		echo "Cloning MiniLibX..."; \
+		git clone $(MLX_URL) $(MLX_DIR); \
+	fi
 	@$(MAKE) -C $(MLX_DIR)
-
 $(LIBFT):
 	$(MAKE) bonus -C $(LIBFT_DIR)
 
