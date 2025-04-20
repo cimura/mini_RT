@@ -6,7 +6,7 @@
 /*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 16:03:19 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 16:24:52 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@
 # include "mini_rt.h"
 # include "vector.h"
 # include "texture.h"
-# include <pthread.h>
-
-# define NUM_THREADS 8
 
 # define MAX_RECURSIVE_LEVEL 6
 
@@ -73,13 +70,6 @@ typedef struct s_intersection
 	t_vector3	normal_vec;
 	t_object	*object;
 }	t_intersection;
-
-typedef struct s_thread_data
-{
-	t_world	*world;
-	double	start_y;
-	double	end_y;
-}	t_thread_data;
 
 // *** camera.c ***
 void			init_camera(t_camera *camera);

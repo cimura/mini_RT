@@ -6,7 +6,7 @@
 /*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 15:46:54 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 16:34:20 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,6 @@ int	init_world(t_world *world)
 	return (0);
 }
 
-#ifdef DEBUG
-#include <sys/time.h>
-long	get_current_time(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-}
-#endif
-
 int	main(int argc, char **argv)
 {
 	t_world	world;
@@ -75,16 +64,7 @@ int	main(int argc, char **argv)
 	world.global_refractive_index = 1.000293;
 	if (init_mlx_struct(&world.mlx) != 0)
 		return (on_destroy(&world), 1);
-	#ifdef DEBUG
-	long	start = get_current_time();
-	#endif
-	printf("rendering...\n");
 	if (renderer(&world) != 0)
 		return (on_destroy(&world), 1);
-	printf("100%%\n");
-	#ifdef DEBUG
-	long	end = get_current_time();
-	printf("rendering: %ldms\n", end - start);
-	#endif
 	display_in_mlx(&world);
 }

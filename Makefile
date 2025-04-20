@@ -15,15 +15,15 @@ MLX_DIR		:=	mlx/
 MLX			:=	$(MLX_DIR)libmlx.a
 
 DFLAGS		:=	-g -O3 -MMD
-CFLAGS		:=	-Wall -Wextra -Werror $(CFLAGS)
+CFLAGS		:=	-Wall -Wextra -Werror $(DFLAGS)
 IFLAGS		:=	-I$(INC_DIR) -I$(LIBFT_DIR)$(INC_DIR) -I$(MLX_DIR)
 
 UNAME_S		:=	$(shell uname -s)
 
 ifeq ($(UNAME_S), Darwin)
-    LD_FLAGS := $(MLX_DIR)libmlx.a -L$(MLX_DIR) -lmlx -L/usr/X11R6/lib -lXext -lX11 -lm -lz -lpthread
+    LD_FLAGS := $(MLX_DIR)libmlx.a -L$(MLX_DIR) -lmlx -L/usr/X11R6/lib -lXext -lX11 -lm -lz
 else ifeq ($(UNAME_S), Linux)
-    LD_FLAGS := -L$(MLX_DIR) -lmlx -lX11 -lXext -lm -lpthread
+    LD_FLAGS := -L$(MLX_DIR) -lmlx -lX11 -lXext -lm
 endif
 
 LFLAGS		:=	-L$(LIBFT_DIR) -lft $(LD_FLAGS)
