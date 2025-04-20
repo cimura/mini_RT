@@ -1,0 +1,10 @@
+A 0.01  255,110,97
+
+sk C:"tex/galaxy.png"
+
+C 0,0,0  0,0,1  45
+
+L -1000,10,250  1.0 255,255,255
+
+sp 15,-2,30 17 0,0,0 WOOD C:"tex/jupitor_color.jpg"
+sp -20,5,200 18 0,0,0 WOOD C:"tex/earth_color.png"

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:58 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 15:49:04 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 17:02:57 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	set_rgb(t_dcolor *rgb, char *str)
 	i = 0;
 	while (rgb_str[i] != NULL)
 	{
+		if (ft_is_valid_double(rgb_str[i]) == false)
+			return (print_err_msg(INV_PARAM, rgb_str[i]), 1);
 		rgb_double[i] = ft_atoi(rgb_str[i]);
 		if (rgb_double[i] < 0 || rgb_double[i] > 255)
 			return (print_err_msg(OUT_OF_RANGE, rgb_str[i]), 1);
@@ -70,6 +72,8 @@ int	set_vector(t_vector3 *xyz, char *str, double min, double max)
 	i = 0;
 	while (xyz_str[i] != NULL)
 	{
+		if (ft_is_valid_double(xyz_str[i]) == false)
+			return (print_err_msg(INV_PARAM, xyz_str[i]), 1);
 		xyz_double[i] = ft_atod(xyz_str[i]);
 		if (min != max && (xyz_double[i] < min || xyz_double[i] > max))
 			return (print_err_msg(OUT_OF_RANGE, xyz_str[i]), 1);
