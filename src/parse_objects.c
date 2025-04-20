@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 19:00:02 by cimy             ###   ########.fr       */
+/*   Updated: 2025/04/20 13:45:43 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ int	material_register(char **per_word_pointer, t_material *material,
 int	parse_sphere(t_world *world, char **per_word_pointer)
 {
 	t_object	*sphere;
-	t_dcolor	color;
 
 	sphere = malloc(sizeof(t_object));
 	if (sphere == NULL)
@@ -150,7 +149,6 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 int	parse_plane(t_world *world, char **per_word_pointer)
 {
 	t_object	*plane;
-	t_dcolor	color;
 
 	int	i = 0;
 	while (per_word_pointer[i] != NULL)
@@ -175,7 +173,6 @@ int	parse_plane(t_world *world, char **per_word_pointer)
 int	parse_cylinder(t_world *world, char **per_word_pointer)
 {
 	t_object	*cylinder;
-	t_dcolor	color;
 
 	cylinder = malloc(sizeof(t_object));
 	if (cylinder == NULL)

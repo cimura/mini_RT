@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   material.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:53 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/18 14:49:41 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 13:45:15 by sshimura         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static t_dcolor	specular_init(int material_id)
 {
 	t_dcolor	specular;
 
+	specular = dcolor_init(0.0, 0.0, 0.0);
 	if (material_id == GLASS)
 		specular = dcolor_init(0.7, 0.7, 0.7);
 	else if (material_id == IRON)
@@ -33,6 +34,7 @@ static double	shinness_init(int material_id)
 {
 	double	shinness;
 
+	shinness = 0.0;
 	if (material_id == GLASS)
 		shinness = 90;
 	else if (material_id == IRON)
