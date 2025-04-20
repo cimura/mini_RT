@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   catadioptric.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 21:23:24 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/08 17:17:48 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/20 15:14:27 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	catadioptric_vars_init(t_catadioptric_vars *catadioptric_vars,
 	const t_intersection *intersection, const t_ray *ray)
 {
 	catadioptric_vars->inverse_ray_vec
-		= multi_vector(ray->orientation_vec, -1);
+		= normalize_vector(multi_vector(ray->orientation_vec, -1));
 	catadioptric_vars->inverse_ray_dot_normal
 		= inner_product(catadioptric_vars->inverse_ray_vec,
 			intersection->normal_vec);
@@ -38,6 +38,8 @@ static void	set_catadioptric_vars(t_catadioptric_vars *cv,
 	cv->cos1 = cv->inverse_ray_dot_normal;
 	cv->cos2 = (cv->refraction_index1 / cv->refraction_index2)
 		* sqrt(pow(rfr_2_1, 2) - (1 - pow(cv->cos1, 2)));
+	if (isnan(cv->cos2))
+		cv->cos2 = 0;
 	cv->omega = rfr_2_1 * cv->cos2 - cv->cos1;
 	cv->p_polarized_light
 		= (rfr_2_1 * cv->cos1 - cv->cos2) / (rfr_2_1 * cv->cos1 + cv->cos2);
