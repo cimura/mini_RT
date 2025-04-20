@@ -20,7 +20,7 @@ IFLAGS		:=	-I$(INC_DIR) -I$(LIBFT_DIR)$(INC_DIR) -I$(MLX_DIR)
 
 STB_DIR		:=	$(INC_DIR)
 STB_HEADER	:=	$(STB_DIR)stb_image.h
-STB_URL		:=	https://github.com/nothings/stb/blob/master/stb_image.h
+STB_URL		:=	https://raw.githubusercontent.com/nothings/stb/master/stb_image.h
 
 MLX_URL		:=	https://github.com/42Paris/minilibx-linux.git
 
@@ -34,7 +34,7 @@ endif
 
 LFLAGS		:=	-L$(LIBFT_DIR) -lft $(LD_FLAGS)
 
-all: $(OBJ_DIR) $(NAME) $(STB_HEADER) $(MLX)
+all: $(STB_HEADER) $(MLX) $(OBJ_DIR) $(NAME)
 
 -include $(OBJ_DIR)/*.d
 
@@ -51,7 +51,7 @@ $(STB_HEADER):
 
 $(MLX):
 	@echo "Cloning MiniLibX..."
-	@git clone $(MLX_REPO) $(MLX_DIR)
+	@git clone $(MLX_URL) $(MLX_DIR)
 	@$(MAKE) -C $(MLX_DIR)
 
 $(LIBFT):
