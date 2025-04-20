@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 16:33:55 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/20 21:54:21 by cimy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,40 @@ static t_vector3	get_rays_orientation_vector(t_vector2 in_screen,
 	return (normalize_vector(orientation_vec));
 }
 
+static void	show_progress_bar(int y, char bar[52])
+{
+	int		progress;
+
+	if (y == 0)
+	{
+		ft_memset(bar, ' ', 52);
+		bar[0] = '[';
+		bar[50] = ']';
+		bar[51] = '\0';
+		write(STDOUT_FILENO, bar, 51);
+	}
+	if (y % (HEIGHT / 50) == 0)
+	{
+		progress = (y * 50) / HEIGHT;
+		if (progress == 49)
+			;
+		else
+		{
+			bar[1 + progress] = '#';
+			write(STDOUT_FILENO, "\r", 1);
+			write(STDOUT_FILENO, bar, 51);
+		}
+	}
+	else if (y == HEIGHT - 1)
+		write(STDOUT_FILENO, "\nRendering Complete!\n", 22);
+}
+
 int	renderer(t_world *world)
 {
 	t_dcolor		color;
 	t_ray			gaze_ray;
 	t_vector2		in_screen;
+	char			bar[52];
 
 	init_camera(&world->camera);
 	gaze_ray.coordinates_vec = world->camera.coordinates_vec;
@@ -70,6 +99,7 @@ int	renderer(t_world *world)
 				world->mlx.img, rgb_to_colorcode(color));
 			in_screen.x++;
 		}
+		show_progress_bar((int)in_screen.y, bar);
 		in_screen.y++;
 	}
 	return (0);
