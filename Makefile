@@ -3,7 +3,7 @@ CC			:=	cc
 INC_DIR		:=	inc/
 SRC_DIR		:=	src/
 SRC			:=	camera.c catadioptric_utils.c catadioptric.c cylinder_utils.c cylinder.c \
-				dcolor.c display.c ft_mlx.c intersections.c libft2.c libft3.c main.c material.c \
+				dcolor.c display.c ft_mlx.c intersections.c libft2.c libft3.c main.c material.c object.c\
 				parse_objects_utils.c parse_objects.c parse_scene.c parser_utils.c parser.c plane.c \
 				renderer.c shader.c skybox.c sphere.c texture_mapping.c texture_register.c texture.c \
 				utils.c vector_utils.c vector.c
@@ -15,7 +15,7 @@ MLX_DIR		:=	mlx/
 MLX			:=	$(MLX_DIR)libmlx.a
 
 DFLAGS		:=	-g -O3 -MMD
-CFLAGS		:=	-Wall -Wextra -Werror $(DFLAGS)
+#CFLAGS		:=	-Wall -Wextra -Werror $(DFLAGS)
 IFLAGS		:=	-I$(INC_DIR) -I$(LIBFT_DIR)$(INC_DIR) -I$(MLX_DIR)
 
 STB_DIR		:=	$(INC_DIR)

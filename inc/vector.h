@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:34 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 21:16:42 by cimy             ###   ########.fr       */
+/*   Updated: 2025/04/21 16:35:17 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ typedef struct s_vector3
 
 typedef struct s_basis_vectors
 {
-	t_vector3	u;
-	t_vector3	v;
+	t_vector3	x_vector;
+	t_vector3	y_vector;
+	t_vector3	normal_vector;
 }	t_basis_vectors;
 
 // *** vector.c ***

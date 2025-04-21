@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 00:00:45 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 16:04:23 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:34:29 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_basis_vectors	get_basis_vectors_from_normal_vec(const t_vector3 *normal_vec)
 	arbitrary = init_vector(0, 1, 0);
 	if (fabs(normal_vec->x) > 0.9)
 		arbitrary = init_vector(1, 0, 0);
-	basis_vec.u = normalize_vector(cross_product(arbitrary, *normal_vec));
-	basis_vec.v = normalize_vector(cross_product(*normal_vec, basis_vec.u));
+	basis_vec.x_vector = normalize_vector(cross_product(arbitrary, *normal_vec));
+	basis_vec.y_vector = normalize_vector(cross_product(*normal_vec, basis_vec.x_vector));
 	return (basis_vec);
 }

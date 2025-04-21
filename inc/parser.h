@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:38 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 15:50:38 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:31:56 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define PARSER_H
 
 # include "mini_rt.h"
+
 # define BUF_SIZE 10000
 
 enum	e_errnum
@@ -32,10 +33,6 @@ enum	e_errnum
 	NOT_NORMALIZED_VEC,
 	TOO_MANY_PARAM,
 };
-
-// *** material.c ***
-int			material_register(char **per_word_pointer, t_material *material,
-				int obj_identifier);
 
 // *** parser.c ***
 void		print_err_msg(int errnum, char *arg);
@@ -60,9 +57,5 @@ int			parse_skybox(t_world *world, char **per_word_pointer);
 int			parse_sphere(t_world *world, char **per_word_pointer);
 int			parse_plane(t_world *world, char **per_word_pointer);
 int			parse_cylinder(t_world *world, char **per_word_pointer);
-
-// *** texture_register.c ***
-int			texture_register(char **filenames, t_list **lst);
-t_texture	*init_new_texture(char *filename);
 
 #endif

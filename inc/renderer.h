@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 16:24:52 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:30:43 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,6 @@
 
 # define RECTANGLE 1
 # define CUBE 2
-
-enum	e_cube_fase
-{
-	ONE_SIDE,
-	PLUS_X,
-	MINUS_X,
-	PLUS_Y,
-	MINUS_Y,
-	PLUS_Z,
-	MINUS_Z,
-};
-
-typedef struct s_cube_map
-{
-	t_vector2	uv;
-	int			fase;
-}	t_cube_map;
 
 typedef struct s_ray
 {

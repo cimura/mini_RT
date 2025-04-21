@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:12:17 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 16:01:27 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:29:51 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_dcolor	texture_get_color(t_texture *tex, int x, int y)
 	return (color);
 }
 
-void	texture_free(void *pointer)
+void	texture_destroy(void *pointer)
 {
 	t_texture	*tex;
 

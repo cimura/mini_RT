@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:40:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 16:01:37 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:29:51 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ typedef struct s_texture
 int			load_texture(t_texture *tex, char *filename, int identifier);
 t_vector3	texture_get_normal(t_texture *tex, int x, int y);
 t_dcolor	texture_get_color(t_texture *tex, int x, int y);
-void		texture_free(void *pointer);
+void		texture_destroy(void *pointer);
 
 #endif

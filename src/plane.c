@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:57:50 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 15:54:04 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:34:29 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ t_vector2	get_vec2_on_plane(const t_intersection *intersection,
 	basis_vec = get_basis_vectors_from_normal_vec(&intersection->normal_vec);
 	on_plane
 		= subst_vector(intersection->coordinates_vec, plane->coordinates_vec);
-	on_map.x = inner_product(on_plane, basis_vec.u);
-	on_map.y = inner_product(on_plane, basis_vec.v);
+	on_map.x = inner_product(on_plane, basis_vec.x_vector);
+	on_map.y = inner_product(on_plane, basis_vec.y_vector);
 	on_map.x = fmod(on_map.x, 1.0);
 	on_map.y = fmod(on_map.y, 1.0);
 	if (on_map.x < 0)

@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 16:07:25 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:41:11 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-static t_object	*object_init(void)
-{
-	t_object	*new;
-
-	new = malloc(sizeof(t_object));
-	if (new == NULL)
-		return (NULL);
-	new->identifier = 0;
-	new->coordinates_vec = init_vector(0, 0, 0);
-	new->orientation_vec = init_vector(0, 0, 0);
-	new->diameter = 0;
-	new->height = 0;
-	new->textures = NULL;
-	return (new);
-}
 
 static int	add_object_to_lst(t_world *world, t_object *object)
 {

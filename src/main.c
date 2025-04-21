@@ -3,29 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 16:34:20 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:40:57 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-void	object_free(void *pointer)
-{
-	t_object	*object;
-
-	object = (t_object *)pointer;
-	ft_lstclear(&object->textures, texture_free);
-	free(pointer);
-}
-
 void	world_destroy(t_world *world)
 {
-	texture_free((void *)world->skybox);
+	texture_destroy((void *)world->skybox);
 	ft_lstclear(&world->lights, free);
-	ft_lstclear(&world->objects, object_free);
+	ft_lstclear(&world->objects, object_destroy);
 }
 
 void	on_destroy(t_world *world)

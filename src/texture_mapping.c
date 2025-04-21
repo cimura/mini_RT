@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_mapping.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 23:04:15 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 16:05:00 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:34:29 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	texture_set_normal(t_intersection *i, t_texture *normal_tex)
 	normalvec_in_tex = texture_get_normal(normal_tex, uv.u, uv.v);
 	basis_vec = get_basis_vectors_from_normal_vec(&i->normal_vec);
 	result_normal_vec
-		= add_vector(multi_vector(basis_vec.u, normalvec_in_tex.x),
-			multi_vector(basis_vec.v, normalvec_in_tex.y));
+		= add_vector(multi_vector(basis_vec.x_vector, normalvec_in_tex.x),
+			multi_vector(basis_vec.y_vector, normalvec_in_tex.y));
 	result_normal_vec
 		= add_vector(result_normal_vec,
 			multi_vector(i->normal_vec, normalvec_in_tex.z));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 15:24:54 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:31:45 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <math.h>
 # include "vector.h"
 # include "dcolor.h"
+# include "object.h"
 # include "texture.h"
 # include "ft_mlx.h"
 # include "utils.h"
@@ -64,38 +65,6 @@ typedef struct s_light
 	t_dcolor	intensity;
 }	t_light;
 
-enum	e_material
-{
-	GLASS,
-	IRON,
-	SILVER,
-	WOOD,
-	WATER,
-};
-
-typedef struct s_material
-{
-	t_dcolor	diffuse;
-	t_dcolor	specular;
-	double		shinness;
-	bool		use_perfect_reflectance;
-	t_dcolor	catadioptric_factor;
-	bool		use_refraction;
-	double		refractive_index;
-	bool		use_thin_surfase;
-}	t_material;
-
-// オブジェクト汎用
-typedef struct s_object
-{
-	int				identifier;
-	t_vector3		coordinates_vec;
-	t_vector3		orientation_vec;
-	double			diameter;
-	double			height;
-	t_list			*textures;
-	t_material		material;
-}	t_object;
 
 // 描画対象の図形（円、平面、円柱）は複数個扱えるように配列にする
 typedef struct s_world
