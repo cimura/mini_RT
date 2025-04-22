@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 23:04:15 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/21 16:34:29 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/22 22:09:37 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ void	texture_set_normal(t_intersection *i, t_texture *normal_tex)
 	t_uv			uv;
 
 	if (i->object->identifier == SPHERE)
-		on_map = get_vec2_on_sphere(&i->coordinates_vec, i->object);
+		on_map = get_vec2_on_sphere(i, i->object);
 	else if (i->object->identifier == PLANE)
-		on_map = get_vec2_on_plane(i, i->object);
+		on_map = get_vec2_on_plane(i, i->object, normal_tex);
+	else if (i->object->identifier == CYLINDER)
+		on_map = get_vec2_on_cylinder(i, i->object, normal_tex);
 	if (on_map.x < 0 || on_map.y < 0 || on_map.x > 1 || on_map.y > 1)
 		return ;
 	uv.u = (int)(on_map.x * normal_tex->width) % normal_tex->width;
@@ -45,9 +47,11 @@ void	texture_set_color(t_intersection *i, t_texture *color_tex)
 	t_uv		uv;
 
 	if (i->object->identifier == SPHERE)
-		on_map = get_vec2_on_sphere(&i->coordinates_vec, i->object);
+		on_map = get_vec2_on_sphere(i, i->object);
 	else if (i->object->identifier == PLANE)
-		on_map = get_vec2_on_plane(i, i->object);
+		on_map = get_vec2_on_plane(i, i->object, color_tex);
+	else if (i->object->identifier == CYLINDER)
+		on_map = get_vec2_on_cylinder(i, i->object, color_tex);
 	if (on_map.x < 0 || on_map.y < 0 || on_map.x > 1 || on_map.y > 1)
 		return ;
 	uv.u = (int)(on_map.x * color_tex->width) % color_tex->width;

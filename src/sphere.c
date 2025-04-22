@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:18 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 15:51:43 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/22 22:12:56 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	set_sphere_normal_vector(t_intersection *intersection,
 	intersection->normal_vec = normal_vector;
 }
 
-t_vector2	get_vec2_on_sphere(const t_vector3 *intersection_vec,
+t_vector2	get_vec2_on_sphere(const t_intersection *intersection,
 	const t_object *sphere)
 {
 	t_vector2		on_map;
@@ -85,7 +85,8 @@ t_vector2	get_vec2_on_sphere(const t_vector3 *intersection_vec,
 	double			theta;
 	double			phi;
 
-	on_sphere = subst_vector(*intersection_vec, sphere->coordinates_vec);
+	on_sphere = subst_vector(intersection->coordinates_vec,
+			sphere->coordinates_vec);
 	theta = atan2(on_sphere.z, on_sphere.x);
 	phi = asin(on_sphere.y / (sphere->diameter / 2));
 	on_map.x = 0.5 + (theta / (2 * M_PI));

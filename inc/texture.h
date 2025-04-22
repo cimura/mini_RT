@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:40:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/21 16:29:51 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/22 21:47:18 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@
 # include <fcntl.h>
 
 # define STB_IMAGE_IMPLEMENTATION
-
-# define PLANE_TEX_WIDTH 20
-# define PLANE_TEX_HEIGHT 20
-# define TEXTURE_MAGNIFICATION 0.1
+# define TEX_MAGNIFICATION 0.01
 
 enum	e_tex_identifier
 {
