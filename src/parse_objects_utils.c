@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:58 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 17:02:57 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:41:47 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int	set_dimension(double *value, char *str, double min, double max)
 {
 	if (str == NULL)
 		return (print_err_msg(NOT_MATCH_PARAM_NUM, str), 1);
+	if (ft_is_valid_double(str) == false)
+		return (print_err_msg(INV_PARAM, str), 1);
 	*value = ft_atod(str);
 	if (min >= max)
 		return (0);

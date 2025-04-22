@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:12 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 21:54:21 by cimy             ###   ########.fr       */
+/*   Updated: 2025/04/22 17:33:22 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_dcolor	ray_trace_recursive(const t_world *world, const t_ray *ray,
 	if (closest_intersection.t < 0)
 		return (color);
 	calculate_intersections_normal_vector(&closest_intersection, ray);
-	texture_mapping(closest_intersection.object->textures,
+	texture_mapping(closest_intersection.object->material.textures,
 		&closest_intersection);
 	color = shader(world, &closest_intersection, ray);
 	color = dcolor_add(color, calculate_catadioptric_radiance(

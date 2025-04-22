@@ -5,90 +5,39 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/24 22:59:53 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/21 16:45:40 by ttakino          ###   ########.fr       */
+/*   Created: 2025/04/22 18:39:02 by ttakino           #+#    #+#             */
+/*   Updated: 2025/04/22 18:45:22 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mini_rt.h"
+#include "object.h"
 #include "parser.h"
 
-static t_dcolor	specular_init(int material_id)
+t_material	material_destroy(t_material *material)
 {
-	t_dcolor	specular;
-
-	specular = dcolor_init(0.0, 0.0, 0.0);
-	if (material_id == GLASS)
-		specular = dcolor_init(0.7, 0.7, 0.7);
-	else if (material_id == IRON)
-		specular = dcolor_init(0.8, 0.8, 0.8);
-	else if (material_id == SILVER)
-		specular = dcolor_init(1.0, 1.0, 1.0);
-	else if (material_id == WOOD)
-		specular = dcolor_init(0.15, 0.15, 0.15);
-	else if (material_id == WATER)
-		specular = dcolor_init(0.85, 0.85, 0.85);
-	return (specular);
+	ft_lstclear(&material->textures, texture_destroy);
 }
 
-static double	shinness_init(int material_id)
+#define ID_NOT_FOUND 2
+
+static int	set_material_id(int *material_id, char *material_name)
 {
-	double	shinness;
-
-	shinness = 0.0;
-	if (material_id == GLASS)
-		shinness = 90;
-	else if (material_id == IRON)
-		shinness = 75;
-	else if (material_id == SILVER)
-		shinness = 150;
-	else if (material_id == WOOD)
-		shinness = 15;
-	else if (material_id == WATER)
-		shinness = 65;
-	return (shinness);
-}
-
-static void	catadioptric_set(t_material *material, int material_id)
-{
-	material->use_perfect_reflectance = false;
-	material->catadioptric_factor = dcolor_init(0.0, 0.0, 0.0);
-	material->use_refraction = false;
-	if (material_id == SILVER)
-	{
-		material->use_perfect_reflectance = true;
-		material->catadioptric_factor = dcolor_init(1.0, 1.0, 1.0);
-		material->use_refraction = false;
-	}
-	else if (material_id == GLASS)
-	{
-		material->use_perfect_reflectance = true;
-		material->catadioptric_factor = dcolor_init(1.0, 1.0, 1.0);
-		material->use_refraction = true;
-		material->refractive_index = 1.51;
-	}
-	else if (material_id == WATER)
-	{
-		material->use_perfect_reflectance = true;
-		material->catadioptric_factor = dcolor_init(1.0, 1.0, 1.0);
-		material->use_refraction = true;
-		material->refractive_index = 1.33;
-	}
-}
-
-static t_material	material_init(int material_id, t_dcolor color, int obj_id)
-{
-	t_material	material;
-
-	material.diffuse = color;
-	material.specular = specular_init(material_id);
-	material.shinness = shinness_init(material_id);
-	catadioptric_set(&material, material_id);
-	if (obj_id == PLANE || obj_id == CYLINDER)
-		material.use_thin_surfase = true;
+	*material_id = WOOD;
+	if (material_name == NULL)
+		return (ID_NOT_FOUND);
+	if (ft_strncmp(material_name, "GLASS", 6) == 0)
+		*material_id = GLASS;
+	else if (ft_strncmp(material_name, "IRON", 5) == 0)
+		*material_id = IRON;
+	else if (ft_strncmp(material_name, "SILVER", 7) == 0)
+		*material_id = SILVER;
+	else if (ft_strncmp(material_name, "WOOD", 5) == 0)
+		*material_id = WOOD;
+	else if (ft_strncmp(material_name, "WATER", 6) == 0)
+		*material_id = WATER;
 	else
-		material.use_thin_surfase = false;
-	return (material);
+		return (ID_NOT_FOUND);
+	return (0);
 }
 
 int	material_register(char **per_word_pointer, t_material *material,
@@ -96,25 +45,18 @@ int	material_register(char **per_word_pointer, t_material *material,
 {
 	int			material_id;
 	t_dcolor	color;
+	int			next_index;
 
 	if (per_word_pointer[0] == NULL)
 		return (print_err_msg(NOT_MATCH_PARAM_NUM, NULL), 1);
 	if (set_rgb(&color, per_word_pointer[0]) != 0)
 		return (1);
-	material_id = WOOD;
-	if (per_word_pointer[1])
-	{
-		if (ft_strncmp(per_word_pointer[1], "GLASS", 6) == 0)
-			material_id = GLASS;
-		else if (ft_strncmp(per_word_pointer[1], "IRON", 5) == 0)
-			material_id = IRON;
-		else if (ft_strncmp(per_word_pointer[1], "SILVER", 7) == 0)
-			material_id = SILVER;
-		else if (ft_strncmp(per_word_pointer[1], "WOOD", 5) == 0)
-			material_id = WOOD;
-		else if (ft_strncmp(per_word_pointer[1], "WATER", 6) == 0)
-			material_id = WATER;
-	}
+	next_index = 2;
+	if (set_material_id(&material_id, per_word_pointer[1]) == ID_NOT_FOUND)
+		next_index = 1;
 	*material = material_init(material_id, color, obj_identifier);
+	if (texture_register(&per_word_pointer[next_index],
+			&material->textures) != 0)
+		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:26:23 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/21 16:42:11 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/22 18:49:36 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_material
 	bool		use_refraction;
 	double		refractive_index;
 	bool		use_thin_surfase;
+	t_list		*textures;
 }	t_material;
 
 // オブジェクト汎用
@@ -48,14 +49,16 @@ typedef struct s_object
 	t_vector3		orientation_vec;
 	double			diameter;
 	double			height;
-	t_list			*textures;
 	t_material		material;
 }	t_object;
 
+// *** material_init.c ***
+t_material	material_init(int material_id, t_dcolor color, int obj_id);
 
 // *** material.c ***
 int			material_register(char **per_word_pointer, t_material *material,
 	int obj_identifier);
+t_material	material_destroy(t_material *material);
 
 // *** object.c ***
 t_object	*object_init(void);

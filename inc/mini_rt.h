@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/21 16:31:45 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/22 18:46:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ typedef struct s_light
 	t_vector3	coordinates_vec;
 	t_dcolor	intensity;
 }	t_light;
-
 
 // 描画対象の図形（円、平面、円柱）は複数個扱えるように配列にする
 typedef struct s_world

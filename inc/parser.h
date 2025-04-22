@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:38 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/21 16:31:56 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/22 17:42:09 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ enum	e_errnum
 	FILE_NOT_FOUND,
 	CANT_READ_FILE,
 	INV_IDENTIFIER,
-	INV_NUMBER,
 	OUT_OF_RANGE,
 	INV_PARAM,
 	NOT_MATCH_PARAM_NUM,
