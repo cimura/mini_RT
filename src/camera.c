@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   camera.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:26 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 15:38:58 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:27:11 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 static void	set_screen_normalized_basis_vectors(t_camera camera,
 	t_vector3 *basisx, t_vector3 *basisy)
 {
-	basisx->y = 0;
-	basisx->x = camera.orientation_vec.z
-		/ sqrt(pow(camera.orientation_vec.z, 2)
-			+ pow(camera.orientation_vec.x, 2));
-	basisx->z = -1 * camera.orientation_vec.x
-		/ sqrt(pow(camera.orientation_vec.x, 2)
-			+ pow(camera.orientation_vec.z, 2));
+	t_vector3	up_vec;
+
+	if (fabs(camera.orientation_vec.y) > fabs(camera.orientation_vec.x))
+		up_vec = init_vector(0, 0, 1);
+	else
+		up_vec = init_vector(0, 1, 0);
+	*basisx = normalize_vector(cross_product(up_vec, camera.orientation_vec));
 	*basisy = cross_product(camera.orientation_vec, *basisx);
 }
 

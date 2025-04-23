@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:26:23 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/22 18:49:36 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/23 15:22:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ enum	e_material
 typedef struct s_material
 {
 	t_dcolor	diffuse;
+	t_dcolor	original_diffuse;
 	t_dcolor	specular;
 	double		shinness;
 	bool		use_perfect_reflectance;
@@ -58,7 +59,7 @@ t_material	material_init(int material_id, t_dcolor color, int obj_id);
 // *** material.c ***
 int			material_register(char **per_word_pointer, t_material *material,
 	int obj_identifier);
-t_material	material_destroy(t_material *material);
+void		material_destroy(t_material *material);
 
 // *** object.c ***
 t_object	*object_init(void);

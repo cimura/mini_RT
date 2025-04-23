@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   material.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:39:02 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/22 18:45:22 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/23 15:22:43 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "object.h"
 #include "parser.h"
 
-t_material	material_destroy(t_material *material)
+void	material_destroy(t_material *material)
 {
 	ft_lstclear(&material->textures, texture_destroy);
 }

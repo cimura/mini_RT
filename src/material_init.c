@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   material_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:53 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/22 18:45:07 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/23 15:21:14 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ t_material	material_init(int material_id, t_dcolor color, int obj_id)
 	t_material	material;
 
 	material.diffuse = color;
+	material.original_diffuse = color;
 	material.specular = specular_init(material_id);
 	material.shinness = shinness_init(material_id);
 	material.catadioptric_factor

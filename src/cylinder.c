@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/22 22:13:29 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/23 17:28:34 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,26 +88,25 @@ void	set_cylinder_normal_vector(t_intersection *intersection,
 t_vector2	get_vec2_on_cylinder(const t_intersection *intersection,
 	const t_object *cylinder, t_texture *tex)
 {
-	t_vector2	on_map;
-	t_vector3	on_cylinder;
-	double		width;
-	double		height;
+	t_vector2		on_map;
+	t_vector3		on_cylinder;
+	t_basis_vectors	basis_vec;
+	double			magnification;
+	double			height;
 
-	on_map.x = -1;
-	on_map.y = -1;
 	on_cylinder = subst_vector(intersection->coordinates_vec,
 			cylinder->coordinates_vec);
-	if (cylinder->diameter * M_PI > cylinder->height)
-	{
-		width = cylinder->height * tex->width / tex->height;
-		height = cylinder->height;
-	}
+	if (cylinder->diameter * M_PI / tex->width > cylinder->height / tex->height)
+		magnification = cylinder->height / tex->height;
 	else
-	{
-		width = cylinder->diameter * M_PI;
-		height = cylinder->diameter * M_PI * tex->height / tex->width;
-	}
-	on_map.x = 0.5 + (atan2(on_cylinder.z, on_cylinder.x) / (2 * M_PI));
-	on_map.y = fabs(inner_product(on_cylinder, cylinder->orientation_vec));
+		magnification = cylinder->diameter * M_PI / tex->width;
+	height = tex->height * magnification;
+	basis_vec = get_basis_vectors_from_normal_vec(&cylinder->orientation_vec);
+	on_map.x = atan2(inner_product(on_cylinder, basis_vec.x_vector),
+			inner_product(on_cylinder, basis_vec.y_vector))
+		/ (2 * M_PI * ((tex->width * magnification)
+				/ (cylinder->diameter * M_PI))) + 0.5;
+	on_map.y = 1 - (inner_product(on_cylinder, cylinder->orientation_vec)
+			+ height / 2) / height;
 	return (on_map);
 }
