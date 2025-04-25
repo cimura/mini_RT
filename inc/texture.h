@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:40:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/25 12:17:57 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:26:03 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <fcntl.h>
 
 # define STB_IMAGE_IMPLEMENTATION
-# define TEX_MAGNIFICATION 0.01
-# define LOOP_MAPPING false
+# define TEX_MAGNIFICATION 0.003
+# define LOOP_MAPPING true
 
 enum	e_tex_identifier
 {

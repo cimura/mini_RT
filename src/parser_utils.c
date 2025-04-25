@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 23:40:35 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/19 17:10:23 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:41:47 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int	parse_rt_file(t_world *world, char *buf)
 		}
 		i++;
 	}
-	printf ("%s\n", buf);
 	free_double_pointer((void **)per_row_pointer);
 	return (0);
 }

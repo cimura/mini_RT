@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/25 12:15:34 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:15:32 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 # define SCREEN_WIDTH 2.0
 # define SCREEN_HEIGHT 2.0
 
-# define BACKGROUND_COLOR_RED 0.2
-# define BACKGROUND_COLOR_GREEN 0.2
-# define BACKGROUND_COLOR_BLUE 0.2
+# define BACKGROUND_COLOR_RED 0
+# define BACKGROUND_COLOR_GREEN 0
+# define BACKGROUND_COLOR_BLUE 0
 
 # define RECTANGLE 1
 # define CUBE 2

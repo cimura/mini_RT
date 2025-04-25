@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_objects.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:33:07 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/22 17:47:39 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:27:20 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	parse_sphere(t_world *world, char **per_word_pointer)
 int	parse_plane(t_world *world, char **per_word_pointer)
 {
 	t_object	*plane;
-	int			size;
 
 	plane = object_init();
 	if (plane == NULL)

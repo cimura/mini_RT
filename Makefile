@@ -14,13 +14,12 @@ LIBFT		:=	$(LIBFT_DIR)libft.a
 MLX_DIR		:=	mlx/
 MLX			:=	$(MLX_DIR)libmlx.a
 
-DFLAGS		:=	-g -O3 -MMD
-#CFLAGS		:=	-Wall -Wextra -Werror $(DFLAGS)
-IFLAGS		:=	-I$(INC_DIR) -I$(LIBFT_DIR)$(INC_DIR) -I$(MLX_DIR)
-
-STB_DIR		:=	$(INC_DIR)
+STB_DIR		:=	stb/
 STB_HEADER	:=	$(STB_DIR)stb_image.h
-STB_URL		:=	https://raw.githubusercontent.com/nothings/stb/master/stb_image.h
+
+DFLAGS		:=	-g -O3 -MMD
+CFLAGS		:=	-Wall -Wextra -Werror $(DFLAGS)
+IFLAGS		:=	-I$(INC_DIR) -I$(LIBFT_DIR)$(INC_DIR) -I$(MLX_DIR) -I$(STB_DIR)
 
 MLX_URL		:=	https://github.com/42Paris/minilibx-linux.git
 
@@ -34,7 +33,7 @@ endif
 
 LFLAGS		:=	-L$(LIBFT_DIR) -lft $(LD_FLAGS)
 
-all: $(STB_HEADER) $(MLX) $(OBJ_DIR) $(NAME)
+all: $(MLX) $(OBJ_DIR) $(NAME)
 
 -include $(OBJ_DIR)/*.d
 
@@ -43,11 +42,6 @@ $(OBJ_DIR):
 
 $(NAME): $(OBJ_DIR) $(LIBFT) $(OBJ)
 	$(CC) $(CFLAGS) $(IFLAGS) $(OBJ) -o $@ $(LFLAGS)
-
-$(STB_HEADER):
-	@echo "Downloading stb_image.h..."
-	@mkdir -p $(STB_DIR)
-	@curl -fsSL $(STB_URL) -o $(STB_HEADER)
 
 $(MLX):
 	@if [ -d "$(MLX_DIR)" ]; then \
