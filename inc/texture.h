@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 22:40:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/22 21:47:18 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 12:17:57 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 # define STB_IMAGE_IMPLEMENTATION
 # define TEX_MAGNIFICATION 0.01
+# define LOOP_MAPPING false
 
 enum	e_tex_identifier
 {
@@ -45,6 +46,9 @@ typedef struct s_texture
 	int				height;
 	int				channels;
 }	t_texture;
+
+// *** texture_mapping.c ***
+void		case_loop_mapping(t_vector2 *on_map);
 
 // *** texture.c ***
 int			load_texture(t_texture *tex, char *filename, int identifier);

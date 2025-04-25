@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   texture_mapping.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 23:04:15 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/23 15:22:11 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 12:19:49 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
+
+void	case_loop_mapping(t_vector2 *on_map)
+{
+	if (on_map->x < 0)
+		on_map->x = 1 - fmod(fabs(on_map->x), 1.0);
+	else
+		on_map->x = fmod(on_map->x, 1.0);
+	if (on_map->y < 0)
+		on_map->y = 1 - fmod(fabs(on_map->y), 1.0);
+	else
+		on_map->y = fmod(on_map->y, 1.0);
+}
 
 void	texture_set_normal(t_intersection *i, t_texture *normal_tex)
 {

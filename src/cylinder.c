@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:58:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/23 17:28:34 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 12:18:48 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,7 @@ t_vector2	get_vec2_on_cylinder(const t_intersection *intersection,
 				/ (cylinder->diameter * M_PI))) + 0.5;
 	on_map.y = 1 - (inner_product(on_cylinder, cylinder->orientation_vec)
 			+ height / 2) / height;
+	if (LOOP_MAPPING)
+		case_loop_mapping(&on_map);
 	return (on_map);
 }

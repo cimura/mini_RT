@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:57:50 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/23 16:46:25 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 12:19:17 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,16 @@ t_vector2	get_vec2_on_plane(const t_intersection *intersection,
 	double			width;
 	double			height;
 
-	on_map.x = -1;
-	on_map.y = -1;
 	width = tex->width * TEX_MAGNIFICATION;
 	height = tex->height * TEX_MAGNIFICATION;
 	basis_vec = get_basis_vectors_from_normal_vec(&intersection->normal_vec);
 	on_plane
 		= subst_vector(intersection->coordinates_vec, plane->coordinates_vec);
-	on_map.x = inner_product(on_plane, basis_vec.x_vector) - width / 2;
-	on_map.y = inner_product(on_plane, basis_vec.y_vector) + height / 2;
-	if (on_map.x < 0)
-		on_map.x = fmod(fabs(on_map.x), width) / (width);
-	else
-		on_map.x = 1 - fmod(on_map.x, width) / (width);
-	if (on_map.y < 0)
-		on_map.y = fmod(fabs(on_map.y), height) / (height);
-	else
-		on_map.y = 1 - fmod(on_map.y, height) / (height);
+	on_map.x = (1 - inner_product(on_plane, basis_vec.x_vector) - width / 2)
+		/ width;
+	on_map.y = (1 - inner_product(on_plane, basis_vec.y_vector) + height / 2)
+		/ height;
+	if (LOOP_MAPPING)
+		case_loop_mapping(&on_map);
 	return (on_map);
 }

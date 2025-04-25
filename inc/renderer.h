@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/22 22:10:33 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 12:15:34 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void			set_plane_intersection(t_intersection *i, t_object *plane,
 					const t_ray *ray);
 void			set_plane_normal_vector(t_intersection *intersection,
 					const t_object *plane, const t_ray *ray);
-t_vector2	get_vec2_on_plane(const t_intersection *intersection,
+t_vector2		get_vec2_on_plane(const t_intersection *intersection,
 					const t_object *plane, t_texture *tex);
 
 // *** cylinder.c ***
