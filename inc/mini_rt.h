@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 16:59:01 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/22 18:46:50 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:44:53 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_RT_H
 
 # define MINI_RT_H
-
-# define DEBUG
 
 # include <stdio.h>
 # include <fcntl.h>
@@ -65,7 +63,6 @@ typedef struct s_light
 	t_dcolor	intensity;
 }	t_light;
 
-// 描画対象の図形（円、平面、円柱）は複数個扱えるように配列にする
 typedef struct s_world
 {
 	t_mlx				mlx;
@@ -76,8 +73,6 @@ typedef struct s_world
 	t_list				*lights;
 	t_list				*objects;
 }	t_world;
-
-//# include "renderer.h"
 
 // *** diaplay.c ***
 void		display_in_mlx(t_world *world);

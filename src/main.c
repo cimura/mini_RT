@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.jp>            +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 22:59:41 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/21 16:40:57 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:49:50 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	init_world(t_world *world)
 	world->camera.identifier = 0;
 	world->lights = NULL;
 	world->objects = NULL;
+	world->global_refractive_index = 1.000293;
 	return (0);
 }
 
@@ -52,7 +53,6 @@ int	main(int argc, char **argv)
 		return (1);
 	if (parse_arguments(&world, argc, argv) != 0)
 		return (1);
-	world.global_refractive_index = 1.000293;
 	if (init_mlx_struct(&world.mlx) != 0)
 		return (on_destroy(&world), 1);
 	if (renderer(&world) != 0)

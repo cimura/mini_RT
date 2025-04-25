@@ -6,39 +6,43 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 23:40:35 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/25 19:41:47 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 20:05:41 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
+void	write_err_msg(char *arg)
+{
+	write(STDERR_FILENO, arg, ft_strlen(arg));
+}
+
 void	print_err_msg(int errnum, char *arg)
 {
 	if (arg == NULL)
 		arg = "";
-	printf("Error\n");
+	write_err_msg("Error\n");
+	write_err_msg(arg);
 	if (errnum == INV_NUM_OF_ARGS)
-		printf("%s: Too many/too few arguments.\n", arg);
+		write_err_msg("Too many/too few arguments.\n");
 	else if (errnum == FILE_TOO_LARGE)
-		printf("%s: .rt file is too large.\n", arg);
+		write_err_msg(".rt file is too large.\n");
 	else if (errnum == INV_FILENAME)
-		printf("%s: The argument file extension must be .rt.\n", arg);
+		write_err_msg("The argument file extension must be .rt.\n");
 	else if (errnum == FILE_NOT_FOUND)
-		printf("%s: File not found.\n", arg);
-	else if (errnum == CANT_READ_FILE)
-		printf("%s: Cannot read file.\n", arg);
+		write_err_msg("File not found.\n");
 	else if (errnum == INV_IDENTIFIER)
-		printf("%s: Invalid identifier.\n", arg);
+		write_err_msg("Invalid identifier.\n");
 	else if (errnum == OUT_OF_RANGE)
-		printf("%s: Number out of range.\n", arg);
+		write_err_msg("Number out of range.\n");
 	else if (errnum == INV_PARAM)
-		printf("%s: Invalid parameter.\n", arg);
+		write_err_msg("Invalid parameter.\n");
 	else if (errnum == NOT_MATCH_PARAM_NUM)
-		printf("%s: The number of parameters does not match.\n", arg);
+		write_err_msg("The number of parameters does not match.\n");
 	else if (errnum == NOT_NORMALIZED_VEC)
-		printf("%s: This vector is not normalized\n", arg);
+		write_err_msg("This vector is not normalized\n");
 	else if (errnum == TOO_MANY_PARAM)
-		printf("%s: This parameter cannot be fefined multiple times.\n", arg);
+		write_err_msg("This parameter cannot be fefined multiple times.\n");
 }
 
 static int	parse_line(t_world *world, char *line)

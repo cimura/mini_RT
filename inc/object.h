@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 16:26:23 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/23 15:22:50 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:51:26 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include "dcolor.h"
 # include "texture.h"
 # include "libft.h"
+
+# define ID_NOT_FOUND 2
 
 enum	e_material
 {
@@ -42,7 +44,6 @@ typedef struct s_material
 	t_list		*textures;
 }	t_material;
 
-// オブジェクト汎用
 typedef struct s_object
 {
 	int				identifier;

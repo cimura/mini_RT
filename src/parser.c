@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshimura <sshimura@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:36 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/20 15:50:30 by sshimura         ###   ########.fr       */
+/*   Updated: 2025/04/25 20:08:39 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	read_rt_file(char *filename, char *buf)
 	file_bytes = read(fd, buf, BUF_SIZE);
 	if (file_bytes < 0)
 	{
-		print_err_msg(CANT_READ_FILE, filename);
+		print_err_msg(FILE_NOT_FOUND, filename);
 		return (1);
 	}
 	if (file_bytes > BUF_SIZE - 1)

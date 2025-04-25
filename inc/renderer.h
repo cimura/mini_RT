@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 23:00:40 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/25 19:15:32 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:45:25 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@
 # define BACKGROUND_COLOR_GREEN 0
 # define BACKGROUND_COLOR_BLUE 0
 
-# define RECTANGLE 1
-# define CUBE 2
 
 typedef struct s_ray
 {

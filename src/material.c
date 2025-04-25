@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:39:02 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/23 15:22:43 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 19:51:13 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	material_destroy(t_material *material)
 {
 	ft_lstclear(&material->textures, texture_destroy);
 }
-
-#define ID_NOT_FOUND 2
 
 static int	set_material_id(int *material_id, char *material_name)
 {

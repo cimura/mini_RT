@@ -6,7 +6,7 @@
 /*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 14:16:38 by ttakino           #+#    #+#             */
-/*   Updated: 2025/03/15 18:53:33 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/25 20:07:55 by ttakino          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ enum	e_errnum
 	INV_FILENAME,
 	FILE_TOO_LARGE,
 	FILE_NOT_FOUND,
-	CANT_READ_FILE,
 	INV_IDENTIFIER,
 	INV_NUMBER,
 	OUT_OF_RANGE,
