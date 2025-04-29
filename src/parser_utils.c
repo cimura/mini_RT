@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttakino <ttakino@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cimy <cimy@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 23:40:35 by ttakino           #+#    #+#             */
-/*   Updated: 2025/04/25 20:05:41 by ttakino          ###   ########.fr       */
+/*   Updated: 2025/04/29 21:30:53 by cimy             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	print_err_msg(int errnum, char *arg)
 		arg = "";
 	write_err_msg("Error\n");
 	write_err_msg(arg);
+	write_err_msg(": ");
 	if (errnum == INV_NUM_OF_ARGS)
 		write_err_msg("Too many/too few arguments.\n");
 	else if (errnum == FILE_TOO_LARGE)
