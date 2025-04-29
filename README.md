@@ -24,34 +24,26 @@ sp 0,0,10 7 0,0,255 WOOD(材質名) N:"textmp.png"(テクスチャマップ)
 ・C カラーマップ （色）
 
 
--> Camera(C)視点、Light(L)光源からSphere(S)を見る
+<img width="793" alt="Image" src="https://github.com/user-attachments/assets/e9a201d6-81c6-45fb-8bd8-49cb290ed2dd" />
 
-①open, read, close...などでファイルを受け取って解釈する
+scenes/futuristic_space.rt
+###
+###
 
-②計算して表示
+<img width="780" alt="Image" src="https://github.com/user-attachments/assets/3290a560-eafd-492e-88c3-77a73bfdaa8a" />
 
----
+scenes/pokemon_master.rt
+###
+###
 
-Sphereについてはplaygroundのコードを参照
-他にPlane（平面）, Cylinder（円筒）の実装が必要
+<img width="796" alt="Image" src="https://github.com/user-attachments/assets/c3108d22-afad-4e51-98f9-0eb330f1c064" />
 
-赤色の球の表示はできたが、複数のオブジェクトの表示をするためには、
-それぞれをループで回して視点に最も近い物体を使う↓
+scenes/refraction.rt
+###
+###
 
-![alt text](image.png)
+<img width="796" alt="Image" src="https://github.com/user-attachments/assets/7fb5ce50-2a7f-482a-bc84-2440b7cc66a4" />
 
-今は物体と色の構造体(t_color)が分離してしまっているため、MultipleShapes以降では
-物体の構造体に色の情報を入れる必要がある。データ構造の整理が必要そう
-
-計画はissuesを使ってやろうかな
-
-<img width="831" alt="image" src="https://github.com/user-attachments/assets/4b733f28-8856-45fc-b147-a59a54414b9c" />
-
-レビューで見せる地図
-①太陽系の惑星（bump-mapping）
-②モンスターボール、鏡面反射と複数光源
-③チェックボード
-④円柱系
-⑤鏡面反射の球
-
-=====>　案1の方が確かにいい気もしてきた
+scenes/texturemap.rt
+###
+###
